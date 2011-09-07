@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Registrieren - Blackbook</title>{% endblock %}
+{%- block stylesheets %}
+<link rel="stylesheet" type="text/css" href="/static/style/default.css">
+<link rel="stylesheet" type="text/css" href="/static/style/register.css">
+{%- endblock %}
+
+{%- block scripts %}
+<script type="text/javascript" src="/static/script/inputverification.js"></script>
+<script type="text/javascript">
+<!--
+function checkform()    {
+    if ( !checkregform() )  {
+        return false;
+    }
+
+    var hash = SHA1 ( document.regform.pass.value );
+    document.regform.pass.value = hash;
+    document.regform.pass2.value= hash;
+    return true;
+}
+-->
+</script>
+{%- endblock %}
+
+{% block infobox %}
+  <!--<div id="infobox">
+    <h4>Informationen zum Passwort:</h4>
+    Momentan unterstützt <i>blackboard</i> keine verschlüsselten Verbindungen.
+    Der <b><a href="http://de.wikipedia.org/wiki/Kryptologische_Hashfunktion">Hash</a></b> 
+    deines Passwort kann theoretisch während der Übertragung mitgelesen werden.
+    Deshalb ist es besonders wichtig, dass du auf dieser Seite ein Passwort verwendest,
+    das du bei keinem anderen Dienst auch benutzt!
+  </div>-->
+{% endblock %}
+
+{% block content %}
+  <div id="register">
+    <h3>Registrieren</h3>
+    <table><form name="regform" action=/register/ method="post" onsubmit="return checkform()">
+      <tr>
+        <td>Benutzername: &nbsp;</td>
+        <td><input type="text" size="20" name="user" tabindex="1"></td>
+      </tr>
+      <tr>
+        <td>Passwort: </td>
+        <td><input type="password" size="20" name="pass" tabindex="2"></td>
+      </tr>
+      <tr>
+        <td>Passwort wiederholen: &nbsp;</td>
+        <td><input type="password" size="20" name="pass2" tabindex="3"></td>
+      </tr>
+      <tr>
+        <td>E-Mail-Adresse:</td>
+        <td><input type="text" size="20" name="email" tabindex="4"></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td><td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th colspan="2">
+          <input type="submit" value="Registrieren" tabindex="5">
+        </th>
+      </tr>
+    </form></table>
+  </div>
+{% endblock %}

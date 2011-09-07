@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+       "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+  {% block title %}<title>Blackboard</title>{% endblock %}
+
+  {% block stylesheets %}<link rel="stylesheet" type="text/css" href="/static/style/default.css">
+  {% endblock %}
+  {%- block scripts %}<script type="text/javascript" src="/static/script/iconanimation.js"></script>
+  {%- endblock %}
+</head>
+<body>
+{%- block header %}
+  <img src="/static/img/switch.png" align="left" height="80" id="icon">
+  <div id="header"><h1><a href="/">Blackboard</a></h1></div>
+{%- endblock %}
+
+{%- block iconband %}{%- endblock %}
+{%- block errorbox %}{%- endblock %}
+{%- block infobox %}{%- endblock %}
+{%- block pagenumber %}{%- endblock %}
+
+{%- block messagebox %}
+{%- for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="messagebox {{ category }}">{{ message }}</div>
+{%- endfor %}
+{%- endblock %}
+
+  <div id="wrapper">
+{%- block navigation %}
+{%- endblock %}
+{%- block content %}
+{%- endblock %}
+  </div>
+
+{%- block pagelinks %}
+{%- if page %}
+  <div id="pagelinks">
+    {%- if page.prev %}<a href="/page/{{ page.prev }}/">neuere Einträge</a>{%- endif %}
+    {%- if page.prev and page.prev %}&nbsp;|&nbsp;{% endif %}
+    {%- if page.prev >= 1 %}<a href="/page/1/">erste Seite</a>{%- endif %}
+    {%- if page.prev >= 1 and page.next %}&nbsp;|&nbsp;{% endif %}
+    {%- if page.next %}<a href="/page/{{ page.next }}/">ältere Einträge</a>
+    {%- endif %}
+  </div>
+{%- endif %}
+{%- endblock %}
+
+{%- block footer %}
+  <div id="footer">
+    <a href="/">Startseite</a>|
+    <a href="/admin/">Administration</a>|
+    <a href="https://github.com/davidnieder/blackboard" target="_blank">Blackboard ist OpenSource</a>
+  </div>
+{%- endblock %}
+
+</body>
+</html>

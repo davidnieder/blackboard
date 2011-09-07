@@ -1,0 +1,45 @@
+{% extends 'admin/base.html' %}
+
+{%- block content %}
+  <div id="content">
+    <h5>User {{ user.name }}</h5>
+    <table>
+      <tr>
+        <td>Id:</td><td>{{ user.id }}</td>
+      </tr>
+      <tr>
+        <td>Name:</td><td>{{ user.name }}</td>
+      </tr>
+      <tr>
+        <td>E-Mail:</td><td>{{ user.email }}</td>
+      </tr>
+      <tr>
+        <td>Password:</td><td><a href="#" onclick="setpw({{ user.id }})">Neu setzen</a></td>
+        <form action="/admin/user/{{ user.id }}/setpw/" method="post" name="hiddenform">
+          <input type="hidden" name="pw">
+        </form>
+      </tr>
+      <tr>
+        <td>Admin:</td><td>{% if user.admin %}Ja{% else %}Nein{% endif %}</td>
+      </tr>
+      <tr>
+        <td>Aktiviert:</td><td>{% if user.active %}Ja{% else %}Nein{% endif %}</td>
+      </tr>
+      <tr>
+        <td>Last Login:</td><td>{{ user.lastlogin }}</td>
+      </tr>
+      <tr>
+        <td>Einträge pro Seite:</td><td>{{ user.postspersite }}</td>
+      </tr>
+      <tr>
+        <td>Avatar:</td><td>{{ user.avatar }}</td>
+      </tr>
+      <tr>
+        <td>Style:</td><td>{{ user.style }}</td>
+      </tr>
+      <tr>
+        <td>Template:</td><td>{{ user.template }}</td>
+      </tr>
+    </table>
+  </div>
+{%- endblock %}

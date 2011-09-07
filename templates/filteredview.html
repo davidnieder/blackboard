@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Ausgewählte Posts - Blackbook</title>{% endblock %}
+
+{% block content %}
+  <div id="content">
+  {% if posts %}
+    {% if type in ['text', 'link', 'image', 'audio', 'video'] %}
+    <h4>Alle Einträge in der Kategorie '{{ type }}':</h4>
+    {%elif type == 'user' %}
+    <h4>Alle Einträge von {{ username }}:</h4>
+    {% else %}
+    <h4>Alle Einträge vom {{ type }}:</h4>
+    {% endif %}
+    {%- for post in posts %}
+    <div class="post">
+      <h5 class="post datum">Post 
+        <a href="/posts/{{ post.id }}/">#{{ post.id }}</a> vom 
+        <a href="/posts/{{ post.date }}/">{{ post.date }}</a></h5>
+      <h5 class="post author">von
+        <a href="/user/{{ post.user }}/">{{ post.user }}</a>
+      </h5>
+
+    {%- if post.contenttype == 'text' %}
+      <a href="/posts/text/"><img src="/static/img/text.png" height="50" class="post icon"></a>
+      <h3 class="post title"><a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
+      <div class="post text">{{ post.text }}</div>
+
+    {%- elif post.contenttype == 'link' %}
+      <a href="/posts/link/"><img src="/static/img/web.png" height="50" class="post icon"></a>
+      <h3 class="post title"><a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
+      <div class="post link"><a href="{{ post.url }}">{{ post.url }}</a></div>
+      <div class="post text">{{ post.text }}</div>
+
+    {%- elif post.contenttype == 'video' %}
+      <a href="/posts/video/"><img src="/static/img/video.png" height="50" class="post icon"></a>
+      <h3 class="post title"><a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
+      <div class="post embedded">{{ post.code |safe }}</div>
+      <div class="post text">{{ post.text }}</div>
+
+    {%- elif post.contenttype == 'audio' %}
+      <a href="/posts/audio/"><img src="/static/img/audio.png" height="50" class="post icon"></a>
+      <h3 class="post title"><a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
+      <div class="post embedded">{{ post.code |safe }}</div>
+      <div class="post text">{{ post.text }}</div>
+
+    {%- elif post.contenttype == 'image' %}
+      <a href="/posts/image/"><img src="/static/img/image.png" height="50" class="post icon"></a>
+      <h3 class="post title"><a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
+      <div class="post image"><img src="{{ post.url }}"></div>
+      <div class="post text">{{ post.text }}</div>
+    {%- endif %}
+
+    </div>
+    {%- endfor %}
+  {% else %}
+    <h4>Keine Einträge gefunden</h4>
+  {% endif %}
+  </div>
+{% endblock %}
+
+{% block pagelinks %}
+{% if page %}{% if type != 'user' %}
+  <div id="pagelinks">
+    {% if page.prev %}<a href="/posts/{{ type }}/{{ page.prev }}/">neuere Einträge</a>
+    &nbsp;|&nbsp;{% endif %}
+
+    {% if page.number>1 %}<a href="/posts/{{ type }}/1">erste Seite</a>{% endif %}
+
+    {% if page.next and page.number>1 %}&nbsp;|&nbsp;{% endif %}
+    {% if page.next %}<a href="/posts/{{ type }}/{{ page.next }}/">ältere Einträge</a>{% endif %}
+  </div>
+{% else %}
+  <div id="pagelinks">
+    {% if page.prev %}<a href="/posts/user/{{ username }}/{{ page.prev }}/">neuere Einträge</a>
+    &nbsp;|&nbsp;{% endif %}
+
+    {% if page.number>1 %}<a href="/posts/user/{{ username }}/1">erste Seite</a>{% endif %}
+
+    {% if page.next and page.number>1 %}&nbsp;|&nbsp;{% endif %}
+    {% if page.next %}<a href="/posts/user/{{ username }}/{{ page.next }}/">ältere Einträge</a>{% endif %}
+  </div>
+{% endif %}{% endif %}
+{% endblock %}
+

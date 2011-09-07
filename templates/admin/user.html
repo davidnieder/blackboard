@@ -1,0 +1,28 @@
+{% extends 'admin/base.html' %}
+
+{%- block content %}
+  <div id="content">
+    <table>
+      <tr>
+        <th>Id</th><th>Name</th><th>E-Mail</th>
+        <th>Admin?</th><th>Aktiviert?</th><th>Letzter Login</th>
+        <th>(De)Aktivieren</th><th>Löschen</th>
+      </tr>
+{%- for user in userlist %}
+      <tr>
+        <td><a href="/admin/user/{{ user.id }}/">{{ user.id }}</a></td>
+        <td>{{ user.name }}</td><td>{{ user.email }}</td>
+        <td>{% if user.admin %}Ja{% else %}Nein{% endif %}</td>
+        <td>{% if user.active %}Ja{% else %}Nein{% endif %}</td>
+        <td>{{ user.lastlogin }}</td>
+        <td>{% if user.active %}<a href="/admin/user/{{ user.id }}/activate/">deaktivieren</a>
+        {% else %}<a href="/admin/user/{{ user.id }}/activate/">aktivieren</a>{% endif %}</td>
+        <td><a href="#" onclick="userdel('{{ user.name }}','{{ user.id }}')">löschen</a></td>
+      </tr>
+{%- endfor %}
+    </table>
+{%- if not userlist %}
+    <h3>Keine Benutzer vorhanden</h3>
+{%- endif %}
+  </div>
+{%- endblock %}

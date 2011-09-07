@@ -1,0 +1,37 @@
+div#register  {
+    padding-bottom: 1em;
+
+    margin-top: 1em;
+    margin-left: 22%;
+    margin-right: 22%;
+    margin-bottom: 0em;
+    width: 56%;
+
+    text-align: center;
+
+    border-style: solid;
+    border-width: thin;
+}
+
+div#register table {
+    margin-left: auto;
+    margin-right: auto;
+
+    border-spacing: 0.1em;
+}
+
+div#register td    {
+    text-align: left;
+}
+
+div#infobox {
+    margin-top: 1em;
+    margin-left: 80%;
+    margin-right: 1em;
+    margin-bottom: 0em;
+    /*width: 19em;*/
+    float: right;     
+
+    text-align: justify;
+    border-style: none;
+}

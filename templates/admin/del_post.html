@@ -1,0 +1,30 @@
+{% extends 'admin/base.html' %}
+
+{%- block content %}
+  <div id="content">
+  {%- if post %}
+    <table>
+      <tr>
+        <td>Id:</td><td>{{ post.id }}</td>
+      </tr>
+      <tr>
+        <td>Typ:</td><td>{{ post.contenttype }}</td>
+      </tr>
+      <tr>
+        <td>Datum:</td><td>{{ post.date }}</td>
+      </tr>
+      <tr>
+        <td>User:</td><td>{{ post.user }}</td>
+      </tr>
+      <tr>
+        <td><a href="/posts/{{ post.id }}/">Anzeigen</a></td>
+        <td><a href="/admin/posts/{{ post.id }}/del/">Löschen</a></td>
+      </tr>
+    </table>
+  {%- else %}
+    <br>ID des Posts eingeben:<br>
+    <input type="text" size="1" id="postid">
+    <input type="button" onclick="delpost()" value="Anzeigen"><br><br>
+  {%- endif %}
+  </div>
+{%- endblock %}
