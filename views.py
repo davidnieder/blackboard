@@ -17,8 +17,8 @@ def index():
 
 def login():
     if request.method == 'POST':
-        u = user.User(username=request.form['username'])
-        if u.authenticate( request.form['password'] ):
+        u = user.User(username=request.form['user'])
+        if u.authenticate( request.form['pass'] ):
             login_user(u, remember=True)
             database.updatelogindate(u.id)
             if u.is_active():
@@ -40,19 +40,19 @@ def logout():
 
 def register():
     if request.method == 'POST':
-        u = user.User(username=request.form['user'])
-        if not u.username:
-            if user.new(request.form['user'], request.form['pass'], request.form['email']):
-                flash('Erfolgreich registriert', 'message')
-                if not ACCOUNTACTIVATION:
-                    u = user.User(username=request.form['user'])
-                    if u.authenticate( request.form['password']):
-                        login_user(u)
-                return redirect(url_for('index'))
+            u = user.User(username=request.form['user'])
+            if not u.username:
+                if user.new(request.form['user'], request.form['pass'], request.form['email']):
+                    flash('Erfolgreich registriert', 'message')
+                    if not ACCOUNTACTIVATION:
+                        u = user.User(username=request.form['user'])
+                        if u.authenticate( request.form['pass']):
+                            login_user(u)
+                    return redirect(url_for('index'))
+                else:
+                    flash('Fehler bei der Registrierung', 'error')
             else:
-                flash('Fehler bei der Registrierung', 'error')
-        else:
-            flash(u'Der gewählte Benutzername ist leider schon vorhanden', 'error')
+                 flash(u'Der gewählte Benutzername ist leider schon vorhanden', 'error')
     return render_template('register.html')
 
 def userpage(name):

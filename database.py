@@ -12,7 +12,10 @@ def opendb():
     g.db = connectdb()
 
 def closedb():
-    g.db.close()
+    if hasattr(g, 'db'):
+        g.db.close()
+    else:
+        g.db.close()
 
 def connectdb():
     return sqlite3.connect(DATABASE)
@@ -22,11 +25,12 @@ def initdb():
     initdb.init_db()
 
 def adduser(name, password, email, admin, active, avatar, style, template, lastlogin, \
-            postspersite):
+            postspersite, emailnotification, rememberme):
     g.db.execute('insert into users (name, password, email, admin, active, avatar, \
-                style, template, lastlogin, postspersite) values (?,?,?,?,?,?,?,?,?,?)',
+                style, template, lastlogin, postspersite, emailnotification, rememberme) \
+                values  (?,?,?,?,?,?,?,?,?,?,?,?)',
                 [name, password, email, admin, active, avatar, style, template, lastlogin, \
-                 postspersite])
+                 postspersite, emailnotification, rememberme])
     g.db.commit()
 
 def addentry( form, user ):

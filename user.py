@@ -70,5 +70,6 @@ def new(username, password, email):
 
     database.adduser(name=username, password=password, email=email, admin=0, \
                     active=active, avatar='null', style='default', \
-                    template='default', lastlogin="", postspersite=POSTSPERSITE);
+                    template='default', lastlogin="", postspersite=POSTSPERSITE, \
+                    emailnotification=0, rememberme=0);
     return True

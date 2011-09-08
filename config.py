@@ -1,12 +1,12 @@
 # -*- coding: UTF-8 -*-
 
 # Database
-DATABASE = 'blackboard/blackboard.sqlite3'
-DBSCHEMA = 'blackboard/dbschema.sql'
+DATABASE = '/var/www/blackboard/blackboard.sqlite3'
+DBSCHEMA = 'dbschema.sql'
 
 # Registration
 # Muss ein account erst aktiviert werden?
-ACCOUNTACTIVATION = True
+ACCOUNTACTIVATION = False
 
 # Posts pro Seite, default Wert
 POSTSPERSITE = 5

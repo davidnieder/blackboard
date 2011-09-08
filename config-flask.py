@@ -1,3 +1,3 @@
 DEBUG = True
-SECRET_KEY = 'development key'
-DATABASE = 'blackbook.sqlite3'
+SECRET_KEY = 'random-phrase'
+DATABASE = '/var/www/blackboard/blackboard.sqlite3'
