@@ -32,19 +32,19 @@ function checkregform() {
 }
 
 function checkloginform()   {
-    if (document.login.username.value == "")    {
+    if (document.login.user.value == "")    {
         alert("Bitte gib deinen Benutzernamen ein");
-        document.login.username.focus();
+        document.login.user.focus();
         return false;
     }
-    if (document.login.password.value == "")    {
+    if (document.login.pass.value == "")    {
         alert("Bitte gib dein Password ein");
-        document.login.password.focus();
+        document.login.pass.focus();
         return false;
     }
 
-    var hash = SHA1 ( document.login.password.value );
-    document.login.password.value = hash;
+    var hash = SHA1 ( document.login.pass.value );
+    document.login.pass.value = hash;
     return true;
 }
 
