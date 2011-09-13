@@ -18,31 +18,31 @@
     {%- if post.contenttype == 'text' %}
       <a href="/posts/text/"><img src="/static/img/text.png" height="50" class="post icon"></a>
       <h3 class="post title">{{ post.title }}</h3>
-      <div class="post text">{{ post.text }}</div>
+      <div class="post text">{{ post.text |safe }}</div>
 
     {%- elif post.contenttype == 'link' %}
       <a href="/posts/link/"><img src="/static/img/web.png" height="50" class="post icon"></a>
       <h3 class="post title">{{ post.title }}</h3>
       <div class="post link"><a href="{{ post.url }}">{{ post.url }}</a></div>
-      <div class="post text">{{ post.comment }}</div>
+      <div class="post text">{{ post.comment |safe }}</div>
 
     {%- elif post.contenttype == 'video' %}
       <a href="/posts/video/"><img src="/static/img/video.png" height="50" class="post icon"></a>
       <h3 class="post title">{{ post.title }}</h3>
       <div class="post embedded">{{ post.code |safe }}</div>
-      <div class="post text">{{ post.text }}</div>
+      <div class="post text">{{ post.text |safe }}</div>
 
     {%- elif post.contenttype == 'audio' %}
       <a href="/posts/audio/"><img src="/static/img/audio.png" height="50" class="post icon"></a>
       <h3 class="post title">{{ post.title }}</h3>
       <div class="post embedded">{{ post.code |safe }}</div>
-      <div class="post text">{{ post.text }}</div>
+      <div class="post text">{{ post.text |safe }}</div>
 
     {%- elif post.contenttype == 'image' %}
       <a href="/posts/image/"><img src="/static/img/image.png" height="50" class="post icon"></a>
       <h3 class="post title">{{ post.title }}</h3>
       <div class="post image"><img src="{{ post.url }}"></div>
-      <div class="post text">{{ post.text }}</div>
+      <div class="post text">{{ post.text |safe }}</div>
     {%- endif %}
 
   {%- else %}
