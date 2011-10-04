@@ -85,7 +85,9 @@
           <td>Template:</td>
           <td>
             <select size="1" name="style">
-            <option>default</option>
+            {% for template in templates %}
+              <option>{{ template }}</option>
+            {% endfor %}
             </select>
           </td>
           <td><input type="submit" value="Ändern" disabled></td>
