@@ -23,4 +23,4 @@ LOGINREQUIREDMESSAGE = 'Bitte melde dich an um diese Seite zu sehen'
 NOADMINACCESS = 'Du hast keine Berechtigung dieses Seite zu sehen'
 
 TEMPLATES = ['default']
-
+STYLES = ['default']
