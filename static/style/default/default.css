@@ -186,3 +186,6 @@ div.post  {
 .post.image   {
     border-style: none;
 }
+.post.image img {
+    max-width: 650px;
+}

@@ -74,23 +74,25 @@
           <td>Style:</td>
           <td>
             <select size="1" name="style">
-            <option>default</option>
+            {%- for s in styles %}
+              <option>{{ s }}</option>
+            {%- endfor %}
             </select>
           </td>
-          <td><input type="submit" value="Ändern" disabled></td>
+          <td><input type="submit" value="Ändern"></td>
         </form>
       </tr>
       <tr>
         <form name="template" action="/user/settings/template/" method="post">
           <td>Template:</td>
           <td>
-            <select size="1" name="style">
-            {% for template in templates %}
+            <select size="1" name="template">
+            {%- for template in templates %}
               <option>{{ template }}</option>
-            {% endfor %}
+            {%- endfor %}
             </select>
           </td>
-          <td><input type="submit" value="Ändern" disabled></td>
+          <td><input type="submit" value="Ändern"></td>
         </form>
       </tr>
       <tr>

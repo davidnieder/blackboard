@@ -115,7 +115,8 @@
       <h3 class="post title">
         <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
       <div class="post image">
-        <img src="{{ post.url }}"></div>
+        <a href="{{ post.url }}">
+        <img src="{{ post.url }}"></a></div>
       <div class="post text">{{ post.comment |safe }}</div>
     {%- endif %}
 

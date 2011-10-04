@@ -7,14 +7,13 @@
 
   {% block title %}<title>Blackboard</title>{% endblock %}
 
-  {% block stylesheets %}<link rel="stylesheet" type="text/css" href="/static/style/default.css">
+  {% block stylesheets %}<link rel="stylesheet" type="text/css" href="/static/style/{{ style }}/default.css">
   {% endblock %}
   {%- block scripts %}<script type="text/javascript" src="/static/script/iconanimation.js"></script>
   {%- endblock %}
 </head>
 <body>
 {%- block header %}
-  <img src="/static/img/switch.png" align="left" height="80" id="icon">
   <div id="header"><h1><a href="/">Blackboard</a></h1></div>
 {%- endblock %}
 
