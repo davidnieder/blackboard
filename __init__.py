@@ -31,3 +31,6 @@ def teardown_request(exception):
 def load_user(userid):
     return user.get(userid)
 
+if __name__ == '__main__':
+    app.run()
+

@@ -6,14 +6,14 @@ from flaskext.login import login_user, logout_user, current_user
 import database
 import user
 import inputverification
-from config import POSTSPERSITE, ACCOUNTACTIVATION
+from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES
 
 def index():
     pps = postspersite()
     posts = database.getentries(i=pps, topost=pps)
     page = calcpagelinks( len(posts), 1 )
 
-    return render_template('index.html', posts=posts, page=page)
+    return render_template(gettemplate('index.html'), posts=posts, page=page)
 
 def login():
     if request.method == 'POST':
@@ -31,7 +31,7 @@ def login():
         else:
             flash('Falscher Benutzername oder falsches Passwort', 'error')
 
-    return render_template('login.html')
+    return render_template(gettemplate('login.html'))
 
 def logout():
     logout_user()
@@ -53,19 +53,19 @@ def register():
                     flash('Fehler bei der Registrierung', 'error')
             else:
                  flash(u'Der gewählte Benutzername ist leider schon vorhanden', 'error')
-    return render_template('register.html')
+    return render_template(gettemplate('register.html'))
 
 def userpage(name):
     u = user.User(username=name)
     userdict = dict(name=u.username, email=u.email, avatar=u.avatar, active=u.active, \
                     lastlogin=u.lastlogin)
-    return render_template('userpage.html', user=userdict)
+    return render_template(gettemplate('userpage.html'), user=userdict)
 
 def usersettings():
     u = current_user
     userdict = dict(name=u.username, email=u.email, avatar=u.avatar, style=u.style, \
                     template=u.template, postspersite=u.postspersite)
-    return render_template('usersettings.html', user=userdict)
+    return render_template(gettemplate('usersettings.html'), user=userdict, templates=TEMPLATES)
 
 def changesettings(field):
     # VERIFICATION!!!
@@ -96,6 +96,8 @@ def changesettings(field):
     elif field == 'template':
         message = 'Template'
         value = request.form['template']
+        if value not in TEMPLATES:
+            value = 'default'
     
     if value:
         database.updatesetting(userid=u.id, column=field, value=value)
@@ -107,7 +109,7 @@ def changesettings(field):
 
 def newpost(ctype):
     if ctype in ['text', 'audio', 'video', 'link', 'image']:
-        return render_template('newpost.html', posttype=ctype)
+        return render_template(gettemplate('newpost.html'), posttype=ctype)
     return abort(404)
 
 def addpost():
@@ -122,7 +124,7 @@ def addpost():
 
 def getpost(id):
     post = database.getpost(id)
-    return render_template('singlepost.html', post=post)
+    return render_template(gettemplate('singlepost.html'), post=post)
 
 def getposts(filter, pagenumber=1):
     posts_per_site = postspersite()
@@ -130,7 +132,8 @@ def getposts(filter, pagenumber=1):
                                 pagenumber*posts_per_site)
     page = calcpagelinks( len(posts), pagenumber )
 
-    return render_template('filteredview.html', posts=posts, type=filter, page=page)
+    return render_template(gettemplate('filteredview.html'), posts=posts, \
+                            type=filter, page=page)
 
 def getuserposts(username, pagenumber=1):
     posts_per_site = postspersite()
@@ -138,8 +141,8 @@ def getuserposts(username, pagenumber=1):
                                 pagenumber*posts_per_site)
     page = calcpagelinks( len(posts), pagenumber )
 
-    return render_template('filteredview.html', posts=posts, type='user', page=page, \
-                            username=username)
+    return render_template(gettemplate('filteredview.html'), posts=posts, type='user', \
+                            page=page, username=username)
 
 def getpage(pagenumber):
     pps = postspersite()
@@ -150,7 +153,7 @@ def getpage(pagenumber):
     #posts = database.getentries(i=pps, topost=pps)
     page = calcpagelinks( len(posts), pagenumber )
 
-    return render_template('page.html', posts=posts, page=page)
+    return render_template(gettemplate('page.html'), posts=posts, page=page)
 
 # helper functions
 def calcpagelinks( postamount, pagenumber ):
@@ -165,3 +168,16 @@ def postspersite():
         return current_user.postspersite
     except:
         return POSTSPERSITE
+
+def gettemplate( templatefile ):
+    template = None
+    try:
+        template = current_user.template
+    except:
+        template = 'default'
+    if template:
+        return template + '/' + templatefile
+    else:
+        return 'default/' + templatefile
+
+

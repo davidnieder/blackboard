@@ -5,6 +5,7 @@ import admin
 
 # urls
 @app.route('/')
+@login_required
 def index():
     return views.index()
 
@@ -46,14 +47,17 @@ def add_entry():
     return views.addpost()
 
 @app.route('/posts/<int:id>/')
+@login_required
 def getpost(id):
     return views.getpost(id)
 
 @app.route('/posts/<filter>/')
+@login_required
 def getposts(filter):
     return views.getposts(filter)
 
 @app.route('/posts/<filter>/<int:page>/')
+@login_required
 def getposts_p(filter, page):
     return views.getposts(filter, page)
 
@@ -68,6 +72,7 @@ def getuserpost_p(username, page):
     return views.getuserposts(username, page)
 
 @app.route('/page/<int:nr>/')
+@login_required
 def getpage(nr):
     return views.getpage(nr)
 
