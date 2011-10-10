@@ -22,5 +22,6 @@ LOGINREQUIREDMESSAGE = 'Bitte melde dich an um diese Seite zu sehen'
 # Administrationsoberfläche zugreifen möchte
 NOADMINACCESS = 'Du hast keine Berechtigung dieses Seite zu sehen'
 
+# Verfügbare Templates und Styles hier eintragen
 TEMPLATES = ['default']
 STYLES = ['default']
