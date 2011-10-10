@@ -76,6 +76,11 @@ def getuserpost_p(username, page):
 def getpage(nr):
     return views.getpage(nr)
 
+@app.route('/comment/add/', methods=['POST'])
+@login_required
+def addcomment():
+    return views.addcomment()
+
 # Admin sites
 @app.route('/admin/')
 def admin_index():

@@ -3,7 +3,7 @@
 from flask import Flask
 from flaskext.login import LoginManager
 
-app = Flask(__name__)
+app = Flask('blackboard')
 app.config.from_object('blackboard.config-flask')
 
 import database

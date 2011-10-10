@@ -119,7 +119,13 @@
         <img src="{{ post.url }}"></a></div>
       <div class="post text">{{ post.comment |safe }}</div>
     {%- endif %}
-
+      <div class="post commentlink">
+    {%- if post.comments %}
+      <a href="/posts/{{ post.id }}/#comments">{{ post.comments }} Kommentare</a>
+    {%- else %}
+      <a href="/posts/{{ post.id }}/#comments">Kommentieren</a>
+    {%- endif %}
+      </div>
     </div>
     {%- endfor %}
   {%- else %}

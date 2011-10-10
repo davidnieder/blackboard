@@ -1,11 +1,11 @@
 {% extends 'default/base.html' %}
 
-{% block title %}<title>Einzelansicht - Blackboard</title>{% endblock %}
+{% block title %}<title>{%- if post %}Eintrag #{{ post.id }}{% endif %} - Blackboard</title>{% endblock %}
 
 {% block content %}
   <div id="content">
   {%- if post %}
-    <h4>Eintrag Nummer {{ post.id }}:</h4>
+    <!--<h4>Eintrag Nummer {{ post.id }}:</h4>-->
     <div class="post">
       <h5 class="post datum">Post 
         <a href="/posts/{{ post.id }}/">#{{ post.id }}</a> vom 
@@ -45,9 +45,30 @@
       <div class="post text">{{ post.text |safe }}</div>
     {%- endif %}
 
-  {%- else %}
-    <h3 class="post title">Eintrag nicht vorhanden</h3>
-  {%- endif %}
+    {%- else %}
+      <h3 class="post title">Eintrag nicht vorhanden</h3>
+    {%- endif %}
+    </div>
+    <div class="commentarea">      
+    {%- if comments %}
+      <a name="comments" href="#comments"><h4>Bisher {{ commentamount }} Kommentare</h4></a>
+    {%- else %}
+      <a name="comments" href="#comments"><h4>Bisher keine Kommentare</h4></a>
+    {%- endif %}
+    {%- for comment in comments %}
+      <div class="commentbox">
+        <h5>{{ comment.username }} schrieb am {{ comment.time }}:</h5>
+        {{ comment.comment }}
+      </div>
+    {%- endfor %}
+      <div class="newcomment">
+        <form action="/comment/add/" method="post">
+          <h4>Dein Kommentar</h4>
+          <input type="hidden" name="relatedpost" value="{{ post.id }}">
+          <textarea name="comment" cols="45" rows="8"></textarea><br>
+          <input type="submit" value="Eintragen">
+        </form>
+      </div>
     </div>
   </div>
 {% endblock %}

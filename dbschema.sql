@@ -15,9 +15,9 @@ create table posts  (
 drop table if exists comments;
 create table comments   (
     id integer primary key autoincrement,
-    content string not null,
-    post integer not null,
-    user string not null,
+    comment string not null,
+    relatedpost integer not null,
+    userid integer not null,
 
     time string not null
 );

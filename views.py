@@ -126,8 +126,10 @@ def addpost():
 
 def getpost(id):
     post = database.getpost(id)
+    comments = database.getcomments(id)
+    camount = database.getcommentamount(id)
     return render_template(gettemplate('singlepost.html'), style=getstyle(), \
-                            post=post)
+                            post=post, comments=comments, commentamount=camount)
 
 def getposts(filter, pagenumber=1):
     posts_per_site = postspersite()
@@ -158,6 +160,14 @@ def getpage(pagenumber):
 
     return render_template(gettemplate('page.html'), style=getstyle(), \
                             posts=posts, page=page)
+
+def addcomment():
+    form = inputverification.NewCommentForm( request.form )
+    if form.verify:
+        database.addcomment(current_user.id, form.comment, form.relatedpost)
+    else:
+        flash('Fehler beim erstellen des Kommentars')
+    return redirect('/posts/'+request.form['relatedpost']+'/')
 
 # helper functions
 def calcpagelinks( postamount, pagenumber ):

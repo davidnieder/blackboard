@@ -125,15 +125,17 @@ def getentries(i=POSTSPERSITE, frompost=0, topost=POSTSPERSITE):
     for tup in cursor.fetchmany(i)[frompost:topost]:
         if tup[5] == contentkey['text']:
             posts += [dict(title=tup[0], text=tup[1], date=tup[4], contenttype='text', \
-                        id=tup[6], user=tup[7])]
+                        id=tup[6], user=tup[7], comments=getcommentamount(tup[6]))]
 
         elif tup[5] == contentkey['link'] or tup[5] == contentkey['image']:
             posts += [dict(title=tup[0], comment=tup[1], url=tup[2], date=tup[4], \
-                        contenttype=contentkey[tup[5]], id=tup[6], user=tup[7])]
+                        contenttype=contentkey[tup[5]], id=tup[6], user=tup[7], \
+                        comments=getcommentamount(tup[6]))]
 
         elif tup[5] == contentkey['video'] or tup[5] == contentkey['audio']:
             posts += [dict(title=tup[0], comment=tup[1], code=tup[3], date=tup[4], \
-                        contenttype=contentkey[tup[5]], id=tup[6], user=tup[7])]
+                        contenttype=contentkey[tup[5]], id=tup[6], user=tup[7], \
+                        comments=getcommentamount(tup[6]))]
 
     return posts
 
@@ -153,6 +155,12 @@ def getuser(user):
                     admin=tup[4], active=tup[5], avatar=tup[6], style=tup[7], \
                     template=tup[8], lastlogin=tup[9], postspersite=tup[10])
     return None
+
+def getusername( id ):
+    cursor = g.db.execute('select name from users where id=%i' %id)
+    username = cursor.fetchone()
+
+    return username[0] if username else None
 
 def getusers():
     cursor = g.db.execute('select * from users')
@@ -185,3 +193,31 @@ def updatesetting(userid, column, value):
         g.db.execute('update users set \'%s\'=\'%s\' where id=%i' \
                     %(column, value, userid))
     g.db.commit()
+
+def addcomment(userid, comment, relatedpost):
+    g.db.execute('insert into comments (userid, comment, relatedpost, time) values \
+                    (?,?,?,?)', [userid, comment, relatedpost, time.strftime('%d.%m.%y')])
+    g.db.commit()
+
+def getcomment( id ):
+    cursor = g.db.execute('select userid, comment, relatedpost, time from comments \
+                            where id=%i' %id)
+    tup = cursor.fetchone()
+    return dict(userid=tup[0], comment=tup[1], relatedpost=tup[2], time=tup[3], \
+                username=getusername(tup[0]))
+
+def getcomments( relatedpost ):
+    cursor = g.db.execute('select userid, comment, time from comments where \
+                           relatedpost=\'%s\' order by id desc' %relatedpost)
+    commentlist = cursor.fetchall()
+    comments = []
+    for tup in commentlist:
+        comments += [dict(userid=tup[0], comment=tup[1], time=tup[2], \
+                    username=getusername(tup[0]))]
+    return comments
+
+def getcommentamount( relatedpost ):
+    cursor = g.db.execute('select comment from comments where relatedpost=%i' %relatedpost)
+    comments = cursor.fetchall()
+    return len(comments)
+

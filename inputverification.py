@@ -31,3 +31,19 @@ class NewPostForm():
 
     def linkpost(self):
         return True
+
+class NewCommentForm():
+
+    def __init__(self, form):
+        if form['relatedpost']:
+            self.relatedpost = form['relatedpost'];
+        else:
+            self.relatedpost = False;
+
+        if form['comment']:
+            self.comment = form['comment'];
+        else:
+            self.comment = False;
+
+        self.verify = self.relatedpost and self.comment
+
