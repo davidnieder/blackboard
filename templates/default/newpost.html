@@ -2,12 +2,12 @@
 
 {% block title %}<title>Neuer Eintrag - Blackboard</title>{% endblock %}
 
-{% block stylesheets %}
+{%- block stylesheets %}
   <link rel="stylesheet" type="text/css" href="/static/style/{{ style }}/default.css">
   <link rel="stylesheet" type="text/css" href="/static/style/{{ style }}/newpost.css">
-{% endblock %}
+{%- endblock %}
 
-{% block scripts %}
+{%- block scripts %}
   <script type="text/javascript"><!--
     function showhelp( show ) {
         if (show)   {    
@@ -21,14 +21,14 @@
         }        
     }
   --></script>
-{% endblock %}
+{%- endblock %}
 
-{% block content %}
+{%- block content %}
   <div id="newpost">
   {% if posttype == 'text' %}<img src="/static/img/text.png">
   {% elif posttype == 'image' %}<img src="/static/img/image.png">
   {% elif posttype == 'video' %}<img src="/static/img/video.png">
-  {% elif posttype == 'link' %}<img src="/static/img/web.png">
+  {% elif posttype == 'link' %}<img src="/static/img/link.png">
   {% elif posttype == 'audio' %}<img src="/static/img/audio.png">{% endif %}
 
   <h3>Neuen Eintrag verfassen</h3>

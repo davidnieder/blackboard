@@ -11,8 +11,11 @@
   {% endblock %}
   {%- block scripts %}<script type="text/javascript" src="/static/script/iconanimation.js"></script>
   {%- endblock %}
+
+  
 </head>
 <body>
+<div id="wrapper">
 {%- block header %}
   <div id="header"><h1><a href="/">Blackboard</a></h1></div>
 {%- endblock %}
@@ -28,13 +31,14 @@
 {%- endfor %}
 {%- endblock %}
 
-  <div id="wrapper">
+{%- block headline %}
+{%- endblock %}
+
 {%- block navigation %}
 {%- endblock %}
 {%- block content %}
 {%- endblock %}
-  </div>
-
+  
 {%- block pagelinks %}
 {%- if page %}
   <div id="pagelinks">
@@ -55,6 +59,19 @@
     <a href="https://github.com/davidnieder/blackboard" target="_blank">Blackboard ist OpenSource</a>
   </div>
 {%- endblock %}
+</div>
 
+<script type="text/javascript"><!--
+    // elements:
+    var navigation = document.getElementById('navigation');
+    var content = document.getElementById('content')
+    // positions + widths:
+    var marginLeft = 10;
+    var contentPosition = content.offsetLeft;
+    var contentWidth = content.offsetWidth;
+    var navigationPosition = contentPosition + contentWidth + marginLeft + "px";
+    // set position of navigation container
+    navigation.style.left = navigationPosition;
+--></script>
 </body>
 </html>

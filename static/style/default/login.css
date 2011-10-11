@@ -1,8 +1,6 @@
 div#login   {
+    width: 800px;
     padding-bottom: 1em;
-    margin-left: 22%;
-    margin-right: 22%;
-
     text-align: center;
 
     border-style: solid;

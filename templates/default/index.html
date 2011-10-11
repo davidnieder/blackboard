@@ -5,7 +5,7 @@
   <img src="/static/img/video_over.png" style="display:none">
   <img src="/static/img/image_over.png" style="display:none">
   <img src="/static/img/text_over.png" style="display:none">
-  <img src="/static/img/web_over.png" style="display:none">
+  <img src="/static/img/link_over.png" style="display:none">
     <a href="/post/new/audio/">
       <img src="/static/img/audio.png" alt="post a song" height="50" width="58"
        name="audioicon" onmouseover="over_icon(this, '/static/img/audio_over.png')"
@@ -27,9 +27,9 @@
        onmouseout="over_icon(this, '/static/img/text.png')">
     </a>
     <a href="/post/new/link/">
-      <img src="/static/img/web.png" alt="post a link" height="50" width="58"
-       name="webicon" onmouseover="over_icon(this, '/static/img/web_over.png')"
-       onmouseout="over_icon(this, '/static/img/web.png')">
+      <img src="/static/img/link.png" alt="post a link" height="50" width="58"
+       name="webicon" onmouseover="over_icon(this, '/static/img/link_over.png')"
+       onmouseout="over_icon(this, '/static/img/link.png')">
     </a>
   </div>
 {%- endblock %}
@@ -76,44 +76,28 @@
       <h5 class="post author">von
         <a href="/user/{{ post.user }}/">{{ post.user }}</a>
       </h5>
+      <div class="post icon"><a href="/posts/{{ post.contenttype }}/">
+        <img src="/static/img/{{ post.contenttype }}.png" height="50" alt="icon"></a></div>
+        <h3 class="post title">
+        <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
 
     {%- if post.contenttype == 'text' %}
-      <a href="/posts/text/">
-        <img src="/static/img/text.png" height="50" class="post icon"></a>
-      <h3 class="post title">
-        <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
       <div class="post text">{{ post.text |safe }}</div>
 
     {%- elif post.contenttype == 'link' %}
-      <a href="/posts/link/">
-        <img src="/static/img/web.png" height="50" class="post icon"></a>
-      <h3 class="post title">
-        <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
       <div class="post link">
         <a href="{{ post.url }}">{{ post.url }}</a></div>
       <div class="post text">{{ post.comment |safe }}</div>
 
     {%- elif post.contenttype == 'video' %}
-      <a href="/posts/video/">
-        <img src="/static/img/video.png" height="50" class="post icon"></a>
-      <h3 class="post title">
-        <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
       <div class="post embedded">{{ post.code |safe }}</div>
       <div class="post text">{{ post.comment |safe }}</div>
 
     {%- elif post.contenttype == 'audio' %}
-      <a href="/posts/audio/">
-        <img src="/static/img/audio.png" height="50" class="post icon"></a>
-      <h3 class="post title">
-        <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
       <div class="post embedded">{{ post.code |safe }}</div>
       <div class="post text">{{ post.comment |safe }}</div>
 
     {%- elif post.contenttype == 'image' %}
-      <a href="/posts/image/">
-        <img src="/static/img/image.png" height="50" class="post icon"></a>
-      <h3 class="post title">
-        <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
       <div class="post image">
         <a href="{{ post.url }}">
         <img src="{{ post.url }}"></a></div>

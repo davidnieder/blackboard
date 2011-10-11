@@ -1,9 +1,14 @@
 body  {
-    /*background-color: #f9f9f9;*/
     color: #4274A1;
-
     border-color: #6294C1;
     border-width: thin;
+}
+
+div#wrapper    {
+    width: 1024px;
+    margin-top: 1.5em;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 img#icon    {
@@ -11,43 +16,37 @@ img#icon    {
 }
 
 div#header {
-    width: 92%;
-    margin-left: 4%;
-    margin-right: 4%;
+    width: 800px;
     margin-top: 0.5em;
-
     font-family: 'Georgia', serif;
     text-align: center;
     color: #4274A1;
-    /*font-size: xx-large;*/
 }
 div#header a    {
     text-decoration: none;
 }
 
-
 div#iconband  {
-    width: 92%;
-    margin-left: 4%;
-    margin-right: 4%;
+    width: 800px;
     margin-top: 1em;
     text-align: center;
 }
 div#iconband img {
     margin-right: 0.5em;
     margin-left: 0.5em;
-  }
+}
+div#iconband a  {
+    text-decoration: none;
+}
 
 div.messagebox {
-    margin-left: 22%;
-    margin-right: 22%;
+    width: 800px;
     margin-top: 1em;
     padding-top: 1em;
     padding-bottom: 1em;
+    margin-bottom: 1em;
     text-align: center;
-
     font-weight: bold;
-
     border-style: solid;
     border-width: thin;
 }
@@ -58,32 +57,30 @@ div.messagebox {
     color: #A52A2A
 }
 
-div#wrapper    {
-    width: 100%;
-    margin-top: 1.5em;
+div#headline    {
+    width: 800px;
+    text-align: center;
 }
 
 div#navigation {
-    width: 15%;
-    float: right;
     text-align: left;
     border-style: solid;
     border-width: thin;
-    margin-right: 4%;
-
-    padding: 0.3em
+    margin-top: 2em;
+    padding: 0.3em;
+    width: 200px;
+    position: fixed;
+    left: 0px;
 }
 
 div#content    {
-    /*margin-top: 1em;*/
-    margin-right: 22%;
-    margin-left: 22%;
+    width: 800px;
     text-align: center;
+    margin-top: 2em;
 }
 div#content table   {
     margin-left: auto;
     margin-right: auto;
-
     border-spacing: 0.2em;
 }
 div#content td  {
@@ -91,79 +88,34 @@ div#content td  {
     padding-right: 1em;
 }
 
-div#pagelinks   {
-    clear: right;
-    width: 92%;
-    margin-left: 4%;
-    margin-right: 4%;
-    margin-top: 1.5em;
-    text-align: center;
-}
-
-div#footer {
-    width: 96%;
-    margin-left: 2%;
-    margin-right: 2%;
-    margin-top: 1.5em;
-    margin-bottom: 1em;
-    padding-top: 1em;
-    text-align: center;
-
-    border-top-width: thin;
-    border-top-style: solid;
-    border-color: #023461; 
-}
-div#footer a  {
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-}
-
-a:link    {
-    color: #4274A1;
-}
-
-a:visited    {
-    color: #4274A1;
-}
-
-a:hover   {
-    color: #4274A1;
-    text-decoration: none;
-}
-
 div.post  {
-    /*margin-left: 1em;
-    margin-right: 1em;*/
-    margin-top: 1em;
-    margin-bottom: 1em;
-    padding-bottom: 0.1px;
     border: 1px solid #6294C1;
+    margin-bottom: 20px;
 }
 .post.datum   {
     text-align: right;
-    padding-right: 1em;
+    margin-right: 10px;
     margin-bottom: 0em;
 }
 .post.author  {
     text-align: right;
-    padding-right: 1em;
+    margin-right: 10px;
     margin-top: 0em;
+    margin-bottom: 0em;
 }
 .post.icon    {
-    /*margin-left: 0.5em;
-    text-align: left;
-    float: left;*/
     position: relative;
-    top: -2.5em;
-    left: -410px;
-    text-align: left;
+    left: 10px;
+    top: -20px;
+    width: 51px;
+    margin-bottom: 0px;
+    border-style: none;
 }
-.post.title   {
-    text-align: center;
-    margin-left: 4em;
-    margin-right: 4em;
-    margin-top: -3em;
 
+.post.title   {
+    margin-top: -40px;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 .post.title a {
     color: #000;
@@ -175,38 +127,55 @@ div.post  {
 .post.text    {
     margin-left: 12%;
     margin-right: 12%;
-    margin-bottom: auto;
-    margin-top: -3em;
-    border-style: none;
-
     text-align: justify;
+    margin-bottom: 10px;
+    border-style: none;
 }
 .post.embedded {
     text-align: center;
     border-style: none;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: 0em;
-    
+    margin-bottom: 10px;
 }
 .post.link    {
     border-style: none;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-bottom: 10px;
+    margin-left: 12%;
+    margin-right: 12%
 }
 .post.image   {
     border-style: none;
-    margin-bottom: auto;
+    margin-bottom: 10px;
 }
 .post.image img {
-    max-width: 650px;
+    max-width: 560px;
 }
 .post.commentlink {
-    border-style: none;
     text-align: right;
-    margin-top: 0em;
-    padding-right: 1em;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-top: 2px;
+    border-style: none;
+}
+
+div#pagelinks   {
+    clear: right;
+    width: 800px;
+    margin-top: 1.5em;
+    text-align: center;
+}
+
+div#footer {
+    width: 800px;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+    padding-top: 1em;
+    text-align: center;
+    border-top-width: thin;
+    border-top-style: solid;
+}
+div#footer a  {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 
 div.commentarea {
@@ -240,4 +209,12 @@ div.commentarea {
 }
 .newcomment h4  {
     margin-bottom: 0.5em;
+}
+
+a:link, a:visited, a:active {
+    color: #4274A1;
+}
+a:hover   {
+    color: #4274A1;
+    text-decoration: none;
 }

@@ -11,9 +11,13 @@
 
 {% block title %}<title>Login - Blackbook</title>{% endblock %}
 
-{% block errorbox %}{% if error %}  <div id="errorbox">{{ error }}</div>{% endif %}{% endblock %}
+{%- block errorbox %}
+  {%- if error %}
+  <div id="errorbox">{{ error }}</div>
+  {%- endif %}
+{%- endblock %}
 
-{% block content %}
+{%- block content %}
   <div id="login">
     <h3>Login</h3>
     <table><form name="login" action="/login/" method="post" onsubmit="return checkloginform()">
@@ -38,5 +42,5 @@
     <br><br>
     <a href="#">Passwort vergessen?</a> &nbsp; <a href="/register/">Noch keinen Account?</a>
   </div>
-{% endblock %}
+{%- endblock %}
 
