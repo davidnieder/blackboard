@@ -35,15 +35,16 @@
     color: #4274A1;
   }
 
-  div#messagebox    {
+  div.messagebox    {
+    width: 800px;
     margin-top: 1em;
-    margin-left: 23%;
-    margin-right: 23%;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 0em;
     padding: 0.5em;
 
     text-align: center;
-    border: 1px solid #023461;
+    border: 1px dashed #023461;
   }
 
   div#navigation    {
@@ -63,10 +64,11 @@
   }
 
   div#content   {
-    padding: 0.2em;
+    width: 800px;
+    padding: 0.5em;
     margin-top: 2em;
-    margin-left: 25%;
-    margin-right: 5%;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
 
     border-style: dashed;
