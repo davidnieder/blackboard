@@ -10,6 +10,7 @@ import database
 import user
 import urls
 from config import LOGINREQUIREDMESSAGE
+from upload import initializeUpload
 
 # Flask-Extension: LoginManager
 loginmanager = LoginManager()
@@ -17,6 +18,10 @@ loginmanager.setup_app(app)
 loginmanager.login_view = 'login'
 loginmanager.login_message = LOGINREQUIREDMESSAGE
 loginmanager.session_protection = 'strong'
+
+# Flask-Extension: Uploads
+imageUploadSet = initializeUpload('images')
+fileUploadSet = initializeUpload('files')
 
 
 @app.before_request

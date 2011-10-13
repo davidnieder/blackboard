@@ -25,3 +25,14 @@ NOADMINACCESS = 'Du hast keine Berechtigung dieses Seite zu sehen'
 # Verfügbare Templates und Styles hier eintragen
 TEMPLATES = ['default']
 STYLES = ['default']
+
+# Uploads
+# Wo sollen Uploads abgelegt werden?
+UPLOADDESTINATION = '/var/www/blackboard/static/upload/'
+# Erlaubte Dateiendungen
+IMAGEEXTENSIONS = ('jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp')
+FILEEXTENSIONS = ('gz', 'bz2', 'zip', 'tar', 'tgz', 'txz', '7z', 'rtf', 'odf', 'ods', \
+                  'gnumeric', 'abw', 'doc', 'docx', 'xls', 'xlsx', 'pdf')
+# Maximale Dateigröße in Byte
+MAXIMAGESIZE = 3145728 #  3MB
+MAXFILESIZE = 10485760 # 10MB
