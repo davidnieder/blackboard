@@ -7,6 +7,7 @@ import database
 import user
 import inputverification
 import upload
+import exceptions
 from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES, STYLES
 
 def index():
@@ -41,19 +42,25 @@ def logout():
 
 def register():
     if request.method == 'POST':
-            u = user.User(username=request.form['user'])
-            if not u.username:
-                if user.new(request.form['user'], request.form['pass'], request.form['email']):
-                    flash('Erfolgreich registriert', 'message')
-                    if not ACCOUNTACTIVATION:
-                        u = user.User(username=request.form['user'])
-                        if u.authenticate( request.form['pass']):
-                            login_user(u)
-                    return redirect(url_for('index'))
-                else:
-                    flash('Fehler bei der Registrierung', 'error')
+        if not ('user', 'pass', 'email') in request.form:
+            try:
+                u = user.NewUser(request.form['user'], request.form['pass'], \
+                                 request.form['email'])
+            except exceptions.UserAlreadyExists:
+                flash(u'Der gewählte Benutzername ist leider schon vorhanden', 'error')
+                return redirect(url_for('register'))
+
+            if u.is_active():
+                login_user(u)
+                flash(u'Erfolgreich registriert: Du bist angemeldet', 'message')
+                return redirect(url_for('index'))
             else:
-                 flash(u'Der gewählte Benutzername ist leider schon vorhanden', 'error')
+                flash(u'Erfolgreich registriert: Dein Account muss noch vom Administrator \
+                        aktiviert werden')
+                return redirect(url_for('login'))
+        else:
+            flash(u'Es wurden nicht alle Felder ausgefüllt', 'error')
+
     return render_template(gettemplate('register.html'), style=getstyle())
 
 def userpage(name):

@@ -2,6 +2,8 @@ import sqlite3, time
 from config import DATABASE, DBSCHEMA, POSTSPERSITE
 from flask import g, flash
 
+import exceptions
+
 contentkey = {  'text': 1,  1: 'text',
                 'image': 2, 2: 'image',
                 'video': 3, 3: 'video',
@@ -166,6 +168,14 @@ def getusername( id ):
     username = cursor.fetchone()
 
     return username[0] if username else None
+
+def getuserid( username ):
+    cursor = g.db.execute('select id from users where name=\'%s\'' %username)
+    userid = cursor.fetchone()[0]
+
+    if not userid:
+        raise exeptions.NoSuchUser()
+    return userid
 
 def getusers():
     cursor = g.db.execute('select * from users')

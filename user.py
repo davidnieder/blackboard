@@ -1,4 +1,4 @@
-import database
+import database, exceptions
 from flask import session
 from config import ACCOUNTACTIVATION, POSTSPERSITE
 
@@ -49,7 +49,7 @@ class User:
         return True 
 
     def is_active(self):
-        return self.active
+        return True if self.active else False
 
     def is_anonymous(self):
         return False;
@@ -57,19 +57,33 @@ class User:
     def get_id(self):
         return unicode(self.id);
 
+    def set_avatar(self, url):
+        database.updatesetting(self.id, 'avatar', url)
+
+class NewUser(User):
+    def __init__(self, username, password, email):
+        User.__init__(self, username=username)
+
+        if self.username:
+            raise exceptions.UserAlreadyExists()
+        else:
+            self.username = username
+            self.password = password
+            self.email = email
+
+            self.create()
+
+    def create(self):
+        self.active = 0 if ACCOUNTACTIVATION else 1
+        database.adduser(name=self.username, password=self.password, \
+                        email=self.email, admin=0, active=self.active, avatar='null', \
+                        style='default', template='default', lastlogin='', \
+                        postspersite=POSTSPERSITE, emailnotification=0, rememberme=0)
+        # Get the new User ID
+        self.id = database.getuserid( self.username )
+
 def get(userid):
     '''Returns User-object or None'''
     u = User(id=int(userid))
     return u if u.username else None
 
-
-def new(username, password, email):
-    # verification einbauen z.b doppelte benutzernamen
-
-    active = 0 if ACCOUNTACTIVATION else 1
-
-    database.adduser(name=username, password=password, email=email, admin=0, \
-                    active=active, avatar='null', style='default', \
-                    template='default', lastlogin="", postspersite=POSTSPERSITE, \
-                    emailnotification=0, rememberme=0);
-    return True

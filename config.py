@@ -6,7 +6,7 @@ DBSCHEMA = 'dbschema.sql'
 
 # Registration
 # Muss ein account erst aktiviert werden?
-ACCOUNTACTIVATION = False
+ACCOUNTACTIVATION = True
 
 # Posts pro Seite, default Wert
 POSTSPERSITE = 5
