@@ -3,3 +3,4 @@ index.html
 *.pyc
 *.db
 *.sqlite3
+*.swp

@@ -123,19 +123,24 @@ def getentries(i=POSTSPERSITE, frompost=0, topost=POSTSPERSITE):
 
     posts = []
     for tup in cursor.fetchmany(i)[frompost:topost]:
+        #Get Avatar
+        cu = g.db.execute('select avatar from users where name=\'%s\'' %tup[7])
+        avatar = cu.fetchone()[0]
+
         if tup[5] == contentkey['text']:
             posts += [dict(title=tup[0], text=tup[1], date=tup[4], contenttype='text', \
-                        id=tup[6], user=tup[7], comments=getcommentamount(tup[6]))]
+                        id=tup[6], user=tup[7], comments=getcommentamount(tup[6]), \
+                        avatar=avatar)]
 
         elif tup[5] == contentkey['link'] or tup[5] == contentkey['image']:
             posts += [dict(title=tup[0], comment=tup[1], url=tup[2], date=tup[4], \
                         contenttype=contentkey[tup[5]], id=tup[6], user=tup[7], \
-                        comments=getcommentamount(tup[6]))]
+                        comments=getcommentamount(tup[6]), avatar=avatar)]
 
         elif tup[5] == contentkey['video'] or tup[5] == contentkey['audio']:
             posts += [dict(title=tup[0], comment=tup[1], code=tup[3], date=tup[4], \
                         contenttype=contentkey[tup[5]], id=tup[6], user=tup[7], \
-                        comments=getcommentamount(tup[6]))]
+                        comments=getcommentamount(tup[6]), avatar=avatar)]
 
     return posts
 

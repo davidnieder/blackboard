@@ -36,3 +36,4 @@ FILEEXTENSIONS = ('gz', 'bz2', 'zip', 'tar', 'tgz', 'txz', '7z', 'rtf', 'odf', '
 # Maximale Dateigröße in Byte
 MAXIMAGESIZE = 3145728 #  3MB
 MAXFILESIZE = 10485760 # 10MB
+MAXAVATARSIZE = 512000 #500KB

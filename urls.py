@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from blackboard import app
 from flaskext.login import login_required
 import views
@@ -35,6 +37,11 @@ def usersettings():
 @login_required
 def changesettings(change):
     return views.changesettings(change)
+
+@app.route('/user/settings/avatar/del/', methods=['GET'])
+@login_required
+def delavatar():
+    return views.changesettings('delavatar')
 
 @app.route('/post/new/<ctype>/')
 @login_required

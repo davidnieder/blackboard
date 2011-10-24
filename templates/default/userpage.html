@@ -14,7 +14,9 @@
       </tr>
       <tr>
         <td>Avatar:</td>
-        <td>{{ user.avatar }}</td>
+        {%- if user.avatar %}
+        <td><img src="{{ user.avatar }}" class="avatar settings"</td>
+        {%- endif %}
       </tr>
       <tr>
         <td>Aktiviert?</td>

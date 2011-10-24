@@ -6,6 +6,7 @@ from flaskext.login import login_user, logout_user, current_user
 import database
 import user
 import inputverification
+import upload
 from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES, STYLES
 
 def index():
@@ -65,6 +66,7 @@ def usersettings():
     u = current_user
     userdict = dict(name=u.username, email=u.email, avatar=u.avatar, style=u.style, \
                     template=u.template, postspersite=u.postspersite)
+    upload.setFileSize('avatars')
     return render_template(gettemplate('usersettings.html'), style=getstyle(), \
                                         user=userdict, templates=TEMPLATES, styles=STYLES)
 
@@ -90,7 +92,10 @@ def changesettings(field):
         value = int( request.form['emailnotification'] )
     elif field == 'avatar':
         message = 'Avatar'
-        pass
+        ul = upload.Upload('avatars')
+        ul.save(request.files['avatar'])
+        if ul.error: flash(ul.error, 'error'); return redirect(url_for('usersettings'));
+        value = ul.url()
     elif field == 'style':
         message = 'Style'
         value = request.form['style']
@@ -99,6 +104,10 @@ def changesettings(field):
         value = request.form['template']
         if value not in TEMPLATES:
             value = 'default'
+    elif field == 'delavatar':
+        database.updatesetting(userid=u.id, column='avatar', value="")
+        flash('Avatar entfernt', 'message')
+        return redirect(url_for('usersettings'))
     
     if value:
         database.updatesetting(userid=u.id, column=field, value=value)

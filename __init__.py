@@ -22,6 +22,7 @@ loginmanager.session_protection = 'strong'
 # Flask-Extension: Uploads
 imageUploadSet = initializeUpload('images')
 fileUploadSet = initializeUpload('files')
+avatarUploadSet = initializeUpload('avatars')
 
 
 @app.before_request

@@ -2,10 +2,10 @@
 
 from flaskext import uploads
 from blackboard import app
-import uuid
+import uuid, exceptions
 
 from config import UPLOADDESTINATION, IMAGEEXTENSIONS, FILEEXTENSIONS, \
-                    MAXIMAGESIZE, MAXFILESIZE
+                    MAXIMAGESIZE, MAXFILESIZE, MAXAVATARSIZE
 
 def initializeUpload(uploadType):
     if uploadType == 'images':
@@ -20,8 +20,14 @@ def initializeUpload(uploadType):
                             lambda dest: uploadDestination)
         uploads.configure_uploads(app, UploadSet)
         return UploadSet
+    elif uploadType == 'avatars':
+        uploadDestination = UPLOADDESTINATION + 'avatars/'
+        UploadSet = uploads.UploadSet('avatars', ('png',), \
+                            lambda dest: uploadDestination)
+        uploads.configure_uploads(app, UploadSet)
+        return UploadSet
     else:
-        # throw an exception
+        raise exceptions.CantCreateUploadSet()
         pass
 
 class Upload():
@@ -33,9 +39,11 @@ class Upload():
         elif UploadSet == 'files':
             from blackboard import fileUploadSet
             self.UploadSet = fileUploadSet
+        elif UploadSet == 'avatars':
+            from blackboard import avatarUploadSet
+            self.UploadSet = avatarUploadSet
         else:
-            # throw an exception
-            pass
+            raise exceptions.NoSuchUploadSet()
 
     def save(self, sentfile):
         self.file = sentfile
@@ -62,6 +70,7 @@ def setFileSize(uploadType):
         uploads.patch_request_class(app, MAXIMAGESIZE)
     elif uploadType == 'files':
         uploads.patch_request_class(app, MAXFILESIZE)
+    elif uploadType == 'avatars':
+        uploads.patch_request_class(app, MAXAVATARSIZE)
     else:
-        # throw an exception
-        pass
+        raise exceptions.NoSuchUploadSet()

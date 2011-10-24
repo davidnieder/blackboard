@@ -7,7 +7,7 @@
 {%- block content %}
   <div id="content">
     <h4>Benutzereinstellungen von {{ user.name }}</h4>
-    <table border="0" rules="rows" cellpadding="15" width="80%">
+    <table border="0" rules="rows" cellpadding="15" width="85%">
       <tr>
         <form name="password" onsubmit="return checkpw()" action="/user/settings/password/" method="post">
           <td>aktuelles Passwort:<br><br>
@@ -53,20 +53,31 @@
       <tr>
       <tr>
         <form name="notification" action="/user/settings/notification/" method="post">
-          <td>Per E-Mail über neue<br>Einträge und Kommentare<br>benachrichtigen?</td>
+          <td>Per E-Mail über neue Einträge und Kommentare benachrichtigen?</td>
           <td>
             <select size="1" name="emailnotification">
             <option value="1"{% if user.emailnotification %} selected{% endif %}>Ja</option>
             <option value="0"{% if user.emailnotification %} selected{% endif %}>Nein</option>
-            </select>
+            </select><br>(not implemented)
           </td>
           <td><input type="submit" value="Ändern" disabled></td>
         </form>
       </tr>
-        <form name="avatar" action="/user/settings/avatar/" method="post">
-          <td>Avatar</td>
-          <td><input type="text" size="20" value="not yet implemented" disabled></td>
-          <td><input type="submit" value="Ändern" disabled></td>
+        <form name="avatar" action="/user/settings/avatar/" enctype="multipart/form-data"
+        method="post">
+          <td>Avatar
+          <div style="font-size: 0.7em">
+            {%- if user.avatar %}
+            <img src="{{ user.avatar }}" alt="avatar" class="avatar settings"><br>
+            <a href="javascript:window.location='/user/settings/avatar/del/'">Avatar löschen</a><br>
+            {%- endif %}
+            Max-Dateigröße: 500kB<br>
+            Max-Abmessung: 100x100px²</div>
+          </td>
+          <td><input type="file" size="15" name="avatar"></td>
+          <td>
+            <input type="submit" value="Hochladen">
+          </td>
         </form>
       </tr>
       <tr>
