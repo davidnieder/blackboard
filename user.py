@@ -1,5 +1,5 @@
 import database, exceptions
-from flask import session
+from flaskext.login import login_user, logout_user, current_user
 from config import ACCOUNTACTIVATION, POSTSPERSITE
 
 class User:
@@ -86,4 +86,11 @@ def get(userid):
     '''Returns User-object or None'''
     u = User(id=int(userid))
     return u if u.username else None
+
+def get_current_user()
+    '''Returns the current, logged-in user or None'''
+    try:
+        return current_user
+    except:
+        return None
 
