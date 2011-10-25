@@ -79,72 +79,10 @@ def addentry( form, user ):
     else:
         pass
 
-def getpost(id):
-    cursor = g.db.execute('select title, text, url, code, time, contenttype, id, user \
-                            from posts where id=%i' %id)
-    tup = cursor.fetchone()
-    if tup:
-        return dict(title=tup[0], text=tup[1], url=tup[2], code=tup[3], \
-                    date=tup[4], contenttype=contentkey[tup[5]], id=tup[6], \
-                    user=tup[7])
-    else:
-        return []
-
-def getposts(filter, frompost=0, topost=POSTSPERSITE):
-    if filter in ['text', 'link', 'image', 'audio', 'video']:
-        cursor = g.db.execute('select title, text, url, code, time, contenttype, id, user \
-                                from posts where contenttype=%i order by id desc' \
-                                %contentkey[filter])
-    else:
-        cursor = g.db.execute('select title, text, url, code, time, contenttype, id, user \
-                                from posts where time=\'%s\' order by id desc' % filter )
-
-    posts = []
-    for tup in cursor.fetchall()[frompost:topost]:
-        posts += [dict(title=tup[0], text=tup[1], url=tup[2], code=tup[3], date=tup[4], \
-                    contenttype=contentkey[tup[5]], id=tup[6], user=tup[7])]
-    return posts
-
 def delpost(id):
     g.db.execute('delete from posts where id=%i' %id)
     g.db.commit()
     return True
-
-def getuserposts(username, frompost=0, topost=POSTSPERSITE):
-    cursor = g.db.execute('select title, text, url, code, time, contenttype, id, user \
-                                from posts where user=\'%s\' order by id desc' %username)
-    posts = []
-    for tup in cursor.fetchall()[frompost:topost]:
-        posts += [dict(title=tup[0], text=tup[1], url=tup[2], code=tup[3], date=tup[4], \
-                    contenttype=contentkey[tup[5]], id=tup[6], user=tup[7])]
-    return posts
-
-def getentries(i=POSTSPERSITE, frompost=0, topost=POSTSPERSITE):
-    cursor = g.db.execute('select title, text, url, code, time, contenttype, id, user from \
-                            posts order by id desc')
-
-    posts = []
-    for tup in cursor.fetchmany(i)[frompost:topost]:
-        #Get Avatar
-        cu = g.db.execute('select avatar from users where name=\'%s\'' %tup[7])
-        avatar = cu.fetchone()[0]
-
-        if tup[5] == contentkey['text']:
-            posts += [dict(title=tup[0], text=tup[1], date=tup[4], contenttype='text', \
-                        id=tup[6], user=tup[7], comments=getcommentamount(tup[6]), \
-                        avatar=avatar)]
-
-        elif tup[5] == contentkey['link'] or tup[5] == contentkey['image']:
-            posts += [dict(title=tup[0], comment=tup[1], url=tup[2], date=tup[4], \
-                        contenttype=contentkey[tup[5]], id=tup[6], user=tup[7], \
-                        comments=getcommentamount(tup[6]), avatar=avatar)]
-
-        elif tup[5] == contentkey['video'] or tup[5] == contentkey['audio']:
-            posts += [dict(title=tup[0], comment=tup[1], code=tup[3], date=tup[4], \
-                        contenttype=contentkey[tup[5]], id=tup[6], user=tup[7], \
-                        comments=getcommentamount(tup[6]), avatar=avatar)]
-
-    return posts
 
 def getuser(user):
     opendb()
@@ -235,4 +173,16 @@ def getcommentamount( relatedpost ):
     cursor = g.db.execute('select comment from comments where relatedpost=%i' %relatedpost)
     comments = cursor.fetchall()
     return len(comments)
+
+def query( q ):
+    cursor = g.db.execute( q )
+    # patch row_factory
+    cursor.row_factory = dict_factory
+    return cursor.fetchall()
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx,col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
 

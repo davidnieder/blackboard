@@ -8,11 +8,13 @@ import user
 import inputverification
 import upload
 import exceptions
+from post import Posts
 from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES, STYLES
 
 def index():
     pps = postspersite()
-    posts = database.getentries(i=pps, topost=pps)
+    posts = Posts()
+    posts = posts.get_post_list()
     page = calcpagelinks( len(posts), 1 )
 
     return render_template(gettemplate('index.html'), style=getstyle(), posts=posts, page=page)
@@ -141,37 +143,33 @@ def addpost():
     return redirect(url_for('index'))
 
 def getpost(id):
-    post = database.getpost(id)
+    post = Posts(postId=id)
+    post = post.get_post_list()
     comments = database.getcomments(id)
     camount = database.getcommentamount(id)
     return render_template(gettemplate('singlepost.html'), style=getstyle(), \
-                            post=post, comments=comments, commentamount=camount)
+                            post=post[0], comments=comments, commentamount=camount)
 
 def getposts(filter, pagenumber=1):
-    posts_per_site = postspersite()
-    posts = database.getposts(filter, (pagenumber-1)*posts_per_site, \
-                                pagenumber*posts_per_site)
+    posts = Posts(postFilter=filter, page=pagenumber)
+    posts = posts.get_post_list()
     page = calcpagelinks( len(posts), pagenumber )
 
     return render_template(gettemplate('filteredview.html'), style=getstyle(), \
                             posts=posts, type=filter, page=page)
 
 def getuserposts(username, pagenumber=1):
-    posts_per_site = postspersite()
-    posts = database.getuserposts(username, (pagenumber-1)*posts_per_site, \
-                                pagenumber*posts_per_site)
+    posts = Posts(username=username, page=pagenumber)
+    posts = posts.get_post_list()
     page = calcpagelinks( len(posts), pagenumber )
 
     return render_template(gettemplate('filteredview.html'), style=getstyle(), \
                             posts=posts, type='user', page=page, username=username)
 
 def getpage(pagenumber):
-    pps = postspersite()
+    posts = Posts(page=pagenumber)
+    posts = posts.get_post_list()
 
-    posts = database.getentries(pagenumber*pps, \
-                                (pagenumber-1)*pps, \
-                                pagenumber*pps )
-    #posts = database.getentries(i=pps, topost=pps)
     page = calcpagelinks( len(posts), pagenumber )
 
     return render_template(gettemplate('page.html'), style=getstyle(), \
