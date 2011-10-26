@@ -144,11 +144,11 @@ def addpost():
 
 def getpost(id):
     post = Posts(postId=id)
-    post = post.get_post_list()
+    post = post.get_single_post()
     comments = database.getcomments(id)
     camount = database.getcommentamount(id)
     return render_template(gettemplate('singlepost.html'), style=getstyle(), \
-                            post=post[0], comments=comments, commentamount=camount)
+                            post=post, comments=comments, commentamount=camount)
 
 def getposts(filter, pagenumber=1):
     posts = Posts(postFilter=filter, page=pagenumber)

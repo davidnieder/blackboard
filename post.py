@@ -34,9 +34,12 @@ class Posts():
             # Get user posts
             if self.userid:
                 self.username = get_username(self.userid)
-
-            self.get_posts( str(self.postTableColumns['user']) + \
-                            '=\'%s\'' %self.username )
+            if self.postFilter:
+                # add a filter
+                pass
+            else:
+                self.get_posts( str(self.postTableColumns['user']) + \
+                                '=\'%s\'' %self.username )
         elif self.postFilter:
             # Filtered view e.g. /posts/audio/
             self.get_posts( str(self.postTableColumns['contenttype']) + \
@@ -88,6 +91,12 @@ class Posts():
 
     def get_post_list(self):
         return self.postList
+
+    def get_single_post(self):
+        if self.postList:
+            return self.postList[0]
+        else:
+            return None
 
     def prepare_posts(self):
         for post in self.postList:
