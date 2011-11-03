@@ -2,34 +2,12 @@
 
 {% block title %}<title>{%- if post %}Eintrag #{{ post.id }}{% endif %} - Blackboard</title>{% endblock %}
 
+{%- block iconband %}
+{% include 'default/iconband.html' %}
+{%- endblock %}
+
 {%- block navigation %}
-  <div id="navigation">
-  {% if current_user.username %}
-    Hallo, <b>{{ current_user.username }}</b>
-    <ul>
-      <li><a href="/user/{{ current_user.username }}">Profil</a></li>
-      <li><a href="/user/settings/">Einstellungen</a></li>
-      {%- if current_user.admin %}
-      <li><a href="{{ url_for('admin_index') }}">Admin</a></li>
-      {%- endif %}
-      <li><a href="{{ url_for('logout') }}">Logout</a></li>
-    </ul>
-    Neuen Beitrag erstellen:
-    <ul>
-      <li><a href="/post/new/audio/">Lied posten</a></li>
-      <li><a href="/post/new/video/">Video posten</a></li>
-      <li><a href="/post/new/image/">Bild posten</a></li>
-      <li><a href="/post/new/text/">Text posten</a></li>
-      <li><a href="/post/new/link/">Link posten</a></li>
-    </ul>
-  {% else %}
-    Du bist nicht eingeloggt.
-    <ul>
-      <li><a href="{{ url_for('login') }}">Login</a></li>
-      <li><a href="{{ url_for('register') }}">Registrieren</a></li>
-    </ul>
-  {% endif %}
-  </div>
+{% include 'default/navigation.html' %}
 {%- endblock %}
 
 {% block content %}
@@ -53,13 +31,9 @@
 
     {%- elif post.contenttype == 'link' %}
       <div class="post link"><a href="{{ post.url }}">{{ post.url }}</a></div>
-      <div class="post text">{{ post.comment |safe }}</div>
-
-    {%- elif post.contenttype == 'video' %}
-      <div class="post embedded">{{ post.code |safe }}</div>
       <div class="post text">{{ post.text |safe }}</div>
 
-    {%- elif post.contenttype == 'audio' %}
+    {%- elif post.contenttype in ['video', 'audio'] %}
       <div class="post embedded">{{ post.code |safe }}</div>
       <div class="post text">{{ post.text |safe }}</div>
 

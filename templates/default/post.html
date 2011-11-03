@@ -1,0 +1,43 @@
+    <div class="post">
+      <h5 class="post datum">Post 
+        <a href="/posts/{{ post.id }}/">#{{ post.id }}</a> vom 
+        <a href="/posts/{{ post.date }}/">{{ post.date }}</a>
+      </h5>
+      <h5 class="post author">von
+        <a href="/user/{{ post.user }}/">{{ post.user }}</a>
+      </h5>
+      <div class="post icon"><a href="/posts/{{ post.contenttype }}/">
+        <img src="/static/img/{{ post.contenttype }}.png" height="50" alt="icon"></a></div>
+        <h3 class="post title">
+        <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
+
+    {%- if post.contenttype == 'text' %}
+      <div class="post text">{{ post.text |safe }}
+      </div>
+
+    {%- elif post.contenttype == 'link' %}
+      <div class="post link">
+        <a href="{{ post.url }}">{{ post.url }}</a></div>
+      <div class="post text">{{ post.text |safe }}
+      </div>
+
+    {%- elif post.contenttype in ['video', 'audio'] %}
+      <div class="post embedded">{{ post.code |safe }}</div>
+      <div class="post text">{{ post.text |safe }}
+      </div>
+
+    {%- elif post.contenttype == 'image' %}
+      <div class="post image">
+        <a href="{{ post.url }}">
+        <img src="{{ post.url }}"></a></div>
+      <div class="post text">{{ post.text |safe }}
+      </div>
+    {%- endif %}
+      <div class="post commentlink">
+    {%- if post.comments %}
+        <a href="/posts/{{ post.id }}/#comments">{{ post.comments }} Kommentare</a>
+    {%- else %}
+        <a href="/posts/{{ post.id }}/#comments">Kommentieren</a>
+    {%- endif %}
+      </div>
+    </div>

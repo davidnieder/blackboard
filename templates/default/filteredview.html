@@ -2,6 +2,10 @@
 
 {% block title %}<title>Ausgewählte Posts - Blackbook</title>{% endblock %}
 
+{%- block iconband %}
+{% include 'default/iconband.html' %}
+{%- endblock %}
+
 {%- block headline %}
   <div id="headline">
   {%- if type in ['text', 'link', 'image', 'audio', 'video'] %}
@@ -15,82 +19,14 @@
 {%- endblock %}
 
 {%- block navigation %}
-  <div id="navigation">
-  {% if current_user.username %}
-    Hallo, <b>{{ current_user.username }}</b>
-    <ul>
-      <li><a href="/user/{{ current_user.username }}">Profil</a></li>
-      <li><a href="/user/settings/">Einstellungen</a></li>
-      {%- if current_user.admin %}
-      <li><a href="{{ url_for('admin_index') }}">Admin</a></li>
-      {%- endif %}
-      <li><a href="{{ url_for('logout') }}">Logout</a></li>
-    </ul>
-    Neuen Beitrag erstellen:
-    <ul>
-      <li><a href="/post/new/audio/">Lied posten</a></li>
-      <li><a href="/post/new/video/">Video posten</a></li>
-      <li><a href="/post/new/image/">Bild posten</a></li>
-      <li><a href="/post/new/text/">Text posten</a></li>
-      <li><a href="/post/new/link/">Link posten</a></li>
-    </ul>
-  {% else %}
-    Du bist nicht eingeloggt.
-    <ul>
-      <li><a href="{{ url_for('login') }}">Login</a></li>
-      <li><a href="{{ url_for('register') }}">Registrieren</a></li>
-    </ul>
-  {% endif %}
-  </div>
+{% include 'default/navigation.html' %}
 {%- endblock %}
 
 {% block content %}
   <div id="content">
   {% if posts %}
     {%- for post in posts %}
-    <div class="post">
-      <h5 class="post datum">Post 
-        <a href="/posts/{{ post.id }}/">#{{ post.id }}</a> vom 
-        <a href="/posts/{{ post.date }}/">{{ post.date }}</a>
-      </h5>
-      <h5 class="post author">von
-        <a href="/user/{{ post.user }}/">{{ post.user }}</a>
-      </h5>
-      <div class="post icon"><a href="/posts/{{ post.contenttype }}/">
-        <img src="/static/img/{{ post.contenttype }}.png" height="50" alt="icon"></a></div>
-        <h3 class="post title">
-        <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
-
-    {%- if post.contenttype == 'text' %}
-      <div class="post text">{{ post.text |safe }}</div>
-
-    {%- elif post.contenttype == 'link' %}
-      <div class="post link">
-        <a href="{{ post.url }}">{{ post.url }}</a></div>
-      <div class="post text">{{ post.comment |safe }}</div>
-
-    {%- elif post.contenttype == 'video' %}
-      <div class="post embedded">{{ post.code |safe }}</div>
-      <div class="post text">{{ post.comment |safe }}</div>
-
-    {%- elif post.contenttype == 'audio' %}
-      <div class="post embedded">{{ post.code |safe }}</div>
-      <div class="post text">{{ post.comment |safe }}</div>
-
-    {%- elif post.contenttype == 'image' %}
-      <div class="post image">
-        <a href="{{ post.url }}">
-        <img src="{{ post.url }}"></a></div>
-      <div class="post text">{{ post.comment |safe }}</div>
-    {%- endif %}
-      <div class="post commentlink">
-    {%- if post.comments %}
-      <a href="/posts/{{ post.id }}/#comments">{{ post.comments }} Kommentare</a>
-    {%- else %}
-      <a href="/posts/{{ post.id }}/#comments">Kommentieren</a>
-    {%- endif %}
-      </div>
-    </div>
+{% include 'default/post.html' %}
     {%- endfor %}
   {% else %}
     <h4>Keine Einträge gefunden</h4>
