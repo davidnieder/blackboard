@@ -1,14 +1,8 @@
 import sqlite3, time
-from config import DATABASE, DBSCHEMA, POSTSPERSITE
+from config import DATABASE, DBSCHEMA
 from flask import g, flash
 
 import exceptions
-
-contentkey = {  'text': 1,  1: 'text',
-                'image': 2, 2: 'image',
-                'video': 3, 3: 'video',
-                'link': 4,  4: 'link',
-                'audio': 5,  5: 'audio'   }
 
 def opendb():
     g.db = connectdb()
@@ -102,33 +96,6 @@ def updatesetting(userid, column, value):
         g.db.execute('update users set \'%s\'=\'%s\' where id=%i' \
                     %(column, value, userid))
     g.db.commit()
-
-def addcomment(userid, comment, relatedpost):
-    g.db.execute('insert into comments (userid, comment, relatedpost, time) values \
-                    (?,?,?,?)', [userid, comment, relatedpost, time.strftime('%d.%m.%y')])
-    g.db.commit()
-
-def getcomment( id ):
-    cursor = g.db.execute('select userid, comment, relatedpost, time from comments \
-                            where id=%i' %id)
-    tup = cursor.fetchone()
-    return dict(userid=tup[0], comment=tup[1], relatedpost=tup[2], time=tup[3], \
-                username=getusername(tup[0]))
-
-def getcomments( relatedpost ):
-    cursor = g.db.execute('select userid, comment, time from comments where \
-                           relatedpost=\'%s\' order by id desc' %relatedpost)
-    commentlist = cursor.fetchall()
-    comments = []
-    for tup in commentlist:
-        comments += [dict(userid=tup[0], comment=tup[1], time=tup[2], \
-                    username=getusername(tup[0]))]
-    return comments
-
-def getcommentamount( relatedpost ):
-    cursor = g.db.execute('select comment from comments where relatedpost=%i' %relatedpost)
-    comments = cursor.fetchall()
-    return len(comments)
 
 def query( q ):
     cursor = g.db.execute( q )

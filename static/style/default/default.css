@@ -203,6 +203,14 @@ div.commentarea {
     margin-left: 0.5em;
     margin-bottom: 0.5em;
 }
+.commentbox blockquote  {
+    text-align: justify;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
 .newcomment {
     text-align: left;
     margin-top: 1em;

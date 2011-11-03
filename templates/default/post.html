@@ -34,7 +34,9 @@
       </div>
     {%- endif %}
       <div class="post commentlink">
-    {%- if post.comments %}
+    {%- if post.comments == 1%}
+        <a href="/posts/{{ post.id }}/#comments">{{ post.comments }} Kommentar</a>
+    {%- elif post.comments > 1%}
         <a href="/posts/{{ post.id }}/#comments">{{ post.comments }} Kommentare</a>
     {%- else %}
         <a href="/posts/{{ post.id }}/#comments">Kommentieren</a>

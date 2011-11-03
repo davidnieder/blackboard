@@ -28,6 +28,12 @@ class CantCreateNewPost(Exception):
     Raised if the creation of a new post fails
     '''
 
+# Comment
+class CantCreateNewComment(Exception):
+    '''
+    Raised if the creation of a new comment failes
+    '''
+
 # Database
 class ColumnAndValueListDontMatch(Exception):
     '''

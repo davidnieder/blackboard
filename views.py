@@ -9,6 +9,7 @@ import inputverification
 import upload
 import exceptions
 from post import Posts, NewPost
+from comment import Comments, NewComment
 from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES, STYLES
 
 def index():
@@ -17,7 +18,8 @@ def index():
     posts = posts.get_post_list()
     page = calcpagelinks( len(posts), 1 )
 
-    return render_template(gettemplate('index.html'), style=getstyle(), posts=posts, page=page)
+    return render_template(gettemplate('index.html'), style=getstyle(), posts=posts, \
+                           page=page)
 
 def login():
     if request.method == 'POST':
@@ -145,8 +147,10 @@ def addpost():
 def getpost(id):
     post = Posts(postId=id)
     post = post.get_single_post()
-    comments = database.getcomments(id)
-    camount = database.getcommentamount(id)
+    comments = Comments(postId=id)
+    camount = comments.get_comment_amount()
+    comments = comments.get_comment_list()
+
     return render_template(gettemplate('singlepost.html'), style=getstyle(), \
                             post=post, comments=comments, commentamount=camount)
 
@@ -176,11 +180,12 @@ def getpage(pagenumber):
                             posts=posts, page=page)
 
 def addcomment():
-    form = inputverification.NewCommentForm( request.form )
-    if form.verify:
-        database.addcomment(current_user.id, form.comment, form.relatedpost)
-    else:
-        flash('Fehler beim erstellen des Kommentars')
+    try:
+        comment = NewComment( request.form )
+        comment.safe()
+        flash('Kommentar erfolgreich erstellt', 'message')
+    except:
+        flash('Fehler beim erstellen des Kommentars', 'error')
     return redirect('/posts/'+request.form['relatedpost']+'/')
 
 # helper functions

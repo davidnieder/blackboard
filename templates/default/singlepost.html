@@ -51,7 +51,7 @@
     {%- for comment in comments %}
       <div class="commentbox">
         <h5>{{ comment.username }} schrieb am {{ comment.time }}:</h5>
-        {{ comment.comment }}
+        <blockquote>{{ comment.comment }}</blockquote>
       </div>
     {%- endfor %}
       <div class="newcomment">

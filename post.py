@@ -4,6 +4,7 @@ import database
 import inputverification
 import time
 import exceptions
+import comment
 from config import POSTSPERSITE
 from user import get_avatar, get_current_user, get as get_username
 
@@ -70,6 +71,7 @@ class Posts():
 
         self.postList = database.query( query )
         self.addAvatar()
+        self.addCommentAmount()
         self.prepare_posts()
 
     def addAvatar(self):
@@ -85,6 +87,12 @@ class Posts():
         for post in self.postList:
             if avatarDict.has_key( post[self.postTableColumns['user']] ):
                 post.update( avatar=avatarDict[post[self.postTableColumns['user']]] )
+
+    def addCommentAmount(self):
+        for post in self.postList:
+            commentAmount = comment.Comments( post[self.postTableColumns['id']] )
+            commentAmount = commentAmount.get_comment_amount()
+            post.update( comments=commentAmount )
 
     def get_posts_per_site(self):
         if get_current_user():
