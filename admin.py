@@ -5,6 +5,7 @@ from flaskext.login import current_user
 
 import database
 from user import User
+from post import Posts
 from config import NOADMINACCESS
 
 def index():
@@ -63,9 +64,10 @@ def post(id):
     if not userisadmin():
         flash(NOADMINACCESS, 'error')
         return redirect(url_for('index'))
-    post = []
+    post=[]
     if id:
-        post = database.getpost(id)
+        post = Posts(postId=id)
+        post = post.get_single_post()
     if id and not post:
         flash("Eintrag #%s nicht gefunden" %id)
     return render_template('admin/del_post.html', post=post)
@@ -75,7 +77,9 @@ def delpost(id):
         flash(NOADMINACCESS, 'error')
         return redirect(url_for('index'))
 
-    if database.delpost(id):
+    post = Posts(postId=id)
+
+    if post.delete():
         flash(u'Post gelöscht')
     else:
         flash(u'Post konnte nicht gelöscht werden')

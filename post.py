@@ -1,6 +1,9 @@
 # -*- coding: UTF-8 -*-
 
 import database
+import inputverification
+import time
+import exceptions
 from config import POSTSPERSITE
 from user import get_avatar, get_current_user, get as get_username
 
@@ -115,8 +118,55 @@ class Posts():
 
 class NewPost():
 
-    def __init__(self):
-        pass
+    def __init__(self, form):
+        self.form = form
+        inputverification.NewPostForm( form )
 
     def safe(self):
-        pass
+        self.get_keys()
+
+        try:
+            if self.contenttype == 'text':
+                database.commit( 'posts', ['title', 'text', 'contenttype', 'time', \
+                                           'user'], \
+                                [self.title, self.text, contentkey['text'], self.date, \
+                                 self.user] )
+
+            elif self.contenttype in ['link', 'image']:
+                database.commit( 'posts', ['title', 'text', 'contenttype', 'url', \
+                                           'time', 'user'], \
+                                [self.title, self.text, contentkey[self.contenttype], \
+                                 self.url, self.date, self.user] )
+
+            elif self.contenttype in ['audio', 'video']:
+                database.commit( 'posts', ['title', 'text', 'contenttype', 'code', \
+                                           'time', 'user'], \
+                                [self.title, self.text, contentkey[self.contenttype], \
+                                  self.code, self.date, self.user] )
+        except:
+            raise exceptions.CantCreateNewPost
+
+    def get_keys(self):
+        try:
+            self.contenttype = self.form['contenttype']
+            self.title = self.form['title']
+
+            if self.contenttype == 'text':
+                self.text = self.form['content']
+            else:
+                self.text = self.form['comment']
+
+            if self.contenttype in ['link', 'image']:
+                self.url = self.form['link']
+
+            elif self.contenttype in ['audio', 'video']:
+                self.code = self.form['code']
+
+            self.date = time.strftime('%d.%m.%y')
+            self.user = get_current_user().username
+            if not self.user:
+                raise exceptions.NoUserLoggedIn
+
+        except:
+            raise exceptions.CantCreateNewPost
+

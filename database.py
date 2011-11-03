@@ -35,50 +35,6 @@ def adduser(name, password, email, admin, active, avatar, style, template, lastl
                  postspersite, emailnotification, rememberme])
     g.db.commit()
 
-def addentry( form, user ):
-    if form['contenttype'] == 'text':
-        if form['content']:
-            g.db.execute('insert into posts (title, text, contenttype, time, user) \
-                        values (?,?,?,?,?)',
-                        [form['title'], form['content'], contentkey['text'], \
-                        time.strftime('%d.%m.%y'), user])
-            g.db.commit()
-
-    elif form['contenttype'] == 'image':
-        if form['link']:
-            g.db.execute('insert into posts (title, text, url, contenttype, time, user) \
-                        values (?,?,?,?,?,?)',
-                        [form['title'], form['comment'], form['link'], contentkey['image'], \
-                        time.strftime('%d.%m.%y'), user])
-            g.db.commit()
-        
-
-    elif form['contenttype'] == 'video':
-        if form['code']:
-            g.db.execute('insert into posts (title, text, code, contenttype, time, user) \
-                        values (?,?,?,?,?,?)',
-                        [form['title'], form['comment'], form['code'], contentkey['video'], \
-                        time.strftime('%d.%m.%y'), user])
-            g.db.commit()
-
-    elif form['contenttype'] == 'link':
-        if form['link']:
-            g.db.execute('insert into posts (title, text, url, contenttype, time, user) \
-                        values (?,?,?,?,?,?)',
-                        [form['title'], form['comment'], form['link'], contentkey['link'], \
-                        time.strftime('%d.%m.%y'), user])
-            g.db.commit()
-
-    elif form['contenttype'] == 'audio':
-        if form['code']:
-            g.db.execute('insert into posts (title, text, code, contenttype, time, user) \
-                        values (?,?,?,?,?,?)',
-                        [form['title'], form['comment'], form['code'], contentkey['audio'], \
-                        time.strftime('%d.%m.%y'), user])
-            g.db.commit()
-    else:
-        pass
-
 def delpost(id):
     g.db.execute('delete from posts where id=%i' %id)
     g.db.commit()
@@ -179,6 +135,26 @@ def query( q ):
     # patch row_factory
     cursor.row_factory = dict_factory
     return cursor.fetchall()
+
+def commit( table, columnList, valueList ):
+    columns = ''
+    columnAmount = ''
+
+    for column in columnList:
+        columns += column + ', '
+        columnAmount += '?,'
+    columns = columns[:-2]
+    columnAmount = columnAmount[:-1]
+
+    if len(columnList) != len(valueList):
+        raise exceptions.ColumnAndValueListDontMatch
+
+    g.db.execute('INSERT INTO ' + table + ' (' + columns + ')' + ' VALUES ' + \
+                 '(' + columnAmount + ')', valueList)
+    g.db.commit()
+
+def delete( table, column, condition ):
+    pass
 
 def dict_factory(cursor, row):
     d = {}

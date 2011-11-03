@@ -8,7 +8,7 @@ import user
 import inputverification
 import upload
 import exceptions
-from post import Posts
+from post import Posts, NewPost
 from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES, STYLES
 
 def index():
@@ -133,12 +133,12 @@ def newpost(ctype):
     return abort(404)
 
 def addpost():
-    form = inputverification.NewPostForm( request.form )
-    if form.verify:
-        database.addentry( request.form, current_user.username )
-        flash('Neuer Post erfolgreich erstellt', 'message')
-    else:
-        flash('Fehler', 'error')
+    newPost = NewPost( request.form )
+    try:
+        newPost.safe()
+        flash("Neuer Eintrag erfolgreich erstellt", 'message')
+    except:
+        flash("Der Eintrag konnte nicht erstellt werden", 'error')
 
     return redirect(url_for('index'))
 

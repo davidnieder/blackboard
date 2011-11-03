@@ -7,6 +7,10 @@ class NoSuchUser(Exception):
     '''
     This Exception is raised if a requested user does not exist
     '''
+class NoUserLoggedIn(Exception):
+    '''
+    Thrown if in a context of a request no user is logged in
+    '''
 
 # Upload
 class NotSuchUploadSet(Exception):
@@ -16,4 +20,16 @@ class NotSuchUploadSet(Exception):
 class CantCreateUploadSet(Exception):
     '''
     This Exception is raised if an UploadSet could not be create
+    '''
+
+# Post
+class CantCreateNewPost(Exception):
+    '''
+    Raised if the creation of a new post fails
+    '''
+
+# Database
+class ColumnAndValueListDontMatch(Exception):
+    '''
+    Raised if the parameters for a commit do not fit
     '''
