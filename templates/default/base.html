@@ -61,16 +61,17 @@
 </div>
 
 <script type="text/javascript"><!--
-    // elements:
     var navigation = document.getElementById('navigation');
-    var content = document.getElementById('content')
-    // positions + widths:
-    var marginLeft = 10;
-    var contentPosition = content.offsetLeft;
-    var contentWidth = content.offsetWidth;
-    var navigationPosition = contentPosition + contentWidth + marginLeft + "px";
-    // set position of navigation container
-    navigation.style.left = navigationPosition;
+    if( navigation != null )    {
+      var content = document.getElementById('content')
+      // positions + widths:
+      var marginLeft = 10;
+      var contentPosition = content.offsetLeft;
+      var contentWidth = content.offsetWidth;
+      var navigationPosition = contentPosition + contentWidth + marginLeft + "px";
+      // set position of navigation container
+      navigation.style.left = navigationPosition;
+    }
 --></script>
 </body>
 </html>

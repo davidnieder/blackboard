@@ -21,6 +21,10 @@ class CantCreateUploadSet(Exception):
     '''
     This Exception is raised if an UploadSet could not be create
     '''
+class UploadFailed(Exception):
+    '''
+    Raised if an Upload fails
+    '''
 
 # Post
 class CantCreateNewPost(Exception):

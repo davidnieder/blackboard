@@ -88,6 +88,11 @@ def getpage(nr):
 def addcomment():
     return views.addcomment()
 
+@app.route('/upload/<utype>/', methods=['POST'])
+@login_required
+def upload(utype):
+    return views.handle_upload(utype)
+
 # Admin sites
 @app.route('/admin/')
 def admin_index():

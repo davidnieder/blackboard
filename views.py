@@ -130,6 +130,8 @@ def changesettings(field):
 
 def newpost(ctype):
     if ctype in ['text', 'audio', 'video', 'link', 'image']:
+        if ctype == 'image':
+            upload.setFileSize('images')
         return render_template(gettemplate('newpost.html'), style=getstyle(), \
                                 posttype=ctype)
     return abort(404)
@@ -187,6 +189,18 @@ def addcomment():
     except:
         flash('Fehler beim erstellen des Kommentars', 'error')
     return redirect('/posts/'+request.form['relatedpost']+'/')
+
+def handle_upload(utype):
+    if utype == 'image':
+        u = upload.Upload('images')
+        try:
+            u.save(request.files['file'])
+        except:
+            return "error"
+        return u.url()
+    else:
+        abort(404)
+
 
 # helper functions
 def calcpagelinks( postamount, pagenumber ):

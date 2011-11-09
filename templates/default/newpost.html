@@ -8,19 +8,16 @@
 {%- endblock %}
 
 {%- block scripts %}
-  <script type="text/javascript"><!--
-    function showhelp( show ) {
-        if (show)   {    
-            document.getElementById('helptext').style.display = 'inline';
-            document.getElementById('showhelp').style.display = 'none';
-            document.getElementById('hidehelp').style.display = 'inline';
-        } else {
-            document.getElementById('helptext').style.display = 'none';
-            document.getElementById('showhelp').style.display = 'inline';
-            document.getElementById('hidehelp').style.display = 'none';
-        }        
-    }
-  --></script>
+  <script type="text/javascript">
+    var upload_handler = '/upload/{{ posttype }}/';
+  </script>
+  <script type="text/javascript" src="/static/script/iconanimation.js"></script>
+  <script type="text/javascript" src="/static/script/ajax-upload.js"></script>
+  <script type="text/javascript" src="/static/script/upload.js"></script>
+{%- endblock %}
+
+{%- block iconband %}
+{% include 'default/iconband.html' %}
 {%- endblock %}
 
 {%- block content %}
@@ -32,11 +29,6 @@
   {% elif posttype == 'audio' %}<img src="/static/img/audio.png">{% endif %}
 
   <h3>Neuen Eintrag verfassen</h3>
-  <div id="helptext">
-      Im Text- und Kommentarfeld <br>sind folgende html-Tags <br>erlaubt:
-      &lt;a&gt; &lt;b&gt; &lt;i&gt; &lt;u&gt;
-    </div>
-
   <div id="mask">
     <form action="/post/add/" method="post">
     <table>
@@ -50,7 +42,10 @@
       </tr>
       <tr>
         <td>Text:</td>
-        <td><textarea cols="60" rows="15" name="content" wrap="soft"></textarea></td>
+        <td>
+          <textarea cols="60" rows="15" name="content" wrap="soft"></textarea>
+          <input type="hidden" name="contenttype" value="text">
+        </td>
   {% elif posttype == 'link' %}
       <tr>
         <th colspan="2">Link posten</th>
@@ -63,7 +58,11 @@
         <td>Url:</td><td><input type="text" size="46" name="link"></td>
       </tr>
       <tr>
-        <td>Kommentar:<br>(optional)</td><td><textarea cols="59" rows="12" name="comment"></textarea></td>
+        <td>Kommentar:<br>(optional)</td>
+        <td>
+          <textarea cols="59" rows="12" name="comment"></textarea>
+          <input type="hidden" name="contenttype" value="link">
+        </td>
       </tr>
   {% elif posttype == 'video' %}
       <tr>
@@ -77,7 +76,11 @@
         <td>Embedding-<br>Code:</td><td><textarea cols="59" rows="3" name="code"></textarea></td>
       </tr>
       <tr>
-        <td>Kommentar:<br>(optional)</td><td><textarea cols="59" rows="12" name="comment"></textarea></td>
+        <td>Kommentar:<br>(optional)</td>
+        <td>
+          <textarea cols="59" rows="12" name="comment"></textarea>
+          <input type="hidden" name="contenttype" value="video">
+        </td>
       </tr>
   {% elif posttype == 'image' %}
       <tr>
@@ -87,11 +90,46 @@
         <td>Titel:<br>(optional)</td>
         <td><input type="text" size="46" name="title"></td>
       </tr>
-      <tr>
-        <td>Url:</td><td><input type="text" size="46" name="link"></td>
+      <tr name="url_post">
+        <td>Url:</td>
+        <td>
+          <input type="text" size="46" name="link" id="uploaded_file_url">
+        </td>
+      </tr>
+      <tr name="url_post">
+        <td></td>
+        <td>
+          <a href="#" onclick="switch_to_upload(true)">Ein Bild hochladen</a>
+        </td>
+      </tr>
+      <tr name="upload_post" style="display:none">
+        <td>Datei:</td>
+        <td>
+          <input type="text" size="21" id="filename" readonly>
+          <input type="button" value="Durchsuchen" id="upload_button">
+          <input type="button" value="Hochladen" id="start_upload" onclick="start()">
+        </td>
+      </tr>
+      <tr name="upload_post" style="display:none">
+        <td></td>
+        <td>
+          <div id="file_extensions">Erlaubte Dateien: .jpg .jpe .jpeg .png .git .svg .bmp<br>
+            Maximale Dateigröße: 3MB</div>
+          <div id="progress_bar" style="display:none">Datei wird hochgeladen
+            <img src="/static/img/progressbar.gif" id="progress_gif" style="float:right"></div>
+          <div id="upload_finished" style="display:none">
+          Datei erfolgreich hochgeladen. Du kannst diesen Beitrag jetzt abschicken.</div>
+          <div id="upload_error" style="display:none;color:#A52A2A;margin-top:0.3em;">
+          Upload fehlgeschlagen. Bitte beachte Dateiendung und Dateigröße</div>
+          <div id="switch_to_url" style="margin-top:0.5em;">
+            <a href="#" onclick="switch_to_upload(false)" id="switch_link">Bild per Url einbinden</a></div>
+        </td>
       </tr>
       <tr>
-        <td>Kommentar:<br>(optional)</td><td><textarea cols="59" rows="12" name="comment"></textarea></td>
+        <td>Kommentar:<br>(optional)</td>
+        <td><textarea cols="59" rows="12" name="comment"></textarea>
+            <input type="hidden" name="contenttype" value="image">
+        </td>
       </tr>
   {% elif posttype == 'audio' %}
       <tr>
@@ -102,32 +140,20 @@
         <td><input type="text" size="46" name="title"></td>
       </tr>
       <tr>
-        <td>Embedding-<br>Code:</td><td><textarea cols="59" rows="3" name="code"></textarea></td>
+        <td>Embedding-<br>Code:</td>
+        <td><textarea cols="59" rows="3" name="code"></textarea></td>
       </tr>
       <tr>
-        <td>Kommentar:<br>(optional)</td><td><textarea cols="59" rows="12" name="comment"></textarea></td>
+        <td>Kommentar:<br>(optional)</td>
+        <td><textarea cols="59" rows="12" name="comment"></textarea>
+          <input type="hidden" name="contenttype" value="audio">
+        </td>
       </tr>
   {% endif %}
       <tr>
         <td></td>
         <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>{% if posttype == 'text' %}<input type="hidden" name="contenttype" value="text">
-            {% elif posttype == 'image' %}<input type="hidden" name="contenttype" value="image">
-            {% elif posttype == 'video' %}<input type="hidden" name="contenttype" value="video">
-            {% elif posttype == 'link' %}<input type="hidden" name="contenttype" value="link">
-            {% elif posttype == 'audio' %}<input type="hidden" name="contenttype" value="audio">
-            {% endif -%}
-        </td>
-        <td>
-          <div style="float:right" id="showhelp">
-            <a href="#" onclick="showhelp( true )">Hilfe zur Eingabe</a></div>
-          <div style="float:right; display: none" id="hidehelp">
-            <a href="#" onclick="showhelp( false )">Hilfe ausblenden</a></div>
-          <input type="submit" value="Eintragen">
+          <input type="submit" id="submit_button" value="Eintragen">
         </td>
       </tr>
     </table>

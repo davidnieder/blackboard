@@ -48,11 +48,10 @@ class Upload():
     def save(self, sentfile):
         self.file = sentfile
         self.uniqueFilename()
-        self.error = None
         try:
             self.name = self.UploadSet.save(self.file, name=self.name)
         except uploads.UploadNotAllowed:
-            self.error = 'Upload fehlgeschlagen: upload nicht erlaubt'
+            raise exceptions.UploadFailed
 
     def url(self):
         return self.UploadSet.url(self.name)

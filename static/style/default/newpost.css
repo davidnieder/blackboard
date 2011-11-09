@@ -1,5 +1,4 @@
 div#newpost {
-    height: 35em;
     width: 800px;
 
     padding: 0.5em 0.5em 0.5em 0.5em;
@@ -8,7 +7,7 @@ div#newpost {
 
     text-align: left;
     color: #4274A1;
-    border: 1px solid #000;
+    border: 1px solid #6294C1;
 }
 
 div#newpost img {
