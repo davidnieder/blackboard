@@ -8,9 +8,22 @@
 
   {% block title %}<title>Blackboard</title>{% endblock %}
 
-  {% block stylesheets %}<link rel="stylesheet" type="text/css" href="/static/style/{{ style }}/default.css">
-  {% endblock %}
-  {%- block scripts %}<script type="text/javascript" src="/static/script/iconanimation.js"></script>
+  {%- block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="/static/style/{{ style }}/default.css">
+  <link rel="stylesheet" type="text/css" href="/static/style/{{ style }}/audiojs.css">
+  {%- endblock %}
+  {%- block scripts %}
+  <script type="text/javascript" src="/static/script/iconanimation.js"></script>
+  <script type="text/javascript" src="/static/script/audio.js"></script>
+  <script type="text/javascript">
+    audiojs.events.ready(function() {
+    var as = audiojs.createAll(
+      {
+        useFlash: true,
+        preload: false
+      });
+    });
+  </script>
   {%- endblock %}
 
 </head>

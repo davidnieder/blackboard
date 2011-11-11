@@ -9,6 +9,7 @@
 
 {%- block scripts %}
   <script type="text/javascript">
+    var upload_type = '{{ posttype }}';
     var upload_handler = '/upload/{{ posttype }}/';
   </script>
   <script type="text/javascript" src="/static/script/iconanimation.js"></script>
@@ -73,7 +74,8 @@
         <td><input type="text" size="46" name="title"></td>
       </tr>
       <tr>
-        <td>Embedding-<br>Code:</td><td><textarea cols="59" rows="3" name="code"></textarea></td>
+        <td>Embedding-<br>Code:</td>
+        <td><textarea cols="59" rows="3" name="code"></textarea></td>
       </tr>
       <tr>
         <td>Kommentar:<br>(optional)</td>
@@ -139,9 +141,38 @@
         <td>Titel:<br>(optional)</td>
         <td><input type="text" size="46" name="title"></td>
       </tr>
-      <tr>
+      <tr name="url_post">
         <td>Embedding-<br>Code:</td>
-        <td><textarea cols="59" rows="3" name="code"></textarea></td>
+        <td><textarea cols="59" rows="3" name="code" id="code_field"></textarea></td>
+      </tr>
+      <tr name="url_post">
+        <td></td>
+        <td>
+          <a href="#" onclick="switch_to_upload(true)">Eine MP3 hochladen</a>
+        </td>
+      </tr>
+      <tr name="upload_post" style="display:none">
+        <td>Datei:</td>
+        <td>
+          <input type="text" size="21" id="filename" readonly>
+          <input type="button" value="Durchsuchen" id="upload_button">
+          <input type="button" value="Hochladen" id="start_upload" onclick="start()">
+        </td>
+      </tr>
+      <tr name="upload_post" style="display:none">
+        <td></td>
+        <td>
+          <div id="file_extensions">Erlaubte Dateien: .mp3<br>
+            Maximale Dateigröße: 6MB</div>
+          <div id="progress_bar" style="display:none">Datei wird hochgeladen
+            <img src="/static/img/progressbar.gif" id="progress_gif" style="float:right"></div>
+          <div id="upload_finished" style="display:none">
+            Datei erfolgreich hochgeladen. Du kannst diesen Beitrag jetzt abschicken.</div>
+          <div id="upload_error" style="display:none;color:#A52A2A;margin-top:0.3em;">
+            Upload fehlgeschlagen. Bitte beachte Dateiendung und Dateigröße</div>
+          <div id="switch_to_url" style="margin-top:0.5em;">
+            <a href="#" onclick="switch_to_upload(false)" id="switch_link">Audio einbinden</a></div>
+        </td>
       </tr>
       <tr>
         <td>Kommentar:<br>(optional)</td>

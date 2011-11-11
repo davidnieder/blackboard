@@ -23,6 +23,7 @@ loginmanager.session_protection = 'strong'
 imageUploadSet = initializeUpload('images')
 fileUploadSet = initializeUpload('files')
 avatarUploadSet = initializeUpload('avatars')
+audioUploadSet = initializeUpload('audio')
 
 
 @app.before_request

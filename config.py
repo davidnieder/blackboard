@@ -33,7 +33,9 @@ UPLOADDESTINATION = '/var/www/blackboard/static/upload/'
 IMAGEEXTENSIONS = ('jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp')
 FILEEXTENSIONS = ('gz', 'bz2', 'zip', 'tar', 'tgz', 'txz', '7z', 'rtf', 'odf', 'ods', \
                   'gnumeric', 'abw', 'doc', 'docx', 'xls', 'xlsx', 'pdf')
+AUDIOEXTENSIONS = ('mp3',)
 # Maximale Dateigröße in Byte
 MAXIMAGESIZE = 3145728 #  3MB
 MAXFILESIZE = 10485760 # 10MB
+MAXAUDIOSIZE = 6291456 #  6MB
 MAXAVATARSIZE = 512000 #500KB

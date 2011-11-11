@@ -5,7 +5,8 @@ from blackboard import app
 import uuid, exceptions
 
 from config import UPLOADDESTINATION, IMAGEEXTENSIONS, FILEEXTENSIONS, \
-                    MAXIMAGESIZE, MAXFILESIZE, MAXAVATARSIZE
+                   AUDIOEXTENSIONS, MAXIMAGESIZE, MAXFILESIZE, MAXAVATARSIZE, \
+                   MAXAUDIOSIZE
 
 def initializeUpload(uploadType):
     if uploadType == 'images':
@@ -22,13 +23,18 @@ def initializeUpload(uploadType):
         return UploadSet
     elif uploadType == 'avatars':
         uploadDestination = UPLOADDESTINATION + 'avatars/'
-        UploadSet = uploads.UploadSet('avatars', ('png',), \
+        UploadSet = uploads.UploadSet('avatars', IMAGEEXTENSIONS, \
+                            lambda dest: uploadDestination)
+        uploads.configure_uploads(app, UploadSet)
+        return UploadSet
+    elif uploadType == 'audio':
+        uploadDestination = UPLOADDESTINATION + 'audio/'
+        UploadSet = uploads.UploadSet('audio', AUDIOEXTENSIONS, \
                             lambda dest: uploadDestination)
         uploads.configure_uploads(app, UploadSet)
         return UploadSet
     else:
         raise exceptions.CantCreateUploadSet()
-        pass
 
 class Upload():
 
@@ -42,6 +48,9 @@ class Upload():
         elif UploadSet == 'avatars':
             from blackboard import avatarUploadSet
             self.UploadSet = avatarUploadSet
+        elif UploadSet == 'audio':
+            from blackboard import audioUploadSet
+            self.UploadSet = audioUploadSet
         else:
             raise exceptions.NoSuchUploadSet()
 
@@ -71,5 +80,7 @@ def setFileSize(uploadType):
         uploads.patch_request_class(app, MAXFILESIZE)
     elif uploadType == 'avatars':
         uploads.patch_request_class(app, MAXAVATARSIZE)
+    elif uploadType == 'audio':
+        uploads.patch_request_class(app, MAXAUDIOSIZE)
     else:
         raise exceptions.NoSuchUploadSet()

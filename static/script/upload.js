@@ -32,7 +32,7 @@ function upload_finished(file,response)  {
     // show error message
     document.getElementById('upload_error').style.display = 'block';
     // enable upload fields
-    //document.getElementById('filename').disabled = false;
+    document.getElementById('filename').value = "";
     document.getElementById('upload_button').disabled = false;
     document.getElementById('start_upload').disabled = false;
     document.getElementById('file_extensions').style.display = 'block';
@@ -42,10 +42,16 @@ function upload_finished(file,response)  {
   else    {
     // show success message
     document.getElementById('upload_finished').style.display = 'block';
-    // write url of the just uploaded file
-    document.getElementById('uploaded_file_url').value = response;
     // enable post-submit button
     document.getElementById('submit_button').disabled = false;
+    // write url of the just uploaded file
+    if( upload_type == 'audio' )    {
+        document.getElementById('code_field').value =
+            '<audio src="' + response + '" />';
+    }
+    if( upload_type == 'image' )    {
+        document.getElementById('uploaded_file_url').value = response;
+    }
   }
 }
 

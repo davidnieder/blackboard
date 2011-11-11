@@ -132,6 +132,9 @@ def newpost(ctype):
     if ctype in ['text', 'audio', 'video', 'link', 'image']:
         if ctype == 'image':
             upload.setFileSize('images')
+        elif ctype == 'audio':
+            upload.setFileSize('audio')
+
         return render_template(gettemplate('newpost.html'), style=getstyle(), \
                                 posttype=ctype)
     return abort(404)
@@ -193,13 +196,16 @@ def addcomment():
 def handle_upload(utype):
     if utype == 'image':
         u = upload.Upload('images')
-        try:
-            u.save(request.files['file'])
-        except:
-            return "error"
+    elif utype == 'audio':
+        u = upload.Upload('audio')
+
+    try:
+        u.save(request.files['file'])
         return u.url()
-    else:
-        abort(404)
+    except:
+        return "error"
+
+    abort(404)
 
 
 # helper functions
