@@ -22,6 +22,8 @@ function upload_started()    {
   document.getElementById('file_extensions').style.display = 'none';
   // show progress bar
   document.getElementById('progress_bar').style.display = 'block';
+  // hide error message
+  document.getElementById('upload_error').style.display = 'none';
 }
 
 function upload_finished(file,response)  {

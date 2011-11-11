@@ -82,7 +82,7 @@ class Posts():
 
         avatarDict = {}
         for user in usernames:
-            avatarDict.update(user=get_avatar(user))
+            avatarDict[user] = get_avatar(user)
 
         for post in self.postList:
             if avatarDict.has_key( post[self.postTableColumns['user']] ):
