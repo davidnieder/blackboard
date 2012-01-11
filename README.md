@@ -8,6 +8,7 @@ I do not recommend installing blackboard on a public system. It is not nearly fi
 ##Requirements
 
 * Apache with mod_wsgi (or another web server)
+* python >v2.6 (not v3)
 * sqlite3
 * flask
 * flask-login
