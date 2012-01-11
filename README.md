@@ -16,8 +16,8 @@ I do not recommend installing blackboard on a public system. It is not nearly fi
 ##Screenshots
 
 * Index page
-  [!index page](screenshots/index_page.png)
+  ![index page](screenshots/index_page.png)
 * single post
-  [!a single post](screenshots/single_post.png)
+  ![a single post](screenshots/single_post.png)
 * login page
-  [!login page](screenshots/login_page.png)
+  ![login page](screenshots/login_page.png)
