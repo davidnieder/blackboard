@@ -16,8 +16,8 @@ I do not recommend installing blackboard on a public system. It is not nearly fi
 ##Screenshots
 
 * Index page
-  ![index page](https://github.com/davidnieder/blackboard/blob/master/screenshots/index_page.png)
+  ![index page](https://github.com/davidnieder/blackboard/raw/master/screenshots/index_page.png)
 * single post
-  ![a single post](https://github.com/davidnieder/blackboard/blob/master/screenshots/single_post.png)
+  ![a single post](https://github.com/davidnieder/blackboard/raw/master/screenshots/single_post.png)
 * login page
-  ![login page](https://github.com/davidnieder/blackboard/blob/master/screenshots/login_page.png)
+  ![login page](https://github.com/davidnieder/blackboard/raw/master/screenshots/login_page.png)
