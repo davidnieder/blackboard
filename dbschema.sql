@@ -41,3 +41,9 @@ create table users  (
     style string,
     template string
 );
+
+drop table if exists public_posts;
+create table public_posts   (
+    public_id string,
+    post_id string
+);

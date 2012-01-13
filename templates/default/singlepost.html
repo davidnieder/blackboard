@@ -40,7 +40,17 @@
     {%- elif post.contenttype == 'image' %}
       <div class="post image"><img src="{{ post.url }}"></div>
       <div class="post text">{{ post.text |safe }}</div>
+
     {%- endif %}
+
+    {%- if post.public_link %}
+      <div class="post public_link_field">
+        Öffentlicher Link: 
+        <input type="text" size="25" onclick="this.select()"
+            value="{{ request.url_root }}public/{{ post.public_link }}/" readonly>
+      </div>
+    {%- endif %}
+
     </div>
     <div class="commentarea">      
     {%- if comments %}

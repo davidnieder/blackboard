@@ -159,6 +159,12 @@ div.post  {
     margin-top: 2px;
     border-style: none;
 }
+.post.public_link_field {
+    text-align: right;
+    border-style: none;
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
 div#pagelinks   {
     clear: right;

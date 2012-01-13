@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+       "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
+
+  <title>Blackboard</title>
+
+  <link rel="stylesheet" type="text/css" href="/static/style/{{ style }}/default.css">
+  <link rel="stylesheet" type="text/css" href="/static/style/{{ style }}/audiojs.css">
+
+  <script type="text/javascript" src="/static/script/iconanimation.js"></script>
+  <script type="text/javascript" src="/static/script/audio.js"></script>
+  <script type="text/javascript">
+    audiojs.events.ready(function() {
+    var as = audiojs.createAll(
+      {
+        useFlash: true,
+        preload: false
+      });
+    });
+  </script>
+
+</head>
+<body>
+<div id="wrapper">
+  <div id="header"><h1><a href="/">Blackboard</a></h1></div>
+
+  <div id="content">
+  {%- if post %}
+    <div class="post">
+      <h5 class="post datum">Post 
+        <a href="/posts/{{ post.id }}/">#{{ post.id }}</a> vom 
+        <a href="/posts/{{ post.date }}/">{{ post.date }}</a>
+      </h5>
+      <h5 class="post author">von
+        <a href="/user/{{ post.user }}/">{{ post.user }}</a>
+      </h5>
+      <div class="post icon"><a href="/posts/{{ post.contenttype }}/">
+      <img src="/static/img/{{ post.contenttype }}.png" height="50" alt="icon"></a></div>
+      <h3 class="post title">
+      <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
+
+    {%- if post.contenttype == 'text' %}
+      <div class="post text">{{ post.text |safe }}</div>
+
+    {%- elif post.contenttype == 'link' %}
+      <div class="post link"><a href="{{ post.url }}">{{ post.url }}</a></div>
+      <div class="post text">{{ post.text |safe }}</div>
+
+    {%- elif post.contenttype in ['video', 'audio'] %}
+      <div class="post embedded">{{ post.code |safe }}</div>
+      <div class="post text">{{ post.text |safe }}</div>
+
+    {%- elif post.contenttype == 'image' %}
+      <div class="post image"><img src="{{ post.url }}"></div>
+      <div class="post text">{{ post.text |safe }}</div>
+    {%- endif %}
+      <div class="post commentlink">
+        <a href="/posts/{{ post.id }}/#comments">Kommentieren</a>
+      </div>
+    </div>
+  {%- else %}
+    <div class="post">
+      <h3>Eintrag nicht vorhanden</h3>
+    </div>
+  {%- endif %}
+  </div>
+
+   <div id="footer">
+    <a href="/">Startseite</a>|
+    <a href="/admin/">Administration</a>|
+    <a href="#">Feedback</a>|
+    <a href="https://github.com/davidnieder/blackboard" target="_blank">Blackboard ist OpenSource</a>
+  </div>
+
+</body>
+</html>
+

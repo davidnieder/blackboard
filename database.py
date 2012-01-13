@@ -120,6 +120,9 @@ def commit( table, columnList, valueList ):
                  '(' + columnAmount + ')', valueList)
     g.db.commit()
 
+    cursor = g.db.execute('SELECT last_insert_rowid()')
+    return cursor.fetchone()
+
 def delete( table, column, condition ):
     pass
 

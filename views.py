@@ -8,7 +8,7 @@ import user
 import inputverification
 import upload
 import exceptions
-from post import Posts, NewPost
+from post import Posts, NewPost, PublicPost
 from comment import Comments, NewComment
 from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES, STYLES
 
@@ -31,9 +31,10 @@ def login():
                 flash('Du hast dich erfolgreich angemeldet', 'message')
             else:
                 flash('Dein Account wartet noch auf Aktivierung', 'message')
-            #if request.form['next']:
-            #    return redirect(url_for(request.form['next']))
+                return redirect(url_for('login'))
+
             return redirect(url_for('index'))
+
         else:
             flash('Falscher Benutzername oder falsches Passwort', 'error')
 
@@ -82,6 +83,7 @@ def usersettings():
                                         user=userdict, templates=TEMPLATES, styles=STYLES)
 
 def changesettings(field):
+    # hu, this is ugly!
     # VERIFICATION!!!
     u = current_user
     value = None
@@ -144,7 +146,7 @@ def addpost():
     try:
         newPost.safe()
         flash("Neuer Eintrag erfolgreich erstellt", 'message')
-    except:
+    except exceptions.CantCreateNewPost:
         flash("Der Eintrag konnte nicht erstellt werden", 'error')
 
     return redirect(url_for('index'))
@@ -206,6 +208,20 @@ def handle_upload(utype):
         return "error"
 
     abort(404)
+
+def public_link( public_post_id ):
+    try:
+        post_id = PublicPost( public_id=public_post_id )
+        post_id = post_id.get_post_id()
+
+        post = Posts(postId=post_id)
+        post = post.get_single_post()
+
+    except:
+        abort(404)
+
+    return render_template( gettemplate('public_view.html'), style=getstyle(), \
+                            post=post )
 
 
 # helper functions

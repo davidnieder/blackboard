@@ -32,6 +32,16 @@ class CantCreateNewPost(Exception):
     Raised if the creation of a new post fails
     '''
 
+class NoPublicPostId(Exception):
+    '''
+    Raised if a given public post id has no post id equivalent
+    '''
+
+class NoSuchPostId(Exception):
+    '''
+    Raised if a Post id does not exists
+    '''
+
 # Comment
 class CantCreateNewComment(Exception):
     '''

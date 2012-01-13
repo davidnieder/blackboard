@@ -93,6 +93,14 @@ def addcomment():
 def upload(utype):
     return views.handle_upload(utype)
 
+@app.route('/public/<public_post_id>/', methods=['GET'])
+def public(public_post_id):
+    return views.public_link(public_post_id)
+
+@app.route('/p/<public_post_id>/', methods=['GET'])
+def p(public_post_id):
+    return views.public_link(public_post_id)
+
 # Admin sites
 @app.route('/admin/')
 def admin_index():
