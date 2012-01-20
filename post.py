@@ -43,12 +43,16 @@ class Posts():
                 # add a filter
                 pass
             else:
-                self.get_posts( str(self.postTableColumns['user']) + \
+                self.get_posts( self.postTableColumns['user'] + \
                                 '=\'%s\'' %self.username )
         elif self.postFilter:
             # Filtered view e.g. /posts/audio/
-            self.get_posts( str(self.postTableColumns['contenttype']) + \
-                            '=%s' %contentkey[self.postFilter] )
+            if self.postFilter in contentkey:
+                self.get_posts( self.postTableColumns['contenttype'] + \
+                                '=\'%s\'' %(contentkey[self.postFilter]) )
+            else:
+                self.get_posts( self.postTableColumns['date'] + \
+                                '=\'%s\'' %(self.postFilter))
 
         elif self.postId == 'all':
             # Get summary of all posts
@@ -56,7 +60,7 @@ class Posts():
 
         elif self.postId:
             # Get special post
-            self.get_posts( str(self.postTableColumns['id']) + \
+            self.get_posts( self.postTableColumns['id'] + \
                             '=%i' %self.postId )
         else:
             # Get index page
