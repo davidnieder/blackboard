@@ -89,6 +89,11 @@ def get(userid):
     u = User(id=int(userid))
     return u if u.username else None
 
+def get_username_from_id(userid):
+    '''Returns username or None'''
+    u = User(id=int(userid))
+    return u.username if u.username else None
+
 def get_current_user():
     '''Returns the current, logged-in user or None'''
     try:

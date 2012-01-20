@@ -166,6 +166,15 @@ div.post  {
     margin-right: 10px;
 }
 
+div#post_list  {
+    border: 1px solid #6294C1;
+    margin-bottom: 20px;
+    text-align: left;
+}
+div#post_list li    {
+    padding-top: 0.3em;
+}
+
 div#pagelinks   {
     clear: right;
     width: 800px;

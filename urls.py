@@ -78,6 +78,11 @@ def getuserpost(username):
 def getuserpost_p(username, page):
     return views.getuserposts(username, page)
 
+@app.route('/posts/all/list/')
+@login_required
+def getallposts():
+    return views.getminimalpostlist()
+
 @app.route('/page/<int:nr>/')
 @login_required
 def getpage(nr):

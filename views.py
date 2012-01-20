@@ -186,6 +186,13 @@ def getpage(pagenumber):
     return render_template(gettemplate('page.html'), style=getstyle(), \
                             posts=posts, page=page)
 
+def getminimalpostlist():
+    posts = Posts(postId='all')
+    posts = posts.get_post_list()
+
+    return render_template(gettemplate('minimal_post_list.html'), style=getstyle(), \
+                           posts=posts )
+
 def addcomment():
     try:
         comment = NewComment( request.form )

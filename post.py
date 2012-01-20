@@ -7,7 +7,7 @@ import hashlib
 import exceptions
 import comment
 from config import POSTSPERSITE
-from user import get_avatar, get_current_user, get as get_username
+from user import get_avatar, get_current_user, get_username_from_id
 
 contentkey = {  'text':  1, 1: 'text',
                 'image': 2, 2: 'image',
@@ -38,7 +38,7 @@ class Posts():
         if self.username or self.userid:
             # Get user posts
             if self.userid:
-                self.username = get_username(self.userid)
+                self.username = get_username_from_id(self.userid)
             if self.postFilter:
                 # add a filter
                 pass
@@ -49,6 +49,11 @@ class Posts():
             # Filtered view e.g. /posts/audio/
             self.get_posts( str(self.postTableColumns['contenttype']) + \
                             '=%s' %contentkey[self.postFilter] )
+
+        elif self.postId == 'all':
+            # Get summary of all posts
+            self.get_all_posts()
+
         elif self.postId:
             # Get special post
             self.get_posts( str(self.postTableColumns['id']) + \
@@ -131,6 +136,20 @@ class Posts():
             database.delpost(self.postId)
             return True
         return False
+
+    def get_all_posts(self):
+        #Gets id, author, date, type and title of all posts
+        query  = 'SELECT '
+        query += self.postTableColumns['id'] + ', '
+        query += self.postTableColumns['user'] + ', '
+        query += self.postTableColumns['date'] + ', '
+        query += self.postTableColumns['title'] + ', '
+        query += self.postTableColumns['contenttype'] + ' '
+        query += 'FROM ' + self.postTable + ' '
+        query += 'ORDER BY id DESC'
+
+        self.postList = database.query( query )
+        self.prepare_posts()
 
 class NewPost():
 

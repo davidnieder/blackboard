@@ -9,9 +9,18 @@
       {%- endif %}
       <li><a href="{{ url_for('logout') }}">Logout</a></li>
     </ul>
+    Beiträge filtern:
+    <ul>
+      <li><a href="/posts/audio/">Alle Songs</a></li>
+      <li><a href="/posts/video/">Alle Videos</a></li>
+      <li><a href="/posts/image/">Alle Bilder</a></li>
+      <li><a href="/posts/text/">Alle Texte</a></li>
+      <li><a href="/posts/link/">Alle Links</a></li>
+      <li><a href="/posts/all/list/">Liste aller Einträge</a>
+    </ul>
     Neuen Beitrag erstellen:
     <ul>
-      <li><a href="/post/new/audio/">Lied posten</a></li>
+      <li><a href="/post/new/audio/">Song posten</a></li>
       <li><a href="/post/new/video/">Video posten</a></li>
       <li><a href="/post/new/image/">Bild posten</a></li>
       <li><a href="/post/new/text/">Text posten</a></li>
