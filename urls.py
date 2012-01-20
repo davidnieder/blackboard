@@ -137,3 +137,8 @@ def admin_post_show(id):
 @app.route('/admin/posts/<int:id>/del/')
 def admin_post_delete(id):
     return admin.delpost(id)
+
+@app.route('/admin/posts/<int:id>/set_public/')
+def admin_post_set_public(id):
+    return admin.setpublic(id)
+

@@ -5,7 +5,7 @@ from flaskext.login import current_user
 
 import database
 from user import User
-from post import Posts
+from post import Posts, PublicPost, new_public_link
 from config import NOADMINACCESS
 
 def index():
@@ -64,13 +64,21 @@ def post(id):
     if not userisadmin():
         flash(NOADMINACCESS, 'error')
         return redirect(url_for('index'))
-    post=[]
+    post = {}
+    public = False
     if id:
         post = Posts(postId=id)
         post = post.get_single_post()
     if id and not post:
         flash("Eintrag #%s nicht gefunden" %id)
-    return render_template('admin/del_post.html', post=post)
+    else:
+        try:
+            public = PublicPost(post_id=post['id'])
+            public = public.get_public_id()
+        except:
+            public = False
+
+    return render_template('admin/del_post.html', post=post, public=public)
 
 def delpost(id):
     if not userisadmin():
@@ -84,6 +92,15 @@ def delpost(id):
     else:
         flash(u'Post konnte nicht gelöscht werden')
     return redirect(url_for('admin_posts'))
+
+def setpublic(postId):
+    if not userisadmin():
+        flash(NOADMINACCESS, 'error')
+        return redirect(url_for('index'))
+
+    #to implement: check if post exists
+    new_public_link(postId)
+    return redirect(url_for('admin_post_show', id=postId))
 
 # helper
 def userisadmin():

@@ -15,7 +15,15 @@
       </tr>
       <tr>
         <td>User:</td><td>{{ post.user }}</td>
-      </tr>
+      <tr>
+        <td>Publik:</td>
+        {%- if public %}
+        <td><a href="/public/{{ public }}/">Ja</a></td>
+        {%- else %}
+        <td>Nein<br><a href="/admin/posts/{{ post.id }}/set_public/">(freischalten)</a></td>
+        {%- endif %}
+     </tr>
+     </tr>
       <tr>
         <td><a href="/posts/{{ post.id }}/">Anzeigen</a></td>
         <td><a href="/admin/posts/{{ post.id }}/del/">Löschen</a></td>

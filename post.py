@@ -228,6 +228,7 @@ class PublicPost():
             raise exceptions.NoPublicPostId
 
 def new_public_link( post_id ):
+    # to implement: check for double hashes
     md5_hash = hashlib.md5()
     md5_hash.update( str(post_id) + str(time.time()) )
     public_id = md5_hash.hexdigest()[:5]
