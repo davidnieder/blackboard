@@ -4,7 +4,7 @@ import database
 import exceptions
 import time
 import inputverification
-from user import get_current_user
+from user import get_current_user, get_username_from_id
 
 commentTable = 'comments'
 commentTableColumns = { 'comment': 'comment',
@@ -26,6 +26,11 @@ class Comments():
                                         'FROM ' + commentTable + ' ' + \
                                         'WHERE ' +  commentTableColumns['relatedPost'] + \
                                         ' =%i' %self.relatedPost )
+
+        # add usernames, inefficient implemented
+        for element in self.comments:
+            element.update(username=get_username_from_id(element['userid']))
+
     def get_comment_list(self):
         self.get_comments()
         return self.comments

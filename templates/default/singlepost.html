@@ -60,7 +60,8 @@
     {%- endif %}
     {%- for comment in comments %}
       <div class="commentbox">
-        <h5>{{ comment.username }} schrieb am {{ comment.time }}:</h5>
+        <h5><a href="/user/{{ comment.username }}">{{ comment.username }}</a>
+             schrieb am {{ comment.time }}:</h5>
         <blockquote>{{ comment.comment }}</blockquote>
       </div>
     {%- endfor %}
