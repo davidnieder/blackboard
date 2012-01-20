@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from flask import Flask
+from flask import Flask, g
 from flaskext.login import LoginManager
 
 app = Flask('blackboard')
@@ -9,7 +9,7 @@ app.config.from_object('blackboard.config-flask')
 import database
 import user
 import urls
-from config import LOGINREQUIREDMESSAGE
+from config import LOGINREQUIREDMESSAGE, FEEDBACKADRESS, IMPRINTURI
 from upload import initializeUpload
 
 # Flask-Extension: LoginManager
@@ -29,6 +29,11 @@ audioUploadSet = initializeUpload('audio')
 @app.before_request
 def before_reqeust():
     database.opendb()    
+
+    # make this constants available globally
+    g.FEEDBACKADRESS = FEEDBACKADRESS
+    g.IMPRINTURI = IMPRINTURI
+
 
 @app.teardown_request
 def teardown_request(exception):

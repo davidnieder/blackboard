@@ -4,6 +4,12 @@
 DATABASE = '/var/www/blackboard/blackboard.sqlite3'
 DBSCHEMA = 'dbschema.sql'
 
+# Feedback E-Mail Adresse
+FEEDBACKADRESS = 'feedback@example.com'
+
+# Link zum Impressum
+IMPRINTURI = 'http://example.com/imprint.html'
+
 # Registration
 # Muss ein account erst aktiviert werden?
 ACCOUNTACTIVATION = True
