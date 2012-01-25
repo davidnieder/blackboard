@@ -5,7 +5,6 @@ from flaskext.login import login_user, logout_user, current_user
 
 import database
 import user
-import inputverification
 import upload
 import exceptions
 from post import Posts, NewPost, PublicPost
