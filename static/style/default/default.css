@@ -132,6 +132,9 @@ div.post  {
     margin-bottom: 10px;
     border-style: none;
 }
+.post.text pre  {
+    font-family: 'Georgia', serif;
+}
 .post.embedded {
     text-align: center;
     border-style: none;
@@ -226,6 +229,9 @@ div.commentarea {
     margin-bottom: 0.5em;
     margin-left: 2em;
     margin-right: 2em;
+}
+.commentbox pre {
+    font-family: 'Georgia', serif;
 }
 
 .newcomment {

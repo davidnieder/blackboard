@@ -44,7 +44,7 @@
       <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
 
     {%- if post.contenttype == 'text' %}
-      <div class="post text">{{ post.text |safe }}</div>
+      <div class="post text"><pre>{{ post.text |safe }}</pre></div>
 
     {%- elif post.contenttype == 'link' %}
       <div class="post link"><a href="{{ post.url }}">{{ post.url }}</a></div>

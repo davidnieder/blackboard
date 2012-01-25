@@ -27,7 +27,7 @@
       <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
 
     {%- if post.contenttype == 'text' %}
-      <div class="post text">{{ post.text |safe }}</div>
+      <div class="post text"><pre>{{ post.text |safe }}</pre></div>
 
     {%- elif post.contenttype == 'link' %}
       <div class="post link"><a href="{{ post.url }}">{{ post.url }}</a></div>
@@ -62,7 +62,7 @@
       <div class="commentbox">
         <h5><a href="/user/{{ comment.username }}">{{ comment.username }}</a>
              schrieb am {{ comment.time }}:</h5>
-        <blockquote>{{ comment.comment }}</blockquote>
+        <blockquote><pre>{{ comment.comment }}</pre></blockquote>
       </div>
     {%- endfor %}
       <div class="newcomment">
