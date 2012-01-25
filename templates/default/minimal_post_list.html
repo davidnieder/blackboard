@@ -19,7 +19,7 @@
       <ul>
       {%- for post in posts %}
         <li>
-          <a href="/post/{{ post.id }}/">
+          <a href="/posts/{{ post.id }}/">
           Eintrag #{{ post.id }} vom {{ post.date }} von {{ post.user }}:
           [{{ post.contenttype }}]
           {%- if post.title %} {{ post.title }}{%- else %} [no title]{%- endif %}
