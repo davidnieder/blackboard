@@ -69,6 +69,8 @@ function switch_to_upload( trigger )    {
     document.getElementsByName('url_post')[1].style.display = 'none';
     document.getElementsByName('upload_post')[0].style.display = 'table-row';
     document.getElementsByName('upload_post')[1].style.display = 'table-row';
+    // disable submit button
+    document.getElementById('submit_button').disabled = true;
   }
   else  {
     // vice versa
@@ -76,6 +78,7 @@ function switch_to_upload( trigger )    {
     document.getElementsByName('upload_post')[1].style.display = 'none';
     document.getElementsByName('url_post')[0].style.display = 'table-row';
     document.getElementsByName('url_post')[1].style.display = 'table-row';
+    document.getElementById('submit_button').disabled = false;
   }
 }    
 
