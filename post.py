@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 import database
-import inputverification
+import inputvalidation
 import time
 import hashlib
 import exceptions
@@ -158,8 +158,11 @@ class Posts():
 class NewPost():
 
     def __init__(self, form):
-        self.form = form
-        inputverification.NewPostForm( form )
+        try:
+            validate = inputvalidation.NewPostForm(form)
+            self.form = validate.validated_form
+        except:
+            raise exceptions.CantValidateForm
 
     def safe(self):
         self.get_keys()
@@ -206,20 +209,18 @@ class NewPost():
                 self.code = self.form['code']
 
             self.date = time.strftime('%d.%m.%y')
+
             self.user = get_current_user().username
             if not self.user:
                 raise exceptions.NoUserLoggedIn
 
-        except:
-            raise exceptions.CantCreateNewPost
-
-        try:
-            if self.form['public_post']  == '1':
+            if self.form['public_post']:
                 self.is_public = True
             else:
                 self.is_public = False
+
         except:
-            self.is_public = False
+            raise exceptions.CantCreateNewPost
 
 
 class PublicPost():

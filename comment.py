@@ -3,7 +3,7 @@
 import database
 import exceptions
 import time
-import inputverification
+import inputvalidation
 from user import get_current_user, get_username_from_id
 
 commentTable = 'comments'
@@ -48,12 +48,13 @@ class Comments():
 class NewComment():
 
     def __init__(self, form):
-        form = inputverification.NewCommentForm( form )
-        if not form.verify:
+        try:
+            validate = inputvalidation.NewCommentForm(form)
+            self.comment = validate.get_comment()
+            self.relatedPost = validate.get_related_post_id()
+        except:
             raise exceptions.CantCreateNewComment
 
-        self.comment = form.comment
-        self.relatedPost = form.relatedPost
         self.date = time.strftime('%d.%m.%y')
         self.user = get_current_user().id
         if not self.user:

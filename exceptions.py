@@ -53,3 +53,10 @@ class ColumnAndValueListDontMatch(Exception):
     '''
     Raised if the parameters for a commit do not fit
     '''
+
+# Input validation
+class CantValidateForm(Exception):
+    '''
+    Raised if input validation fails
+    '''
+

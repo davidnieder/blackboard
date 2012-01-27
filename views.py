@@ -141,9 +141,10 @@ def newpost(ctype):
     return abort(404)
 
 def addpost():
-    newPost = NewPost( request.form )
     try:
+        newPost = NewPost( request.form )
         newPost.safe()
+
         flash("Neuer Eintrag erfolgreich erstellt", 'message')
     except exceptions.CantCreateNewPost:
         flash("Der Eintrag konnte nicht erstellt werden", 'error')
@@ -199,6 +200,7 @@ def addcomment():
         flash('Kommentar erfolgreich erstellt', 'message')
     except:
         flash('Fehler beim erstellen des Kommentars', 'error')
+
     return redirect('/posts/'+request.form['relatedpost']+'/')
 
 def handle_upload(utype):
