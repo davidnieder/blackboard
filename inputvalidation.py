@@ -16,7 +16,7 @@ allowed_audio_sites = ['soundcloud.com',
 allowed_audio_sites += allowed_video_sites
 
 allowed_embedding_tags = ['iframe', 'embed', 'object']
-allowed_text_tags = ['a', 'b', 'i', 's', 'strike', 'strong', 'br', 'span']
+allowed_text_tags = ['a', 'b', 'i', 's', 'strike', 'strong', 'br', 'span', 'div']
 
 video_rules = {
             'host_whitelist': allowed_video_sites,
@@ -161,9 +161,12 @@ class NewPostForm():
         if not self.field_has_content('content'):
             raise exceptions.CantValidateForm
 
-        # clean content html
+        # workaround a lxml bug
+        html_string = '<span>' + self.form['content'] + '</span>'
+
+        # clean content field html
         cleaner = Cleaner(**text_rules)
-        self.validated_form['content'] = cleaner.clean_html(self.form['content'])
+        self.validated_form['content'] = cleaner.clean_html(html_string)
 
 
     def field_has_content(self, key):
@@ -187,9 +190,12 @@ class NewPostForm():
 
     def clean_html_in_comment_field(self):
         if self.field_has_content('comment'):
+            # workaround to be compatible with older lxml versions:
+            html_string = '<span>' + self.form['comment'] + '</span>'
+
             cleaner = Cleaner(**text_rules)
             self.validated_form['comment'] = \
-                cleaner.clean_html(self.form['comment'])
+                cleaner.clean_html(html_string)
 
 class NewCommentForm(NewPostForm):
 
