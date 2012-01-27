@@ -62,7 +62,7 @@
       <div class="commentbox">
         <h5><a href="/user/{{ comment.username }}">{{ comment.username }}</a>
              schrieb am {{ comment.time }}:</h5>
-        <blockquote><pre>{{ comment.comment }}</pre></blockquote>
+        <blockquote>{{ comment.comment |safe}}</blockquote>
       </div>
     {%- endfor %}
       <div class="newcomment">
