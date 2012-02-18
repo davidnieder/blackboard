@@ -16,7 +16,7 @@ allowed_audio_sites = ['soundcloud.com',
 allowed_audio_sites += allowed_video_sites
 
 allowed_embedding_tags = ['iframe', 'embed', 'object']
-allowed_text_tags = ['a', 'b', 'i', 's', 'strike', 'strong', 'br', 'span', 'div']
+allowed_text_tags = ['a', 'b', 'i', 's', 'u', 'strike', 'strong', 'br', 'span', 'div']
 
 video_rules = {
             'host_whitelist': allowed_video_sites,
