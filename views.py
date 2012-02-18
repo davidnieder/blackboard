@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from flask import render_template, request, redirect, url_for, abort, flash
+from flask import render_template, request, redirect, url_for, abort, flash, Markup
 from flaskext.login import login_user, logout_user, current_user
 
 import database
@@ -10,6 +10,7 @@ import exceptions
 from post import Posts, NewPost, PublicPost
 from comment import Comments, NewComment
 from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES, STYLES
+from usersettings import UpdateUserSettings
 
 def index():
     pps = postspersite()
@@ -81,52 +82,12 @@ def usersettings():
     return render_template(gettemplate('usersettings.html'), style=getstyle(), \
                                         user=userdict, templates=TEMPLATES, styles=STYLES)
 
-def changesettings(field):
-    # hu, this is ugly!
-    # VERIFICATION!!!
-    u = current_user
-    value = None
-    message = None
+def changesetting(setting):
+    updateSetting = UpdateUserSettings( setting, request.form )
+    message = updateSetting.get_message_as_list()
 
-    if field == 'password':
-        message = "Passwort"
-        if u.authenticate( request.form['oldpass'] ):
-            value = request.form['newpass1']
+    flash(message[0], message[1])
 
-    elif field == 'email':
-        message = 'E-Mail-Adresse'
-        value = request.form['newemail']
-    elif field == 'postspersite':
-        message = 'Beitragszahl pro Seite'
-        value = int( request.form['postspersite'] )
-    elif field == 'notification':
-        message = 'E-Mail-Benachrichtigung'
-        value = int( request.form['emailnotification'] )
-    elif field == 'avatar':
-        message = 'Avatar'
-        ul = upload.Upload('avatars')
-        ul.save(request.files['avatar'])
-        if ul.error: flash(ul.error, 'error'); return redirect(url_for('usersettings'));
-        value = ul.url()
-    elif field == 'style':
-        message = 'Style'
-        value = request.form['style']
-    elif field == 'template':
-        message = 'Template'
-        value = request.form['template']
-        if value not in TEMPLATES:
-            value = 'default'
-    elif field == 'delavatar':
-        database.updatesetting(userid=u.id, column='avatar', value="")
-        flash('Avatar entfernt', 'message')
-        return redirect(url_for('usersettings'))
-    
-    if value:
-        database.updatesetting(userid=u.id, column=field, value=value)
-        flash("%s erfolgreich editiert" %(message), 'message')
-    else:
-        flash("Das hat leider nicht geklappt", 'error')
-    
     return redirect(url_for('usersettings'))
 
 def newpost(ctype):

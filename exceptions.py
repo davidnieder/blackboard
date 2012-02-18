@@ -39,13 +39,19 @@ class NoPublicPostId(Exception):
 
 class NoSuchPostId(Exception):
     '''
-    Raised if a Post id does not exists
+    Raised if a Post id does not exist
     '''
 
 # Comment
 class CantCreateNewComment(Exception):
     '''
     Raised if the creation of a new comment failes
+    '''
+
+# User settings
+class NoSuchSetting(Exception):
+    '''
+    Raised if setting should be changed that does not exist
     '''
 
 # Database
