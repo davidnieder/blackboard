@@ -10,8 +10,6 @@ def opendb():
 def closedb():
     if hasattr(g, 'db'):
         g.db.close()
-    else:
-        g.db.close()
 
 def connectdb():
     return sqlite3.connect(DATABASE)
@@ -125,6 +123,14 @@ def commit( table, columnList, valueList ):
 
 def delete( table, column, condition ):
     pass
+
+def check_if_entry_exists( table, column, value ):
+    cursor = g.db.execute('SELECT * FROM ' + table + ' WHERE ' + \
+                          column + '=' + str(value) + ' LIMIT 1')
+    entry = cursor.fetchone()
+
+    return True if entry else False
+
 
 def dict_factory(cursor, row):
     d = {}

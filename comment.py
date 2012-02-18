@@ -1,10 +1,13 @@
 # -*- coding: UTF-8 -*-
 
+import time
+
 import database
 import exceptions
-import time
 import inputvalidation
+import post
 from user import get_current_user, get_username_from_id
+
 
 commentTable = 'comments'
 commentTableColumns = { 'comment': 'comment',
@@ -53,6 +56,9 @@ class NewComment():
             self.comment = validate.get_comment()
             self.relatedPost = validate.get_related_post_id()
         except:
+            raise exceptions.CantCreateNewComment
+
+        if not post.check_if_post_exists( self.relatedPost ):
             raise exceptions.CantCreateNewComment
 
         self.date = time.strftime('%d.%m.%y')

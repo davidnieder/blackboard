@@ -198,8 +198,12 @@ def addcomment():
         comment = NewComment( request.form )
         comment.safe()
         flash('Kommentar erfolgreich erstellt', 'message')
+
     except:
         flash('Fehler beim erstellen des Kommentars', 'error')
+
+    else:
+        return redirect('/posts/' + str(comment.relatedPost) + '/#comments')
 
     return redirect('/posts/'+request.form['relatedpost']+'/')
 

@@ -258,3 +258,7 @@ def new_public_link( post_id ):
     public_id = md5_hash.hexdigest()[:5]
     database.commit( 'public_posts', ['public_id', 'post_id'], [public_id, post_id] )
 
+
+def check_if_post_exists( post_id ):
+    return database.check_if_entry_exists('posts', 'id', post_id)
+
