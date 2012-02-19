@@ -36,12 +36,12 @@ def usersettings():
 @app.route('/user/settings/<change>/', methods=['POST'])
 @login_required
 def changesettings(change):
-    return views.changesettings(change)
+    return views.changesetting(change)
 
 @app.route('/user/settings/avatar/del/', methods=['GET'])
 @login_required
 def delavatar():
-    return views.changesettings('delavatar')
+    return views.changesetting('delavatar')
 
 @app.route('/post/new/<ctype>/')
 @login_required
@@ -108,42 +108,52 @@ def p(public_post_id):
 
 # Admin sites
 @app.route('/admin/')
+@login_required
 def admin_index():
     return admin.index()
 
 @app.route('/admin/user/')
+@login_required
 def admin_user():
     return admin.user()
 
 @app.route('/admin/user/<int:id>/')
+@login_required
 def admin_user_detail(id):
     return admin.userdetail(id)
 
 @app.route('/admin/user/<int:id>/del')
+@login_required
 def admin_user_del(id):
     return admin.deluser(id)
 
 @app.route('/admin/user/<int:id>/activate/')
+@login_required
 def admin_user_activate(id):
     return admin.activate(id)
 
 @app.route('/admin/user/<int:id>/setpw/', methods=['POST'])
+@login_required
 def admin_setpw(id):
     return admin.setpw(id)
 
 @app.route('/admin/posts/')
+@login_required
 def admin_posts():
     return admin.post(None)
 
 @app.route('/admin/posts/<int:id>/')
+@login_required
 def admin_post_show(id):
     return admin.post(id)
 
 @app.route('/admin/posts/<int:id>/del/')
+@login_required
 def admin_post_delete(id):
     return admin.delpost(id)
 
 @app.route('/admin/posts/<int:id>/set_public/')
+@login_required
 def admin_post_set_public(id):
     return admin.setpublic(id)
 

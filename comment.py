@@ -22,13 +22,14 @@ class Comments():
         self.comments = []
 
     def get_comments(self):
-        self.comments = database.query( 'SELECT ' +  \
-                                            commentTableColumns['user'] + ', ' + \
-                                            commentTableColumns['comment'] + ', ' + \
-                                            commentTableColumns['date'] + ' ' +\
-                                        'FROM ' + commentTable + ' ' + \
-                                        'WHERE ' +  commentTableColumns['relatedPost'] + \
-                                        ' =%i' %self.relatedPost )
+        self.comments = database.query(
+                            'SELECT ' +  \
+                            commentTableColumns['user'] + ', ' + \
+                            commentTableColumns['comment'] + ', ' + \
+                            commentTableColumns['date'] + ' ' +\
+                            'FROM ' + commentTable + ' ' + \
+                            'WHERE ' +  commentTableColumns['relatedPost'] + \
+                            ' =%i' %self.relatedPost )
 
         # add usernames, inefficient implemented
         for element in self.comments:
@@ -42,10 +43,11 @@ class Comments():
         if self.comments:
             return len(self.comments)
         else:
-            ca = database.query( 'SELECT ' + commentTableColumns['relatedPost'] + \
-                                 ' FROM ' + commentTable + ' WHERE ' + \
-                                 commentTableColumns['relatedPost'] + '=%i' 
-                                 %self.relatedPost )
+            ca = database.query(
+                        'SELECT ' + commentTableColumns['relatedPost'] + \
+                        ' FROM ' + commentTable + ' WHERE ' + \
+                        commentTableColumns['relatedPost'] + '=%i'
+                        %self.relatedPost )
             return len(ca)
 
 class NewComment():

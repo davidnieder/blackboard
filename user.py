@@ -78,9 +78,11 @@ class NewUser(User):
     def create(self):
         self.active = 0 if ACCOUNTACTIVATION else 1
         database.adduser(name=self.username, password=self.password, \
-                        email=self.email, admin=0, active=self.active, avatar='null', \
-                        style='default', template='default', lastlogin='', \
-                        postspersite=POSTSPERSITE, emailnotification=0, rememberme=0)
+                         email=self.email, admin=0, active=self.active, \
+                         avatar='null', style='default', template='default', \
+                         lastlogin='', postspersite=POSTSPERSITE, \
+                         emailnotification=0, rememberme=0)
+
         # Get the new User ID
         self.id = database.getuserid( self.username )
 
@@ -102,6 +104,7 @@ def get_current_user():
         return None
 
 def get_avatar(username):
-    avatar = database.query('SELECT avatar FROM users WHERE name=\'%s\'' %username)[0]
+    avatar = database.query('SELECT avatar FROM users WHERE name=\'%s\'' \
+                            %username)[0]
     return avatar['avatar']
 

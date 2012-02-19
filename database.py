@@ -18,13 +18,15 @@ def initdb():
     import initdb
     initdb.init_db()
 
-def adduser(name, password, email, admin, active, avatar, style, template, lastlogin, \
-            postspersite, emailnotification, rememberme):
-    g.db.execute('insert into users (name, password, email, admin, active, avatar, \
-                style, template, lastlogin, postspersite, emailnotification, rememberme) \
-                values  (?,?,?,?,?,?,?,?,?,?,?,?)',
-                [name, password, email, admin, active, avatar, style, template, lastlogin, \
-                 postspersite, emailnotification, rememberme])
+def adduser(name, password, email, admin, active, avatar, style, template, \
+            lastlogin, postspersite, emailnotification, rememberme):
+    g.db.execute('insert into users (name, password, email, admin, active, \
+                  avatar, style, template, lastlogin, postspersite, \
+                  emailnotification, rememberme) \
+                  values (?,?,?,?,?,?,?,?,?,?,?,?)',
+                 [name, password, email, admin, active, avatar, style, \
+                  template, lastlogin, postspersite, emailnotification, \
+                  rememberme])
     g.db.commit()
 
 def delpost(id):
@@ -35,13 +37,13 @@ def delpost(id):
 def getuser(user):
     opendb()
     if type(user) == str or type(user) == unicode:    
-        cursor = g.db.execute('select id, name, password, email, admin, active, avatar, \
-                                style, template, lastlogin, postspersite from users where \
-                                name=\'%s\'' % user)
+        cursor = g.db.execute('select id, name, password, email, admin, \
+                               active, avatar, style, template, lastlogin, \
+                               postspersite from users where name=\'%s\'' % user)
     else:
-        cursor = g.db.execute('select id, name, password, email, admin, active, avatar, \
-                                style, template, lastlogin, postspersite \
-                                from users where id=%i' % user)
+        cursor = g.db.execute('select id, name, password, email, admin, \
+                               active, avatar, style, template, lastlogin, \
+                               postspersite from users where id=%i' % user)
     tup = cursor.fetchone()
     if tup:
         return dict(id=tup[0], name=tup[1], password=tup[2], email=tup[3], \
@@ -69,8 +71,8 @@ def getusers():
 
     users = []
     for ut in userlist:
-        users += [dict(id=ut[0], name=ut[1], email=ut[3], admin=ut[4], active=ut[5], \
-                        lastlogin=ut[6])]
+        users += [dict(id=ut[0], name=ut[1], email=ut[3], admin=ut[4], \
+                       active=ut[5], lastlogin=ut[6])]
     return users
 
 def deluser(id):

@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from flask import render_template, request, redirect, url_for, abort, flash, Markup
+from flask import render_template, request, redirect, url_for, abort, flash
 from flaskext.login import login_user, logout_user, current_user
 
 import database
@@ -13,13 +13,13 @@ from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES, STYLES
 from usersettings import UpdateUserSettings
 
 def index():
-    pps = postspersite()
+    pps = posts_per_site()
     posts = Posts()
     posts = posts.get_post_list()
-    page = calcpagelinks( len(posts), 1 )
+    page = calc_page_links( len(posts), 1 )
 
-    return render_template(gettemplate('index.html'), style=getstyle(), posts=posts, \
-                           page=page)
+    return render_template(get_template('index.html'), style=get_style(), \
+                           posts=posts, page=page)
 
 def login():
     if request.method == 'POST':
@@ -38,7 +38,7 @@ def login():
         else:
             flash('Falscher Benutzername oder falsches Passwort', 'error')
 
-    return render_template(gettemplate('login.html'), style=getstyle())
+    return render_template(get_template('login.html'), style=get_style())
 
 def logout():
     logout_user()
@@ -52,7 +52,8 @@ def register():
                 u = user.NewUser(request.form['user'], request.form['pass'], \
                                  request.form['email'])
             except exceptions.UserAlreadyExists:
-                flash(u'Der gewählte Benutzername ist leider schon vorhanden', 'error')
+                flash(u'Der gewählte Benutzername ist leider schon vorhanden', \
+                      'error')
                 return redirect(url_for('register'))
 
             if u.is_active():
@@ -60,27 +61,29 @@ def register():
                 flash(u'Erfolgreich registriert: Du bist angemeldet', 'message')
                 return redirect(url_for('index'))
             else:
-                flash(u'Erfolgreich registriert: Dein Account muss noch vom Administrator \
-                        aktiviert werden')
+                flash(u'Erfolgreich registriert: Dein Account muss noch vom \
+                       Administrator aktiviert werden')
                 return redirect(url_for('login'))
         else:
             flash(u'Es wurden nicht alle Felder ausgefüllt', 'error')
 
-    return render_template(gettemplate('register.html'), style=getstyle())
+    return render_template(get_template('register.html'), style=get_style())
 
 def userpage(name):
     u = user.User(username=name)
-    userdict = dict(name=u.username, email=u.email, avatar=u.avatar, active=u.active, \
-                    lastlogin=u.lastlogin)
-    return render_template(gettemplate('userpage.html'), style=getstyle(), user=userdict)
+    userdict = dict(name=u.username, email=u.email, avatar=u.avatar, \
+                    active=u.active, lastlogin=u.lastlogin)
+    return render_template(get_template('userpage.html'), style=get_style(), \
+                           user=userdict)
 
 def usersettings():
     u = current_user
-    userdict = dict(name=u.username, email=u.email, avatar=u.avatar, style=u.style, \
-                    template=u.template, postspersite=u.postspersite)
+    userdict = dict(name=u.username, email=u.email, avatar=u.avatar, \
+                    style=u.style, template=u.template, \
+                    postspersite=u.postspersite)
     upload.setFileSize('avatars')
-    return render_template(gettemplate('usersettings.html'), style=getstyle(), \
-                                        user=userdict, templates=TEMPLATES, styles=STYLES)
+    return render_template(get_template('usersettings.html'), user=userdict, \
+                           style=get_style(), templates=TEMPLATES, styles=STYLES)
 
 def changesetting(setting):
     updateSetting = UpdateUserSettings( setting, request.form )
@@ -97,8 +100,8 @@ def newpost(ctype):
         elif ctype == 'audio':
             upload.setFileSize('audio')
 
-        return render_template(gettemplate('newpost.html'), style=getstyle(), \
-                                posttype=ctype)
+        return render_template(get_template('newpost.html'), posttype=ctype, \
+                               style=get_style())
     return abort(404)
 
 def addpost():
@@ -119,40 +122,40 @@ def getpost(id):
     camount = comments.get_comment_amount()
     comments = comments.get_comment_list()
 
-    return render_template(gettemplate('singlepost.html'), style=getstyle(), \
-                            post=post, comments=comments, commentamount=camount)
+    return render_template(get_template('singlepost.html'), style=get_style(), \
+                           post=post, comments=comments, commentamount=camount)
 
 def getposts(filter, pagenumber=1):
     posts = Posts(postFilter=filter, page=pagenumber)
     posts = posts.get_post_list()
-    page = calcpagelinks( len(posts), pagenumber )
+    page = calc_page_links( len(posts), pagenumber )
 
-    return render_template(gettemplate('filteredview.html'), style=getstyle(), \
-                            posts=posts, type=filter, page=page)
+    return render_template(get_template('filteredview.html'), style=get_style(), \
+                           posts=posts, type=filter, page=page)
 
 def getuserposts(username, pagenumber=1):
     posts = Posts(username=username, page=pagenumber)
     posts = posts.get_post_list()
-    page = calcpagelinks( len(posts), pagenumber )
+    page = calc_page_links( len(posts), pagenumber )
 
-    return render_template(gettemplate('filteredview.html'), style=getstyle(), \
-                            posts=posts, type='user', page=page, username=username)
+    return render_template(get_template('filteredview.html'), style=get_style(), \
+                           posts=posts, type='user', page=page, username=username)
 
 def getpage(pagenumber):
     posts = Posts(page=pagenumber)
     posts = posts.get_post_list()
 
-    page = calcpagelinks( len(posts), pagenumber )
+    page = calc_page_links( len(posts), pagenumber )
 
-    return render_template(gettemplate('page.html'), style=getstyle(), \
+    return render_template(get_template('page.html'), style=get_style(), \
                             posts=posts, page=page)
 
 def getminimalpostlist():
     posts = Posts(postId='all')
     posts = posts.get_post_list()
 
-    return render_template(gettemplate('minimal_post_list.html'), style=getstyle(), \
-                           posts=posts )
+    return render_template(get_template('minimal_post_list.html'), \
+                           style=get_style(), posts=posts)
 
 def addcomment():
     try:
@@ -193,25 +196,25 @@ def public_link( public_post_id ):
     except:
         abort(404)
 
-    return render_template( gettemplate('public_view.html'), style=getstyle(), \
+    return render_template( get_template('public_view.html'), style=get_style(), \
                             post=post )
 
 
 # helper functions
-def calcpagelinks( postamount, pagenumber ):
+def calc_page_links( postamount, pagenumber ):
     page = dict(number=pagenumber)
     page['prev'] = pagenumber-1 if pagenumber>1 else 0
-    page['next'] = pagenumber+1 if postamount==postspersite() else 0
+    page['next'] = pagenumber+1 if postamount==posts_per_site() else 0
 
     return page
 
-def postspersite():
+def posts_per_site():
     try:
         return current_user.postspersite
     except:
         return POSTSPERSITE
 
-def gettemplate( templatefile ):
+def get_template( templatefile ):
     template = None
     try:
         template = current_user.template
@@ -222,7 +225,7 @@ def gettemplate( templatefile ):
     else:
         return 'default/' + templatefile
 
-def getstyle():
+def get_style():
     try:
         style = current_user.style
     except:

@@ -169,22 +169,27 @@ class NewPost():
 
         try:
             if self.contenttype == 'text':
-                self.post_id = database.commit( 'posts', ['title', 'text', \
-                                                'contenttype', 'time', 'user'], \
-                                [self.title, self.text, contentkey['text'], self.date, \
-                                 self.user] )
+                self.post_id = database.commit(
+                                    'posts', ['title', 'text', 'contenttype', \
+                                    'time', 'user'], \
+                                    [self.title, self.text, contentkey['text'],\
+                                     self.date, self.user] )
 
             elif self.contenttype in ['link', 'image']:
-                self.post_id = database.commit( 'posts', ['title', 'text', \
-                                                'contenttype', 'url', 'time', 'user'], \
-                                [self.title, self.text, contentkey[self.contenttype], \
-                                 self.url, self.date, self.user] )
+                self.post_id = database.commit(
+                                    'posts', ['title', 'text', 'contenttype', \
+                                    'url', 'time', 'user'], \
+                                    [self.title, self.text, \
+                                     contentkey[self.contenttype], \
+                                     self.url, self.date, self.user])
 
             elif self.contenttype in ['audio', 'video']:
-                self.post_id = database.commit( 'posts', ['title', 'text', \
-                                                'contenttype', 'code', 'time', 'user'], \
-                                [self.title, self.text, contentkey[self.contenttype], \
-                                 self.code, self.date, self.user] )
+                self.post_id = database.commit(
+                                    'posts', ['title', 'text', 'contenttype', \
+                                    'code', 'time', 'user'], \
+                                    [self.title, self.text, \
+                                     contentkey[self.contenttype], \
+                                     self.code, self.date, self.user])
         except:
             raise exceptions.CantCreateNewPost
 
@@ -256,7 +261,8 @@ def new_public_link( post_id ):
     md5_hash = hashlib.md5()
     md5_hash.update( str(post_id) + str(time.time()) )
     public_id = md5_hash.hexdigest()[:5]
-    database.commit( 'public_posts', ['public_id', 'post_id'], [public_id, post_id] )
+    database.commit( 'public_posts', ['public_id', 'post_id'], \
+                     [public_id, post_id] )
 
 
 def check_if_post_exists( post_id ):
