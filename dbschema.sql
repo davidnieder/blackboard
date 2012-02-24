@@ -47,3 +47,13 @@ create table public_posts   (
     public_id string,
     post_id string
 );
+
+drop table if exists facebook;
+create table facebook   (
+    user_id integer not null,
+    active integer not null,
+
+    access_token string,
+    expire_time integer
+);
+
