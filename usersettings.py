@@ -6,6 +6,7 @@ import exceptions
 import database
 import config
 import upload
+from facebook import Facebook
 from user import get_current_user
 
 class UpdateUserSettings():
@@ -34,6 +35,8 @@ class UpdateUserSettings():
             self.change_style()
         elif setting == 'delavatar':
             self.def_avatar()
+        elif setting == 'facebook':
+            self.change_facebook_activation()
         else:
             raise exceptions.NoSuchSetting
 
@@ -91,8 +94,13 @@ class UpdateUserSettings():
 
 
     def change_avatar(self):
-        ul = upload.Upload('avatar')
-        ul.save(request.files['avatar'])
+        try:
+            ul = upload.Upload('avatars')
+            ul.save(request.files['avatar'])
+        except:
+            self.message[0] = u'Avatar konnte nicht hochgeladen werden'
+            self.message[1] = 'error'
+            return
 
         if ul.error:
             self.message[0] = u'Avatar konnte nicht hochgeladen werden'
@@ -132,6 +140,22 @@ class UpdateUserSettings():
             self.message[1] = 'message'
         else:
             self.message[0] = u'Style konnte nicht geändert werden'
+            self.message[1] = 'error'
+
+    def change_facebook_activation(self):
+        fb = Facebook()
+
+        if self.form['facebookintegration'] in ['0', '1']:
+            if self.form['facebookintegration'] == '0':
+                fb.deactivate_fb_integration()
+            else:
+                fb.activate_fb_integration()
+
+            self.message[0] = u'Facebookeinstellung erfolgreich geändert'
+            self.message[1] = 'message'
+
+        else:
+            self.message[0] = u'Einstellung konnte nicht geändert werden'
             self.message[1] = 'error'
 
     def get_message_as_dict(self):

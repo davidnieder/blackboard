@@ -34,6 +34,7 @@ class User:
             self.template = fromdb['template']
             self.lastlogin = fromdb['lastlogin']
             self.postspersite = fromdb['postspersite']
+            self.facebookintegration = self.facebook_support_activated()
 
         self.authenticated = False
 
@@ -61,6 +62,13 @@ class User:
 
     def set_avatar(self, url):
         database.updatesetting(self.id, 'avatar', url)
+
+    def facebook_support_activated(self):
+        q = database.query('SELECT active FROM facebook WHERE user_id=%i' \
+                           %self.id)
+        if q:
+            return True if q[0]['active'] else False
+        return False
 
 class NewUser(User):
     def __init__(self, username, password, email):

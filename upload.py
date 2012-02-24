@@ -52,7 +52,7 @@ class Upload():
             from blackboard import audioUploadSet
             self.UploadSet = audioUploadSet
         else:
-            raise exceptions.NoSuchUploadSet()
+            raise exceptions.NoSuchUploadSet
 
     def save(self, sentfile):
         self.file = sentfile

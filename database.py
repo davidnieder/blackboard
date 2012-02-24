@@ -97,6 +97,11 @@ def updatesetting(userid, column, value):
                     %(column, value, userid))
     g.db.commit()
 
+def update_facebook_setting(userid, column, value):
+    g.db.execute('UPDATE facebook SET %s=%s WHERE user_id=%s' \
+                 %(column, value, userid))
+    g.db.commit()
+
 def query( q ):
     cursor = g.db.execute( q )
     # patch row_factory

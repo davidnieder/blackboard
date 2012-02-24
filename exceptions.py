@@ -66,3 +66,19 @@ class CantValidateForm(Exception):
     Raised if input validation fails
     '''
 
+# Facebook integration
+class AppIsNotAuthenticated(Exception):
+    '''
+    Raised if the facebook app is not authenticated
+    '''
+
+class CantPostToWall(Exception):
+    '''
+    Raised if a post to the facebook wall fails
+    '''
+
+class AuthenticationFailed(Exception):
+    '''
+    Raised if the authentication procedure has failed
+    '''
+

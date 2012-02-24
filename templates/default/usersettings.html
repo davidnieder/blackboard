@@ -51,18 +51,30 @@
         </form>
       </tr>
       <tr>
-      <tr>
         <form name="notification" action="/user/settings/notification/" method="post">
           <td>Per E-Mail über neue Einträge und Kommentare benachrichtigen?</td>
           <td>
             <select size="1" name="emailnotification">
             <option value="1"{% if user.emailnotification %} selected{% endif %}>Ja</option>
-            <option value="0"{% if user.emailnotification %} selected{% endif %}>Nein</option>
+            <option value="0"{% if not user.emailnotification %} selected{% endif %}>Nein</option>
             </select><br>(not implemented)
           </td>
           <td><input type="submit" value="Ändern" disabled></td>
         </form>
       </tr>
+      <tr>
+        <form name="facebook" action="/user/settings/facebook/" method="post">
+          <td>Deine öffentlichen Posts auf Facebook veröffentlichen?</td>
+          <td>
+            <select size="1" name="facebookintegration">
+            <option value="1"{% if user.facebookintegration %} selected{% endif %}>Ja</option>
+            <option value="0"{% if not user.facebookintegration %} selected{% endif %}>Nein</option>
+            </select>
+          </td>
+          <td><input type="submit" value="Ändern"></td>
+        </form>
+      </tr>
+      <tr>
         <form name="avatar" action="/user/settings/avatar/" enctype="multipart/form-data"
         method="post">
           <td>Avatar

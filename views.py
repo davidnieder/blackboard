@@ -11,6 +11,7 @@ from post import Posts, NewPost, PublicPost
 from comment import Comments, NewComment
 from config import POSTSPERSITE, ACCOUNTACTIVATION, TEMPLATES, STYLES
 from usersettings import UpdateUserSettings
+from facebook import Facebook
 
 def index():
     pps = posts_per_site()
@@ -79,8 +80,10 @@ def userpage(name):
 def usersettings():
     u = current_user
     userdict = dict(name=u.username, email=u.email, avatar=u.avatar, \
-                    style=u.style, template=u.template, \
-                    postspersite=u.postspersite)
+                    style=u.style, postspersite=u.postspersite, \
+                    facebookintegration=u.facebookintegration, \
+                    template=u.template)
+
     upload.setFileSize('avatars')
     return render_template(get_template('usersettings.html'), user=userdict, \
                            style=get_style(), templates=TEMPLATES, styles=STYLES)
@@ -110,6 +113,12 @@ def addpost():
         newPost.safe()
 
         flash("Neuer Eintrag erfolgreich erstellt", 'message')
+
+        # push this post to facebook?
+        if current_user.facebookintegration and newPost.is_public:
+            return redirect(url_for('facebook_push_post', \
+                                    post_id=newPost.get_id()))
+
     except exceptions.CantCreateNewPost:
         flash("Der Eintrag konnte nicht erstellt werden", 'error')
 
@@ -199,6 +208,54 @@ def public_link( public_post_id ):
     return render_template( get_template('public_view.html'), style=get_style(), \
                             post=post )
 
+# facebook auth
+def facebook_authentication():
+    fb = Facebook()
+    return fb.authenticate_app()
+
+def facebook_handle_response(action=None, arg=None):
+    fb = Facebook()
+    fb.handle_fb_auth_response()
+
+    if action:
+        if action == 'post' and arg:
+            return redirect(url_for('facebook_push_post', post_id=arg))
+    else:
+        return redirect(url_for('index'))
+
+def facebook_push_post(post_id):
+    fb = Facebook()
+    if fb.app_is_authenticated():
+        post = Posts(postId=post_id).get_single_post()
+        if not post:
+            flash(u'Konnte nicht auf Facebook posten: Post-Id ungültig', \
+                  'error')
+            return redirect(url_for('index'))
+
+        publicPost = PublicPost(post_id=post_id)
+        try:
+            public_id = publicPost.get_public_id()
+            post_title = post['title']
+
+            post_url = request.url_root + 'public/' + str(public_id) + '/'
+            fb.push_post_to_wall(post_url=post_url, post_title=post_title, \
+                                      post_type=post['contenttype'])
+
+        except exceptions.NoPublicPostId:
+            flash(u'Konnte nicht auf Facebook posten: Post ist nicht \
+                    öffentlich', 'error')
+        except exceptions.AppIsNotAuthenticated:
+            flash(u'Konnte nicht auf Facebook posten: Authentifizierung \
+                    gescheitert', 'error')
+        except exceptions.CantPostToWall:
+            flash(u'Konnte nicht auf Facebook posten', 'error')
+
+        return redirect(url_for('index'))
+
+    else:
+        fb.action_after_response = 'post'
+        fb.after_response_args = dict(post_id=post_id)
+        return fb.authenticate_app()
 
 # helper functions
 def calc_page_links( postamount, pagenumber ):

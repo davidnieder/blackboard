@@ -157,3 +157,24 @@ def admin_post_delete(id):
 def admin_post_set_public(id):
     return admin.setpublic(id)
 
+# Facebook integration
+@app.route('/facebook/oauth/')
+@login_required
+def facebook_authentication():
+    return views.facebook_authentication()
+
+@app.route('/facebook/response/')
+@login_required
+def facebook_response():
+    return views.facebook_handle_response()
+
+@app.route('/facebook/response/<action>/<arg>/')
+@login_required
+def facebook_response_(action, arg):
+    return views.facebook_handle_response(action, arg)
+
+@app.route('/facebook/push_post/<post_id>/')
+@login_required
+def facebook_push_post(post_id):
+    return views.facebook_push_post(post_id)
+

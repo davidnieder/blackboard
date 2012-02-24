@@ -227,6 +227,9 @@ class NewPost():
         except:
             raise exceptions.CantCreateNewPost
 
+    def get_id(self):
+        return self.post_id[0]
+
 
 class PublicPost():
 
