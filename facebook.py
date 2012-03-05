@@ -84,9 +84,11 @@ class Facebook():
         args = dict(client_id=facebook_app_id, scope=permission_scope, \
                     redirect_uri=redirect_url)
 
-        if self.action_after_reponse == 'post' and self.after_response_args:
+        if self.action_after_response == 'post' and \
+           self.after_response_args.has_key('post_id'):
             args['redirect_uri'] += 'post/'
-            args['redirect_uri'] += str(self.after_response_args) + '/'
+            args['redirect_uri'] += str(self.after_response_args['post_id']) \
+                                    + '/'
 
         return redirect('https://www.facebook.com/dialog/oauth?' + \
                         urllib.urlencode(args))
@@ -97,7 +99,8 @@ class Facebook():
 
             args = dict(client_id=facebook_app_id, \
                         client_secret=facebook_app_secret, \
-                        redirect_uri=redirect_url, code=returned_code)
+                        code=returned_code)
+            args['redirect_uri'] = request.base_url
 
             response = urllib.urlopen('https://graph.facebook.com/oauth/' + \
                                       'access_token?' + urllib.urlencode(args))
@@ -136,7 +139,7 @@ class Facebook():
         if post_title:
             title = post_title
         else:
-            title = 'Watch/Listen/Read it.'
+            title = 'View this post'
 
         args = dict(message=message, link=post_url, name=title, \
                     access_token=access_token)

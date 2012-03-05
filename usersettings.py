@@ -34,7 +34,7 @@ class UpdateUserSettings():
         elif setting == 'style':
             self.change_style()
         elif setting == 'delavatar':
-            self.def_avatar()
+            self.del_avatar()
         elif setting == 'facebook':
             self.change_facebook_activation()
         else:
