@@ -4,3 +4,4 @@ index.html
 *.db
 *.sqlite3
 *.swp
+tmp/*
