@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# whole use of exceptions in blackboard needs to be rethought
 
 class BlackboardException(Exception):
     '''Base class for exceptions in Blackboard'''

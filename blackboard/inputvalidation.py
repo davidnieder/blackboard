@@ -1,4 +1,4 @@
-# -*- conding: UTF-8 -*-
+# -*- conding: utf-8 -*-
 
 import lxml
 from lxml.html.clean import Cleaner, clean_html
