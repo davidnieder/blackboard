@@ -14,9 +14,9 @@
     Alias /static /var/www/blackboard/blackboard/static
 
     <Directory />
-    	AllowOverride None
-	    Order allow,deny
-    	allow from all
+        AllowOverride None
+        Order allow,deny
+        allow from all
         Options -Indexes
     </Directory>
 

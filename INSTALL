@@ -26,7 +26,7 @@ Now install the libraries:
 $ /usr/lib/python-blackboard-env/bin/pip install Flask SQLAlchemy lxml oauth2 \
   Flask-Login Flask-OAuth Flask-SQLAlchemy Flask-Uploads
 
-This will probably install some other packages (like Werkzeug, Jinja2, httplib)
+This will probably install some other packages (like Werkzeug, Jinja2, httplib2)
 
 Clone this repository wherever you want:
 $ git clone https://github.com/davidnieder/blackboard.git

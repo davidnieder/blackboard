@@ -25,9 +25,9 @@ You can also test Blackboard on your local machine.
 
 ##Screenshots
 ####home page
-  ![home page](home_page.png)
+  ![home page](https://github.com/davidnieder/blackboard/raw/master/screenshots/home_page.png)
 ####single post
-  ![a single post](single_post.png)
+  ![a single post](https://github.com/davidnieder/blackboard/raw/master/screenshots/single_post.png)
 ####login
-  ![login view](login.png)
+  ![login view](https://github.com/davidnieder/blackboard/raw/master/screenshots/login.png)
 
