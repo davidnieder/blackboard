@@ -10,7 +10,7 @@ just links not for publishing large texts.
 
 Currently there is no stable release of Blackboard. It is still under
 development. Therefore, I do not recommend installing Blackboard on a public
-System.
+system.
 See the file INSTALL for a list of dependencies and installation instructions.
 You can also test Blackboard on your local machine.
 
