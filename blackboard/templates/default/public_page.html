@@ -1,0 +1,19 @@
+{% extends 'default/public_base.html' %}
+
+{%- block page_number %}
+  {%- if page_links.number > 1 %}
+  <div style="text-align:center; width: 800px">
+    <h4>Page {{ page_links.number }}</h4>
+  </div>
+  {%- endif %}
+{%- endblock %}
+
+{%- block content %}
+  {%- if posts %}
+    {%- for post in posts %}
+{% include 'default/public_post.html' %}
+	{%- endfor %}
+  {%- else %}
+    <div class="post"><h3>Keine Einträge vorhanden</h3></div>
+  {%- endif %}
+{%- endblock %}

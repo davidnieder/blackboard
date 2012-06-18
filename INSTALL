@@ -1,0 +1,63 @@
+Installation Instruction
+------------------------
+
+For a working Blackboard installation you need to have the following libraries
+installed:
+
+- Python 2.6 or higher (Python 3 is not supported)
+- Flask
+- A database (a database supported by SQLAlchemy, SQLite comes with python)
+- SQLAlchemy
+- lxml
+- oauth2
+- Flask-Login
+- Flask-OAuth
+- Flask-SQLAlchemy
+- Flask-Uploads
+
+Once you have python installed you can install all other dependencies via pip
+or easy_install.
+
+If you want to install all dependencies in a virtual environment, create it
+first:
+$ virtualenv /usr/lib/python-blackboard-env
+
+Now install the libraries:
+$ /usr/lib/python-blackboard-env/bin/pip install Flask SQLAlchemy lxml oauth2 \
+  Flask-Login Flask-OAuth Flask-SQLAlchemy Flask-Uploads
+
+This will probably install some other packages (like Werkzeug, Jinja2, httplib)
+
+Clone this repository wherever you want:
+$ git clone https://github.com/davidnieder/blackboard.git
+
+Symlink the source folder into the virtual environment
+$ ln -s /absolute/path/to/blackboard/blackboard \
+  /usr/lib/python-blackboard-env/lib/python2.7/site-packages/blackboard
+
+
+Development Server
+------------------
+
+Start the Server:
+$ ./development_server.py
+
+If nothing went wrong, you get some output like this:
+ * Running on http://127.0.0.1:5000/
+ * Restarting with reloader
+
+Visit http://localhost:5000/ with your favorite browser
+
+You probably have to change the sitedir path in development_server.py
+
+
+Apache and mod_wsgi
+-------------------
+
+Take a look at the files blackboard.wsgi and blackboard_vhost to figure out
+how an simple configuration could look like.
+
+More documentation on apache and mod_wsgi:
+ http://httpd.apache.org/docs/2.0/en/
+ http://code.google.com/p/modwsgi/wiki/InstallationInstructions
+

@@ -1,0 +1,84 @@
+{% extends 'default/base.html' %}
+
+{%- block title %}
+<title>Settings - Blackboard</title>
+{%- endblock %}
+
+{%- block scripts %}
+  <script type="text/javascript" src="/static/script/sha1.js"></script>
+  <script type="text/javascript" src="/static/script/user_settings.js"></script>
+{%- endblock %}
+
+{%- block content %}
+  <div style="padding:1em;margin:0;border:solid #4274A1 thin">
+  <h3>User settings of {{ user.name }}</h3>
+
+  <div style="display: none">
+    <form id="change_setting" method="post" action="/user/settings/">
+      <input type="text" name="setting" id="setting">
+      <input type="text" name="value" id="value">
+      <input type="text" name="old_value" id="old_value">
+      <input type="text" name="csrf_token" value="{{ csrf_token() }}">
+    </form>
+  </div>
+
+  <div id="usersettings">
+
+    <p>
+    <h4>Change password</h4>
+    Current password:<br>
+    <input type="password" size="20" id="old_pass" tabindex="1" onfocus="this.select()"><br>
+    New password:<br>
+    <input type="password" size="20" id="new_pass_1" tabindex="2" onfocus="this.select()">
+    <span><input type="button" value="change" tabindex="4" onclick="changeSetting('password')"></span><br>
+    New password (repeat):<br>
+    <input type="password" size="20" id="new_pass_2" tabindex="3" onfocus="this.select()"><br>
+
+    <p>
+    <h4>Change email address</h4>
+    Email address:<br>
+    <input type="text" size="20" id="new_email" value="{{ user.email }}" tabindex="5" onfocus="this.select()">
+    <span><input type="button" value="change" tabindex="6" onclick="changeSetting('email')"></span><br>
+
+    <p>
+    <h4>Amount of posts per page</h4>
+    <select size="1" id="posts_per_page" tabindex="7">
+      <option value="5"{% if user.posts_per_page ==  5 %} selected{% endif %}>5  posts per page</option>
+      <option value="10"{% if user.posts_per_page == 10 %} selected{% endif %}>10 posts per page</option>
+      <option value="15"{% if user.posts_per_page == 15 %} selected{% endif %}>15 posts per page</option>
+    </select>
+    <span><input type="button" value="change" onclick="changeSetting('posts_per_page')" tabindex="8"></span>
+
+    <p>
+    <h4>Notifications</h4>
+    Inform about new posts per email<br>
+    <select size="1" id="email_notification" tabindex="9">
+      <option value="0"{% if not user.email_notification %} selected{% endif %}>Do not inform me</option>
+      <option value="1"{% if user.email_notification %} selected{% endif %}>Inform me</option>
+    </select>
+    <span><input type="button" value="change" tabindex="10" disabled></span>
+    <br>(not implemented yet)
+
+    <p>
+    <h4>Facebook</h4>
+    Publish my public posts on facebook
+    <select size="1" id="facebook_integration" tabindex="11">
+      <option value="0"{%- if not user.facebook_integration %} selected{%- endif %}>Publish my posts</option>
+      <option value="1"{%- if user.facebook_integration %} selected{%- endif %}>Do not publish</option>
+    </select>
+    <span><input type="button" value="change" tabindex="12" onclick="changeSetting('facebook_integration')"></span>
+
+    <p>
+    <h4>Change template</h4>
+    <select size="1" id="template" tabindex="13">
+    {%- for template in templates %}
+      <option {%- if template==user.template %} selected{%- endif %}>{{ template }}</option>
+      {%- endfor %}
+    </select>
+    <span><input type="button" value="change" tabindex="14" onclick="changeSetting('template')"></span>
+
+  </div>
+
+    <input type="button" value="Finished" tabindex="15" onclick="javascript:window.location='/';">
+  </div>
+{%- endblock %}

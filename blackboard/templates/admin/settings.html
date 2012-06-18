@@ -1,0 +1,151 @@
+{% extends 'admin/base.html' %}
+
+{%- block content %}
+  <div id="content">
+    <h4>Blackboard Settings</h4>
+    <table>
+      <tr>
+        <td colspan="3" style="text-align:center">Gerneral settings</td>
+      </tr>
+      <tr>
+        <td>Feedback email address:</td>
+        <td><input type="text" value="{{ settings.feedback_address }}" id="feedback_address"></td>
+        <td><input type="button" id="change_feedback_address" value="change" onclick="changeSetting('feedback_address')"></td>
+      </tr>
+      <tr>
+        <td>Imprint uri:</td>
+        <td><input type="text" value="{{ settings.imprint_uri }}" id="imprint_uri"></td>
+        <td><input type="button" id="change_imprint_uri" value="change" onclick="changeSetting('imprint_uri')"></td>
+      </tr>
+      <tr>
+        <td>Account activation:<br><span>(if enabled, the administrator must activate new user accounts)</span></td>
+        <td>
+          <select id="account_activation">
+            <option value="True"{%- if settings.account_activation=='True'  %} selected{%- endif %}>Enabled</option>
+            <option value="False"{%- if settings.account_activation=='False' %} selected{%- endif %}>Disabled</option>
+          </select>
+        </td>
+        <td><input type="button" id="change_account_activation" value="change" onclick="changeSetting('account_activation')"></td>
+      </tr>
+      <tr>
+        <td>Registration:</td>
+        <td>
+          <select id="registration">
+            <option value="True"{%- if settings.registration=='True'  %} selected{%- endif %}>Enabled</option>
+            <option value="False"{%- if settings.registration=='False' %} selected{%- endif %}>Disabled</option>
+          </select>
+        </td>
+        <td><input type="button" id="change_registratiob" value="change" onclick="changeSetting('registration')"></td>
+      </tr>
+      <tr>
+        <td>Posts per page options:<br><span>(Values a user can choose from for his posts per page setting)</span></td>
+        <td><input type="text" id="posts_per_page_options" value="{{ settings.posts_per_page_options }}"></td>
+        <td><input type="button" id="change_posts_per_page_options" value="change" onclick="changeSetting('posts_per_page_options')"></td>
+      </tr>
+      <tr>
+        <td>Posts per page:<br><span>default value, users can override this setting</span></td>
+        <td>
+          <select id="posts_per_page">
+          {%- for option in settings.posts_per_page_options.split(',') %}
+            <option value="{{ option }}">{{ option }}</option>
+          {%- endfor %}
+          </select>
+        </td>
+        <td><input type="button" id="change_posts_per_page" value="change" onclick="changeSetting('posts_per_page')"></td>
+      </tr>
+      <tr>
+        <td>Templates:<br><span>(comma separated)</span></td>
+        <td><input type="text" value="{{ settings.templates }}" id="templates"></td>
+        <td><input type="button" id="change_templates" value="change" onclick="changeSetting('templates')"></td>
+      </tr>
+      <tr>
+        <td colspan="3" style="text-align:center">Upload settings</td>
+      </tr>
+      <tr>
+        <td>Max size for images:<br><span>(in bytes)</span></td>
+        <td><input type="text" value="{{ settings.max_image_size }}" id="max_image_size"></td>
+        <td><input type="button" id="change_max_image_size" value="change" onclick="changeSetting('max_image_size')"></td>
+      </tr>
+      <tr>
+        <td>Allowed extensions for images:<br><span>(comma separated)</span></td>
+        <td><input type="text" value="{{ settings.image_extensions }}" id="image_extensions"></td>
+        <td><input type="button" id="change_image_extensions" value="change" onclick="changeSetting('image_extensions')"></td>
+      </tr>
+      <tr>
+        <td>Max size for audio files:<br><span>(in bytes)</span></td>
+        <td><input type="text" value="{{ settings.max_audio_size }}" id="max_audio_size"></td>
+        <td><input type="button" id="change_max_audio_size" value="change" onclick="changeSetting('max_audio_size')"></td>
+      </tr>
+      <tr>
+        <td>Allowed extensions for audio files:<br><span>(comma separated)</span></td>
+        <td><input type="text" value="{{ settings.audio_extensions }}" id="audio_extensions"></td>
+        <td><input type="button" id="change_audio_extensions" value="change" onclick="changeSetting('audio_extensions')"></td>
+      </tr>
+      <!--
+      <tr>
+        <td>Max size for avatars</td>
+        <td><input type="text" value="{{ settings.max_avatar_size }}" id="max_avatar_size"></td>
+        <td><input type="button" id="change_max_avatar_size" value="change" onclick="changeSetting('max_avatar_size')"></td>
+      </tr>
+      -->
+      <tr>
+        <td colspan="3" style="text-align:center">Facebook integration</td>
+      </tr>
+      <tr>
+        <td>Facebook integration:<br><span>(you have to create your own facebook app to use this function)</span></td>
+        <td>
+          <select id="facebook_integration">
+            <option value="True"{%- if settings.facebook_integration=='True'  %} selected{%- endif %}>Enable</option>
+            <option value="False"{%- if settings.facebook_integration=='False' %} selected{%- endif %}>Disable</option>
+          </select>
+        </td>
+        <td><input type="button" id="change_facebook_integration" value="change" onclick="changeSetting('facebook_integration')"></td>
+      </tr>
+      <tr>
+        <td>App-Id:</td>
+        <td><input type="text" value="{{ settings.facebook_app_id }}" id="facebook_app_id"></td>
+        <td><input type="button" id="change_facebook_app_id" value="change" onclick="changeSetting('facebook_app_id')"></td>
+      </tr>
+      <tr>
+        <td>App-Secret</td>
+        <td><input type="text" value="{{ settings.facebook_app_secret }}" id="facebook_app_secret"></td>
+        <td><input type="button" id="change_facebook_app_secret" value="change" onclick="changeSetting('facebook_app_secret')"></td>
+      </tr>
+      <!--
+      <tr>
+        <td>Max size for files:</td>
+        <td><input type="text" value="{{ settings.max_file_size }}" id="max_file_size"></td>
+        <td><input type="button" id="" value="change"></td>
+      </tr>
+      <tr>
+        <td>Allowed extensions for files:</td>
+        <td><input type="text" value="{{ settings.file_extensions }}" id="file_extensions"></td>
+        <td><input type="button" id="" value="change"></td>
+      </tr>
+      -->
+      <tr>
+        <td colspan="3" style="text-align:center">Internal settings</td>
+      </tr>
+      <tr>
+        <td>Debug:</td>
+        <td>
+          <select size="1" id="debug">
+            <option value="True"{%- if settings.debug=='True'  %} selected{%- endif %}>True</option>
+            <option value="false"{%- if settings.debug=='False' %} selected{%- endif %}>False</option>
+          </select>
+        </td>
+        <td><input type="button" id="change_debug" value="change" onclick="changeSetting('debug')"></td>
+      </tr>
+      <tr>
+        <td>Setup:</td>
+        <td>
+          <select size="1" id="setup">
+            <option value="True"{%- if settings.setup=='True'  %} selected{%- endif %}>True</option>
+            <option value="False"{%- if settings.setup=='False' %} selected{%- endif %}>False</option>
+          </select>
+        </td>
+        <td><input type="button" id="change_setup" value="change" onclick="changeSetting('setup')"></td>
+      </tr>
+    </table>
+  </div>
+{%- endblock %}

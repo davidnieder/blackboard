@@ -1,0 +1,119 @@
+body  {
+  background-color: #f9f9f9;
+  color: #4274A1;
+
+  border-color: #326491;
+}
+
+a:link    {
+  color: #4274A1;
+}
+
+a:visited    {
+  color: #4274A1;
+}
+
+a:hover   {
+  color: #4274A1;
+  text-decoration: none;
+}
+
+h1#header {
+  font-family: 'Georgia', serif;
+  margin-left: 2%;
+  margin-bottom: 1%;
+  text-align: left;
+  color: #4274A1;
+}
+h1#header a   {
+  text-decoration: none;
+  color: #4274A1;
+}
+
+div.messagebox    {
+  margin-top: 1em;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 1em;
+  padding: 0.5em;
+
+  text-align: center;
+  border: 1px dashed #023461;
+}
+
+div#wrapper   {
+  margin-left: 2%;
+  margin-right: 2%;
+  width: 96%;
+  text-align: left;
+  border-style: none;
+}
+
+div#navigation    {
+  padding: 0.2em;
+  margin-top: 0em;
+  margin-bottom: 1em;
+  text-align: left;
+
+  width: 12em;
+  height: 20em;
+
+  border-style: dashed;
+  border-width: thin;
+  border-color: #000;
+  float: left;
+}
+
+div#content   {
+  padding: 1em;
+  margin-top: 0em;
+  margin-left: 14em;
+  text-align: center;
+
+  border-style: dashed;
+  border-width: thin;
+  border-color: #000;
+
+}
+
+div#content table {
+  margin-left: auto;
+  margin-right: auto;
+
+  border-spacing: 1em;
+  border-style: dashed;
+  border-width: thin;
+  border-color: #000;
+
+  text-align: center;
+  width: 800px;
+}
+
+div#content table th,td    {
+  text-align: left;
+  vertical-align: top;
+}
+
+div#content table td span {
+  font-size: 0.7em;
+}
+
+div#footer    {
+  margin-top: 2em;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 0.5em;
+  padding-top: 0.6em;
+
+  text-align: center;
+
+  border-top-width: thin;
+  border-top-style: dashed;
+  border-color: #023461;
+  clear: left;
+}
+div#footer a  {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+

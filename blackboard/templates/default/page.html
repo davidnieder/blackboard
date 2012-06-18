@@ -1,0 +1,37 @@
+{% extends 'default/base.html' %}
+
+{%- block title %}
+  {%- if page_links.number > 1 %}
+  <title>Seite {{ page_links.number }} - Blackboard</title>
+  {%- else %}
+  <title>Blackboard</title>
+  {%- endif %}
+{%- endblock %}
+
+{%- block iconband %}
+{% include 'default/icon_band.html' %}
+{%- endblock %}
+
+{%- block pagenumber %}
+  {%- if page_links.number > 1 %}
+  <div style="text-align:center; width:800px">
+    <h4>Seite {{ page_links.number }}</h4>
+  </div>
+  {%- endif %}
+{%- endblock %}
+ 
+{%- block navigation %}
+{% include 'default/navigation.html' %}
+{%- endblock %}
+
+{%- block content %}
+  {%- if posts %}
+    {%- for post in posts %}
+{% include 'default/post.html' %}
+    {%- endfor %}
+  {%- else %}
+    <div class="post">
+      <h3>No entries found</h3>
+    </div>
+  {%- endif %}
+{%- endblock %}

@@ -1,0 +1,26 @@
+# apache virtual host example file
+
+<VirtualHost *:80>
+    ServerAdmin www-admin@example.com
+
+    DocumentRoot "/var/www/blackboard/blackboard"
+    ServerName blackboard.example.com
+    ServerAlias www.blackboard.example.com
+
+    WSGIScriptAlias / /var/www/blackboard/blackboard.wsgi
+
+    # let apache serve our static files
+    Alias /robots.txt /var/www/blackboard/blackboard/robots.txt
+    Alias /static /var/www/blackboard/blackboard/static
+
+    <Directory />
+    	AllowOverride None
+	    Order allow,deny
+    	allow from all
+        Options -Indexes
+    </Directory>
+
+    CustomLog "/var/log/apache2/blackboard-access.log" vhost_combined
+    ErrorLog "/var/log/apache2/blackboard-error.log"
+
+</VirtualHost>

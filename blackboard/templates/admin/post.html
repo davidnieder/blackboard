@@ -1,0 +1,41 @@
+{% extends 'admin/base.html' %}
+
+{%- block content %}
+  <div id="content">
+  {%- if post %}
+    <table>
+      <tr>
+        <td>Id:</td><td>{{ post.id }}</td>
+      </tr>
+      <tr>
+        <td>Typ:</td><td>{{ post.content_type }}</td>
+      </tr>
+      <tr>
+        <td>Date:</td><td>{{ post.time |date_and_time }}</td>
+      </tr>
+      <tr>
+        <td>User:</td><td>{{ post.user.name }} ({{ post.user.id }})</td>
+      <tr>
+        <td>Public:</td>
+        {%- if post.is_public %}
+        <td>
+          <a href="/public/{{ post.public_id }}/">Yes</a>
+          <a href="#" onclick="setPublic({{ post.id }}, false)">(set private)</a>
+        </td>
+        {%- else %}
+        <td>No <a href="#" onclick="setPublic({{ post.id }}, true)">(set public)</a></td>
+        {%- endif %}
+     </tr>
+     </tr>
+      <tr>
+        <td><a href="/posts/{{ post.id }}/">Show</a></td>
+        <td><a href="#" onclick="delPost({{ post.id }})">Delete</a></td>
+      </tr>
+    </table>
+  {%- else %}
+    <br>Enter post id:<br>
+    <input type="text" size="1" id="post_id">
+    <input type="button" onclick="showPost()" value="Show"><br><br>
+  {%- endif %}
+  </div>
+{%- endblock %}

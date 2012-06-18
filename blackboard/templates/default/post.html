@@ -1,0 +1,47 @@
+    <div class="post">
+      <h5 class="post author">Post 
+        <a href="/posts/{{ post.id }}/">#{{ post.id }}</a> by
+        <a href="/user/{{ post.user.name }}/">{{ post.user.name }}</a>
+      </h5>
+      <h5 class="post date">on
+        <a href="/posts/{{ post.time |db_format }}/">{{ post.time |date }}</a>
+      </h5>
+      <div class="post icon"><a href="/posts/{{ post.content_type }}/">
+        <img src="/static/img/{{ post.content_type }}.png" height="50" alt="icon"></a></div>
+        <h3 class="post title">
+        <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
+
+    {%- if post.content_type == 'text' %}
+      <div class="post text">
+        {{ post.content |safe }}
+      </div>
+
+    {%- elif post.content_type == 'link' %}
+      <div class="post link">
+        <a href="{{ post.content }}">{{ post.content }}</a></div>
+      <div class="post text">{{ post.comment |safe }}
+      </div>
+
+    {%- elif post.content_type in ['video', 'audio'] %}
+      <div class="post embedded">{{ post.content |safe }}</div>
+	  {%- if post.comment %}
+      <div class="post text">{{ post.comment |safe }}</div>
+      {%- endif %}
+
+    {%- elif post.content_type == 'image' %}
+      <div class="post image">
+        <a href="{{ post.content }}">
+        <img src="{{ post.content }}"></a></div>
+      <div class="post text">{{ post.comment |safe }}
+      </div>
+    {%- endif %}
+      <div class="post commentlink">
+    {%- if post.comments|len == 1 %}
+        <a href="/posts/{{ post.id }}/#comments">One comment</a>
+    {%- elif post.comments|len > 1%}
+        <a href="/posts/{{ post.id }}/#comments">{{ post.comments|len }} comments</a>
+    {%- else %}
+        <a href="/posts/{{ post.id }}/#comments">Leave a comment</a>
+    {%- endif %}
+      </div>
+    </div>

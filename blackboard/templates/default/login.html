@@ -1,0 +1,45 @@
+{% extends 'default/base.html' %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="/static/style/default/default.css">
+{% endblock %}
+
+{%- block scripts %}
+  <script type="text/javascript" src="/static/script/sha1.js"></script>
+  <script type="text/javascript" src="/static/script/login.js"></script>
+{%- endblock %}
+
+{% block title %}<title>Login - Blackbook</title>{% endblock %}
+
+{%- block content %}
+  <div id="login">
+
+    <h3>Login</h3>
+
+    <div class="form_input">
+      {%- if next %}
+      <form name="login" action="/login/?next={{ next }}" method="post" id="login_form">
+      {%- else %}
+      <form name="login" action="/login/" method="post" id="login_form">
+      {%- endif %}
+        <dl>
+        <dt>Username:</dt>
+        <dd><input type="text" id="username" name="username" tabindex="1"></dd>
+        <dt>Password:</dt>
+        <dd><input type="password" id="password" tabindex="2"></dd>
+        </dl>
+
+        <input type="checkbox" tabindex="3" id="remember_me" name="remember_me" value="True">
+          <span>Remember me on this computer</span>
+
+        <input type="hidden" name="password" id="hashed_pw">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="submit" value="Login"  onclick="checkForm()" tabindex="4">
+      </form>
+    </div>
+    <a href="#">Forgot password?</a> &nbsp; <a href="/register/">Have no account? Create one.</a>
+
+  </div>
+{%- endblock %}
+{%- block navigation_pos %}{%- endblock %}
+

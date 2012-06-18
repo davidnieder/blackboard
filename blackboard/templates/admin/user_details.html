@@ -1,0 +1,49 @@
+{% extends 'admin/base.html' %}
+
+{%- block content %}
+  <div id="content">
+  {%- if user %}
+    <h5>User {{ user.name }}</h5>
+    <table>
+      <tr>
+        <td>Id:</td><td>{{ user.id }}</td>
+      </tr>
+      <tr>
+        <td>Name:</td><td>{{ user.name }}</td>
+      </tr>
+      <tr>
+        <td>E-Mail:</td><td>{{ user.email }}</td>
+      </tr>
+      <tr>
+        <td>Password:</td><td><a href="#" onclick="setPw({{ user.id }})">set password</a></td>
+      </tr>
+      <tr>
+        <td>Admin:</td><td>{% if user.admin %}Yes{% else %}No{% endif %}</td>
+      </tr>
+      <tr>
+        <td>Activated:</td>
+        {%- if user.active %}
+        <td>Yes <a href="#" onclick="setActive({{ user.id }}, false)">(deactivate)</a></td>
+        {%- else %}
+        <td>No <a href="#" onclick="setActive({{ user.id }}, true)">(activate)</a></td>
+        {%- endif %}
+      </tr>
+      <tr>
+        <td>Last login:</td><td>{{ user.last_login |date_and_time}}</td>
+      </tr>
+      <tr>
+        <td>Posts per page:</td><td>{{ user.posts_per_page }}</td>
+      </tr>
+      <tr>
+        <td>Template:</td><td>{{ user.template }}</td>
+      </tr>
+      <tr>
+        <td>Facebook integration:</td><td>{{ user.facebook_integration }}</td>
+      </tr>
+      <tr><td colspan="2"><a href="#" onclick="deleteUser({{ user.id }})">Delete user</a></td></tr>
+    </table>
+  {%- else %}
+    <h5>User not found</h5>
+  {%- endif %}
+  </div>
+{%- endblock %}

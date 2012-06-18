@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+       "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+  <title>{% block title %}Administration - Blackbook{% endblock %}</title>
+{%- block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="/static/style/admin.css">
+{%- endblock %}
+
+{%- block script %}
+  <script type="text/javascript" src="/static/script/sha1.js"></script>
+  <script type="text/javascript" src="/static/script/admin.js"></script>
+{%- endblock %}
+
+</head>
+<body>
+
+  <h1 id="header"><a href="/admin/">Blackboard-Admin</a></h1>
+
+{%- block messagebox %}
+{%- for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="messagebox {{ category }}">{{ message }}</div>
+{%- endfor %}
+{%- endblock %}
+
+<div id="wrapper">
+
+{%- block navigation %}
+  <div id="navigation">
+    Navigation
+    <ul>
+      <li><a href='/admin/settings/'>Settings</a></li>
+      <li><a href='/admin/user/'>Users</a></li>
+      <li><a href='/admin/post/'>Posts</a></li>
+      <li><a href='/admin/comment/'>Comments</a></li>
+    </ul>
+  </div>
+{%- endblock %}
+
+{%- block content %}
+  <div id="content">
+    <h4>Select a category on the left</h4>
+  </div>
+{%- endblock %}
+
+</div>
+
+{%- block settings_form %}
+  <div style="display:none">
+    <form id="setting_form" method="post">
+      <input type="text" name="setting">
+      <input type="text" name="value_0">
+      <input type="text" name="value_1">
+      <input type="text" name="csrf_token" value="{{ csrf_token() }}">
+    </form>
+  </div>
+{%- endblock %}
+
+{%- block footer %}
+  <div id="footer">
+    <a href="/">Index</a>|
+    <a href="/admin/">Admin Index</a>|
+    <a href="https://github.com/davidnieder/blackboard">Blackboard on Github</a>
+  </div>
+{%- endblock %}
+

@@ -1,0 +1,37 @@
+{% extends 'admin/base.html' %}
+
+{%- block content %}
+  <div id="content">
+    Enter comment id:<br>
+    <input type="text" size="1" id="comment_id">
+    <input type="button" onclick="showComment()" value="show comment"><br><br>
+
+  {%- if comment %}
+    <table>
+      <tr>
+        <td>Id:</td>
+        <td>{{ comment.id }}</td>
+      </tr>
+      <tr>
+        <td>User:</td>
+        <td>{{ comment.user.name }}</td>
+      </tr>
+      <tr>
+        <td>Date:</td>
+        <td>{{ comment.time |date_and_time }}</td>
+      </tr>
+      <tr>
+        <td>Content:</td>
+        <td>{{ comment.content |safe }}</td>
+      </tr>
+      <tr>
+        <td colspan="2" style="text-align:center">
+          <a href="#" onclick="deleteComment({{ comment.id }})">Delete this comment</a>
+        </td>
+      </tr>
+    </table>
+  {%- endif %}
+  </div>
+{%- endblock %}
+
+

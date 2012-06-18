@@ -1,24 +1,33 @@
 ##About
 
-Blackboard is a small blogging software powered by python, sqlite and the [flask framework](https://github.com/mitsuhiko/flask).
-It is designed for posting small snippets from the web like videos, images, audio files or just links not for publishing large texts.
+Blackboard is a small blogging software written in python, powered by the
+[flask microframework](https://github.com/mitsuhiko/flask). It is designed
+for posting small snippets from the web like videos, images, audio files or
+just links not for publishing large texts.
 
-I do not recommend installing blackboard on a public system. It is not nearly finished or in a stable state and there are several security issues I have not dealt with yet.
 
-##Requirements
+##Installation
 
-* Apache with mod_wsgi (or another web server)
-* python >=v2.6 (not v3)
-* sqlite3
-* flask
-* flask-login
-* flask-uploads
+Currently there is no stable release of Blackboard. It is still under
+development. Therefore, I do not recommend installing Blackboard on a public
+System.
+See the file INSTALL for a list of dependencies and installation instructions.
+You can also test Blackboard on your local machine.
+
+
+##Further plans
+
+* search function
+* email notification
+* rss/atom feed
+* i18n
+* second theme
 
 ##Screenshots
+####home page
+  ![home page](home_page.png)
+####single post
+  ![a single post](single_post.png)
+####login
+  ![login view](login.png)
 
-* Index page
-  ![index page](https://github.com/davidnieder/blackboard/raw/master/screenshots/index_page.png)
-* single post
-  ![a single post](https://github.com/davidnieder/blackboard/raw/master/screenshots/single_post.png)
-* login page
-  ![login page](https://github.com/davidnieder/blackboard/raw/master/screenshots/login_page.png)

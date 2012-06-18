@@ -1,0 +1,34 @@
+{% extends 'default/base.html' %}
+
+{%- block title %}
+  <title>List of all entries - Blackboard</title>
+{%- endblock %}
+
+{%- block iconband %}
+{% include 'default/icon_band.html' %}
+{%- endblock %}
+
+{%- block navigation %}
+{% include 'default/navigation.html' %}
+{%- endblock %}
+
+{% block content %}
+  {%- if posts %}
+    <div class="post_list">
+      <ul>
+      {%- for post in posts %}
+		<li class="post_list_{{ post.content_type }}">
+          <a href="/posts/{{ post.id }}/">
+          Post #{{ post.id }} by {{ post.user.name }} on {{ post.time |date }}:
+          {%- if post.title %} {{ post.title }}{%- else %} [no title]{%- endif %}
+          </a>
+        </li>
+      {%- endfor %}
+      </ul>
+    </div>
+  {%- else %}
+    <div class="post">
+      <h3>No entries found</h3>
+    </div>
+  {%- endif %}
+{% endblock %}

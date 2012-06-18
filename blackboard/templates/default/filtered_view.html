@@ -1,0 +1,70 @@
+{% extends 'default/base.html' %}
+
+{% block title %}<title>Ausgewählte Einträge - Blackbook</title>{% endblock %}
+
+{%- block iconband %}
+{% include 'default/icon_band.html' %}
+{%- endblock %}
+
+{%- block headline %}
+  <div id="headline">
+  {%- if type in ['text', 'link', 'image', 'audio', 'video'] %}
+    <h4>All entries in category '{{ type }}':</h4>
+  {%- elif type == 'user' %}
+    <h4>All entries by {{ username }}:</h4>
+  {%- else %}
+    <h4>All entries on {{ type.split('-')[2] }}.{{type.split('-')[1]}}.{{type.split('-')[0]}}:</h4>
+  {%- endif %}
+  {%- if page_links.number > 1 %}
+    <h5>Page {{ page_links.number }}</h5>
+  {%- endif %}
+  </div>
+{%- endblock %}
+
+{%- block navigation %}
+{% include 'default/navigation.html' %}
+{%- endblock %}
+
+{% block content %}
+  {% if posts %}
+    {%- for post in posts %}
+{% include 'default/post.html' %}
+    {%- endfor %}
+  {% else %}
+    <div class="post">
+      <h4>No entries found</h4>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{%- block pagelinks %}
+  {%- if page_links %}
+  <div id="pagelinks">
+    {%- if type != 'user' %}
+      {%- if page_links.prev and page_links.prev != 1 %}
+      <a href="/posts/{{ type }}/{{ page_links.prev }}/">Next entries</a>
+      {%- endif %}
+      {%- if page_links.prev and page_links.prev != 1 %}|{%- endif %}
+      {%- if page_links.prev >= 1 %}
+      <a href="/posts/{{ type }}/">First page</a>
+      {%- endif %}
+      {%- if page_links.prev >= 1 and page_links.next %}|{% endif %}
+      {%- if page_links.next %}
+      <a href="/posts/{{ type }}/{{ page_links.next }}/">Previous entries</a>
+      {%- endif %}
+    {%- else %}
+      {%- if page_links.prev and page_links.prev != 1 %}
+      <a href="/posts/user/{{ username }}/{{ page_links.prev }}/">Next entries</a>
+      {%- endif %}
+      {%- if page_links.prev and page_links.prev != 1 %}|{%- endif %}
+      {%- if page_links.prev >= 1 %}
+      <a href="/posts/user/{{ username }}/">First page</a>
+      {%- endif %}
+      {%- if page_links.prev >= 1 and page_links.next %}|{% endif %}
+      {%- if page_links.next %}
+      <a href="/posts/user/{{ username }}/{{ page_links.next }}/">Previous entries</a>
+      {%- endif %}
+    {%- endif %}
+  </div>
+  {%- endif %}
+{%- endblock %}
