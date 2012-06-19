@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from flaskext.sqlalchemy import SQLAlchemy
+try:
+    from flaskext.sqlalchemy import SQLAlchemy
+except ImportError:
+    from flask.ext.sqlalchemy import SQLAlchemy
 
 from base import app
 import config
