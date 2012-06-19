@@ -47,7 +47,7 @@
         <td>
           <select id="posts_per_page">
           {%- for option in settings.posts_per_page_options.split(',') %}
-            <option value="{{ option }}">{{ option }}</option>
+            <option value="{{ option }}" {% if option == settings.posts_per_page %} selected{% endif %}>{{ option }}</option>
           {%- endfor %}
           </select>
         </td>
