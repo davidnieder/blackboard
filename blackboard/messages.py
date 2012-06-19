@@ -36,6 +36,7 @@ fb_invalid_post_id = u'Could not post on facebook: post id is invalid'
 fb_post_is_private = u'Could not post on facebook: post is not public'
 fb_invalid_post_type = u'Could not post on facebook: post type is invalid'
 fb_error_returned = u'Could not post on facebook: an error occurred'
+fb_successfully_posted = u'Post successfully pushed to your facebook wall'
 
 
 # admin.py

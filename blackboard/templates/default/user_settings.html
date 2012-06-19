@@ -63,8 +63,8 @@
     <h4>Facebook</h4>
     Publish my public posts on facebook
     <select size="1" id="facebook_integration" tabindex="11">
-      <option value="0"{%- if not user.facebook_integration %} selected{%- endif %}>Publish my posts</option>
-      <option value="1"{%- if user.facebook_integration %} selected{%- endif %}>Do not publish</option>
+      <option value="0"{%- if not user.facebook_integration %} selected{%- endif %}>Do not publish my posts</option>
+      <option value="1"{%- if user.facebook_integration %} selected{%- endif %}>Publish my posts</option>
     </select>
     <span><input type="button" value="change" tabindex="12" onclick="changeSetting('facebook_integration')"></span>
 

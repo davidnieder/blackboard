@@ -8,6 +8,7 @@ from flask.ext.login import login_required
 from flaskext.oauth import OAuth
 
 import config
+import messages
 from database import db, Facebook as DBFacebook
 from user import get_current_user
 from post import Post
@@ -128,6 +129,8 @@ def push_post(post_id):
     if response.data.get('error'):
         #flash(u'Facebook-Push: %s' %response.data['error'], 'error')
         flash(messages.fb_error_returned, 'error')
+    else:
+        flash(messages.fb_successfully_posted, 'message')
 
     return redirect(url_for('index'))
 

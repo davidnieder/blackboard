@@ -183,8 +183,8 @@ def add_post():
     # push this post to facebook?
     if config.get('facebook_integration', bool):
         if get_current_user().facebook_integration and post.is_public:
-            return redirect(url_for('facebook_authorize_and_post'),
-                            post_id=post.id)
+            return redirect(url_for('facebook_authorize_and_post',
+                            post_id=post.id))
 
     return redirect(url_for('index'))
 

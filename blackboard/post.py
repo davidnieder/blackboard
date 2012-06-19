@@ -142,7 +142,7 @@ class Post():
         if not self.public_id:
             while True:
                 md5_hash = hashlib.md5()
-                md5_hash.update(str(self.time)+str(self.id))
+                md5_hash.update(str(self.time)+str(self.user.id))
                 public_id = md5_hash.hexdigest()[:5]
 
                 if DBPosts.query.filter_by(public_id=public_id).first():
@@ -181,7 +181,7 @@ class NewPost():
             self.is_public = True
             while True:
                 md5_hash = hashlib.md5()
-                md5_hash.update(str(self.time)+str(self.id))
+                md5_hash.update(str(self.time)+str(self.user.id))
                 public_id = md5_hash.hexdigest()[:5]
 
                 if DBPosts.query.filter_by(public_id=public_id).first():
@@ -208,8 +208,11 @@ class NewPost():
         db.session.add(self.db_post)
         db.session.commit()
 
+        # now this post has an id
+        self.id = self.db_post.id
+
     def get_id(self):
-        return self.db_post.id
+        return self.id
 
 
 def check_if_post_exists(post_id):
