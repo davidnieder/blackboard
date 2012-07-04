@@ -3,6 +3,7 @@
 from flask import render_template, request, redirect, url_for, flash, abort
 from flask import session, jsonify
 from flask.ext.login import login_required
+from werkzeug.contrib.atom import AtomFeed
 
 import exceptions
 import upload
@@ -244,6 +245,36 @@ def public_post(public_post_id):
     post = post.get_post()
 
     return render_template(get_template('public_single_post.html'), post=post)
+
+
+# feeds
+@login_required
+def feed():
+    feed = AtomFeed('Recent posts', feed_url=request.url, url=request.url_root)
+    posts = Posts(post_amount=15)
+    posts = posts.get_posts()
+
+    for post in posts:
+        title = '[' + post.content_type + '] ' + post.title
+        feed.add(title, content_type='html', author=post.user.name,
+                 updated=post.time, url=url_for('get_post', post_id=post.id,
+                 _external=True))
+
+    return feed.get_response()
+
+def public_feed():
+    feed = AtomFeed('Recent public posts', feed_url=request.url,
+                    url=request.url_root)
+    posts = Posts(only_public=True, post_amount=15)
+    posts = posts.get_posts()
+
+    for post in posts:
+        title = '[' + post.content_type + '] ' + post.title
+        feed.add(title, content_type='html', author=post.user.name,
+                 updated=post.time, url=url_for('public_post',
+                 public_post_id=post.public_id, _external=True))
+
+    return feed.get_response()
 
 
 # helper functions

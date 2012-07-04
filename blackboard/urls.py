@@ -102,3 +102,8 @@ app.add_url_rule('/facebook/authorize_and_post/<post_id>/',
 app.add_url_rule('/facebook/push_post/<post_id>/', 'facebook_push_post',
                  view_func=facebook.push_post)
 
+# atom feeds
+app.add_url_rule('/feed/', 'feed', view_func=views.feed)
+
+app.add_url_rule('/public/feed/', 'public_feed', view_func=views.public_feed)
+

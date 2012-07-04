@@ -13,7 +13,7 @@ from database import db, Posts as DBPosts
 class Posts():
 
     def __init__(self, username=None, user_id=None, page=1, post_filter=None,
-                 id_list=None, only_public=False):
+                 id_list=None, only_public=False, post_amount=None):
 
         self.username = username
         self.user_id = user_id
@@ -22,7 +22,8 @@ class Posts():
         self.id_list = id_list
         self.only_public = only_public
 
-        self.posts_per_page = user.get_posts_per_page()
+        self.posts_per_page = post_amount if post_amount else \
+                              user.get_posts_per_page()
 
         if self.username or self.user_id:
             # get user posts

@@ -5,13 +5,16 @@
   <meta charset="UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
-  {% block title %}<title>Blackboard</title>{% endblock %}
-
   {%- block stylesheets %}
   <link rel="stylesheet" type="text/css" href="/static/style/default/default.css">
   {%- endblock %}
   {%- block scripts %}
   {%- endblock %}
+  {%- block feed %}
+  <link rel="alternate" type="application/atom+xml" title="Recent public posts" href="{{ url_for('public_feed') }}">
+  {%- endblock %}
+
+  {% block title %}<title>Blackboard</title>{% endblock %}
 
 </head>
 <body>
@@ -53,6 +56,7 @@
     <a href="/login/">Login</a>|
     <a href="mailto:{{ FEEDBACK_ADDRESS }}">Feedback</a>|
     <a href="{{ IMPRINT_URI }}">Imprint</a>|
+    <a href="{{ url_for('public_feed') }}">Feed</a>|
     <a href="https://github.com/davidnieder/blackboard" target="_blank">Blackboard is open source</a>
   </div>
 {%- endblock %}
