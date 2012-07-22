@@ -8,13 +8,16 @@
         <td>Id:</td><td>{{ post.id }}</td>
       </tr>
       <tr>
+        <td>Title:</td><td>{{ post.title if post.title else 'no title' }}</td>
+      </tr>
+      <tr>
         <td>Typ:</td><td>{{ post.content_type }}</td>
       </tr>
       <tr>
         <td>Date:</td><td>{{ post.time |date_and_time }}</td>
       </tr>
       <tr>
-        <td>User:</td><td>{{ post.user.name }} ({{ post.user.id }})</td>
+        <td>User:</td><td>{{ post.user.name }} (id: {{ post.user.id }})</td>
       <tr>
         <td>Public:</td>
         {%- if post.is_public %}
@@ -25,8 +28,7 @@
         {%- else %}
         <td>No <a href="#" onclick="setPublic({{ post.id }}, true)">(set public)</a></td>
         {%- endif %}
-     </tr>
-     </tr>
+      </tr>
       <tr>
         <td><a href="/posts/{{ post.id }}/">Show</a></td>
         <td><a href="#" onclick="delPost({{ post.id }})">Delete</a></td>
