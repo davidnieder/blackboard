@@ -17,7 +17,7 @@ class UserSettings():
         self.user = get_current_user()
 
         if not self.setting or not self.value:
-            abort(503)
+            abort(400)
 
         if self.setting == 'password':
             self.change = self.change_password
@@ -32,7 +32,7 @@ class UserSettings():
         elif self.setting == 'facebook_integration':
             self.change = self.change_facebook_integration
         else:
-            abort(503)
+            abort(400)
 
     def change_password(self):
         if self.old_value:
@@ -42,7 +42,7 @@ class UserSettings():
             else:
                 flash(messages.wrong_password, 'error')
         else:
-            abort(503)
+            abort(400)
 
     def change_email(self):
         self.user.update_setting('email', self.value)
@@ -53,7 +53,7 @@ class UserSettings():
             self.user.update_setting('posts_per_page', int(self.value))
             flash(messages.changed_setting, 'message')
         else:
-            abort(503)
+            abort(400)
 
     def change_email_notification(self):
         if self.value in ['True', 'False']:
@@ -63,14 +63,14 @@ class UserSettings():
                 self.user.update_setting('email_notification', False)
             flash(messages.changed_setting, 'message')
         else:
-            abort(503)
+            abort(400)
 
     def change_template(self):
         if self.value in config.get('templates', list):
             self.user.update_setting('template', self.value)
             flash(messages.changed_template, 'message')
         else:
-            abort(503)
+            abort(400)
 
     def change_facebook_integration(self):
         if self.value in ['True', 'False']:
@@ -80,5 +80,5 @@ class UserSettings():
                 self.user.update_setting('facebook_integration', False)
             flash(messages.changed_facebook_integration, 'message')
         else:
-            abort(503)
+            abort(400)
 
