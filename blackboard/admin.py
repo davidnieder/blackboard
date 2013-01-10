@@ -28,6 +28,8 @@ def settings():
     if request.method == 'POST':
         setting = request.form.get('setting')
         value = request.form.get('value_0')
+        # strip whitespaces
+        value = value.replace(' ', '')
 
         if not setting or not value:
             abort(400)
