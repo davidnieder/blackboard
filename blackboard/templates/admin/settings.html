@@ -59,6 +59,17 @@
         <td><input type="button" id="change_templates" value="change" onclick="changeSetting('templates')"></td>
       </tr>
       <tr>
+        <td>Default template:</td>
+        <td>
+          <select id="default_template">
+          {% for option in settings.templates.split(',') %}
+            <option value="{{ option }}" {% if option == settings.default_template %} selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+          </select>
+        </td>
+        <td><input type="button" id="change_default_template" value="change" onclick="changeSetting('default_template')"></td>
+      </tr>
+      <tr>
         <td colspan="3" style="text-align:center">Upload settings</td>
       </tr>
       <tr>

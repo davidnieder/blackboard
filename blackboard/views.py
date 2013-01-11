@@ -198,7 +198,7 @@ def add_comment():
         return redirect('/posts/' + str(comment.related_post) + '/#comments')
 
     except exceptions.CantCreateNewComment:
-        flash(message.comment_error, 'error')
+        flash(messages.comment_error, 'error')
 
     return redirect('/posts/' + request.form['related_post'] + '/')
 
@@ -282,7 +282,7 @@ def get_template(template_file):
     if hasattr(get_current_user(), 'template'):
         template = get_current_user().template
     else:
-        template = 'default'
+        template = config.get('default_template')
 
     return template + '/' + template_file
 

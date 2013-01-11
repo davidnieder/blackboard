@@ -44,8 +44,8 @@ def settings():
     setting_list = [
         'facebook_integration', 'facebook_app_id', 'facebook_app_secret',
         'feedback_address', 'imprint_uri', 'account_activation',
-        'posts_per_page', 'templates', 'image_extensions', 'setup',
-        'file_extensions', 'audio_extensions', 'max_image_size',
+        'posts_per_page', 'templates', 'default_template', 'image_extensions',
+        'setup', 'file_extensions', 'audio_extensions', 'max_image_size',
         'max_audio_size', 'max_file_size', 'max_avatar_size', 'debug',
         'posts_per_page_options', 'registration'
     ]
