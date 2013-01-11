@@ -19,7 +19,6 @@ You can also test Blackboard on your local machine.
 
 * search function
 * email notification
-* rss/atom feed
 * i18n
 * second theme
 
