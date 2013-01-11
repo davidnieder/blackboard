@@ -159,7 +159,7 @@ def get_minimal_post_list():
 # new post, comment
 @login_required
 def new_post(post_type):
-    if post_type in ['text', 'audio', 'video', 'link', 'image']:
+    if post_type in config.get('post_categories', list):
         if post_type == 'image':
             upload.setFileSize('images')
         elif post_type == 'audio':
@@ -245,6 +245,22 @@ def public_post(public_post_id):
     post = post.get_post()
 
     return render_template(get_template('public_single_post.html'), post=post)
+
+def public_posts(filter, page_number=1):
+    posts = Posts(only_public=True, page=page_number, post_filter=filter)
+    posts = posts.get_posts()
+    page_links = calc_page_links(len(posts), page_number)
+
+    return render_template(get_template('public_filtered_view.html'),
+                           posts=posts, page_links=page_links, type=filter)
+
+def public_user_posts(username, page_number=1):
+    posts = Posts(only_public=True, page=page_number, username=username)
+    posts = posts.get_posts()
+    page_links = calc_page_links(len(posts), page_number)
+
+    return render_template(get_template('public_filtered_view.html'),
+                           posts=posts, username=username, type='user')
 
 
 # feeds

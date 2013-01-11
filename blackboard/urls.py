@@ -63,6 +63,15 @@ app.add_url_rule('/public/page/<int:page_number>/', view_func=views.public_page)
 
 app.add_url_rule('/public/<public_post_id>/', view_func=views.public_post)
 
+app.add_url_rule('/public/category/<filter>/', view_func=views.public_posts)
+
+app.add_url_rule('/public/category/<filter>/<int:page_number>/',
+                 view_func=views.public_posts)
+
+app.add_url_rule('/public/user/<username>/', view_func=views.public_user_posts)
+
+app.add_url_rule('/public/user/<username>/<int:page_number>/',
+                 view_func=views.public_user_posts)
 
 # admin pages
 app.add_url_rule('/admin/', 'admin_index', view_func=admin.index)
