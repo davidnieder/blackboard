@@ -7,6 +7,7 @@ import inputvalidation
 import exceptions
 import comment
 import user
+import config
 from database import db, Posts as DBPosts
 
 
@@ -25,64 +26,44 @@ class Posts():
         self.posts_per_page = post_amount if post_amount else \
                               user.get_posts_per_page()
 
-        if self.username or self.user_id:
-            # get user posts
-            if self.username:
-            # get user_id from username
-                self.user_id = user.get_user_id_from_name(self.username)
+        self.offset = (self.page-1)*self.posts_per_page
 
-            self.post_list = DBPosts.query. \
-                             filter_by(user_id=self.user_id). \
-                             order_by(DBPosts.id.desc()). \
-                             limit(self.posts_per_page). \
-                             offset((self.page-1)*self.posts_per_page). \
-                             all()
+        # get post query object
+        query = DBPosts.query
 
-        elif self.post_filter:
-            # filtered view e.g. /posts/audio/
-            if self.post_filter in ['audio', 'video', 'image', 'text', 'link']:
-                self.post_list = DBPosts.query. \
-                                 filter_by(content_type=self.post_filter). \
-                                 order_by(DBPosts.id.desc()). \
-                                 limit(self.posts_per_page). \
-                                 offset((self.page-1)*self.posts_per_page). \
-                                 all()
-            # filter by date
-            elif self.post_filter:
+        if self.id_list == 'all':
+            # get all posts and return
+            self.post_list = query.order_by(DBPosts.id.desc()).all()
+            return
 
-                self.post_list = DBPosts.query. \
-                                 filter(DBPosts.time.startswith(self.post_filter)). \
-                                 order_by(DBPosts.id.desc()). \
-                                 limit(self.posts_per_page). \
-                                 offset((self.page-1)*self.posts_per_page). \
-                                 all()
+        if self.username and not self.user_id:
+            # get user id
+            self.user_id = user.get_user_id_from_name(self.username)
+            # filter posts py user
+            query = query.filter_by(user_id=self.user_id)
+
+        if self.post_filter:
+            if self.post_filter in config.get('post_categories', list):
+                # filter by categories
+                query = query.filter_by(content_type=self.post_filter)
             else:
-                self.post_list = []
+                # filter by date
+                query = query.filter(DBPosts.time.startswith(self.post_filter))
 
-        elif self.id_list == 'all':
-            # get all posts
-            self.post_list = DBPosts.query.order_by(DBPosts.id.desc()).all()
+        if self.only_public:
+            # only public posts
+            query = query.filter_by(is_public=True)
 
-        elif self.id_list:
-            # get some specified posts
-            pass
+        # set order
+        query = query.order_by(DBPosts.id.desc())
+        # set limit
+        query = query.limit(self.posts_per_page)
+        # set offset
+        query = query.offset(self.offset)
 
-        elif self.only_public:
-            # get public index page
-            self.post_list = DBPosts.query. \
-                             filter_by(is_public=True). \
-                             order_by(DBPosts.id.desc()). \
-                             limit(self.posts_per_page). \
-                             offset((self.page-1)*self.posts_per_page). \
-                             all()
+        # query database
+        self.post_list = query.all()
 
-        else:
-            # get index page
-            self.post_list = DBPosts.query. \
-                             order_by(DBPosts.id.desc()). \
-                             limit(self.posts_per_page). \
-                             offset((self.page-1)*self.posts_per_page). \
-                             all()
 
     def get_posts(self):
         return self.post_list
@@ -100,7 +81,7 @@ class Post():
             self.db_post = DBPosts.query.filter_by(public_id=self.public_id,
                            is_public=True).first()
         else:
-            #no id was given
+            # no id was given
             self.db_post = None
 
         if self.db_post:
@@ -196,14 +177,14 @@ class NewPost():
 
     def safe(self):
         # create post object
-        self.db_post = DBPosts( title = self.title,
-                                content = self.content,
-                                comment = self.comment,
-                                content_type = self.content_type,
-                                time = self.time,
-                                user = self.user,
-                                is_public = self.is_public,
-                                public_id = self.public_id )
+        self.db_post = DBPosts(title = self.title,
+                               content = self.content,
+                               comment = self.comment,
+                               content_type = self.content_type,
+                               time = self.time,
+                               user = self.user,
+                               is_public = self.is_public,
+                               public_id = self.public_id)
 
         # commit to database
         db.session.add(self.db_post)
