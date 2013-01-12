@@ -136,6 +136,9 @@ def post(id=None):
         if setting == 'delete':
             post.delete()
             flash(messages.post_deleted)
+
+            if request.form.get('next'):
+                return redirect(request.form['next'])
             return redirect(url_for('admin_post'))
 
         elif setting == 'public':

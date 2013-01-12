@@ -1,5 +1,4 @@
 /* post functions */
-
 function showPost() {
   var post_id = document.getElementById('post_id').value;
   if( post_id != '' ) {
@@ -39,7 +38,6 @@ function setPublic(post_id, value)  {
 }
 
 /* user functions */
-
 function setPw(user_id)
 {
   var setting_form = document.getElementById('setting_form');
@@ -89,7 +87,6 @@ function setActive(user_id, active)
 }
 
 /* comment functions */
-
 function showComment()
 {
   var comment_id = document.getElementById('comment_id').value;
@@ -123,4 +120,40 @@ function changeSetting(setting)
   setting_form[1].value = value;
 
   setting_form.submit();
+}
+
+/* delete posts from main page */
+function _delete_post(post_id)  {
+    if(confirm('Do you realy want to delete post #' + post_id + '?'))   {
+        endpoint = '/admin/post/';
+        var params = new Array();
+        params['setting'] = 'delete';
+        params['value_0'] = post_id;
+        params['csrf_token'] = document.getElementById('__csrf_token').value;
+        params['next'] = window.location;
+
+        make_post_request(endpoint, params);
+    }
+    else
+        return;
+}
+
+function make_post_request(endpoint, params)    {
+    var form = document.createElement("form");
+    form.setAttribute("method", 'POST');
+    form.setAttribute("action", endpoint);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
 }

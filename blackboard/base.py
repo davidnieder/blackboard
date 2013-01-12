@@ -67,6 +67,7 @@ app.jinja_env.filters['db_format'] = lambda(dt_obj):dt_obj.strftime('%Y-%m-%d') 
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
 app.jinja_env.globals['IMPRINT_URI'] = config.get('imprint_uri')
 app.jinja_env.globals['FEEDBACK_ADDRESS'] = config.get('feedback_address')
+app.jinja_env.globals['current_user_is_admin'] = user.current_user_is_admin
 
 # setup
 @app.before_request
