@@ -11,7 +11,7 @@ import config
 import messages
 
 from user import User, NewUser, get_current_user, get_posts_per_page
-from post import Posts, Post, NewPost
+from post import Posts, Post, NewPost, get_random_post
 from comment import NewComment
 from usersettings import UserSettings
 
@@ -53,9 +53,7 @@ def login():
         else:
             flash(messages.invalid_credentials, 'error')
 
-    next = None
-    if request.args.get('next'):
-        next = request.args['next']
+    next = request.args.get('next')
     return render_template(get_template('login.html'), next=next)
 
 def logout():
@@ -211,16 +209,16 @@ def handle_upload(file_type):
     elif file_type == 'audio':
         u = upload.Upload('audio')
 
+    # generate csrf token for next request
+    from base import generate_csrf_token
+    csrf_token = generate_csrf_token()
+
     try:
         u.save(request.files['file'])
-
-        from base import generate_csrf_token
-        return jsonify(url=u.url(), csrf_token=generate_csrf_token(),
-                       error='false')
+        return jsonify(url=u.url(), error='false',
+                       csrf_token=csrf_token)
     except:
-        return jsonify(error='true')
-
-    abort(404)
+        return jsonify(error='true', csr_token=csrf_token)
 
 
 # public pages
@@ -261,6 +259,10 @@ def public_user_posts(username, page_number=1):
 
     return render_template(get_template('public_filtered_view.html'),
                            posts=posts, username=username, type='user')
+
+def public_random_post():
+    post = get_random_post()
+    return render_template(get_template('public_single_post.html'), post=post)
 
 
 # feeds

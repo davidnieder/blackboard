@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import hashlib
+import random
 from datetime import datetime
 
 import inputvalidation
@@ -206,4 +207,12 @@ def check_if_public_post_exists(public_id):
     if DBPosts.query.filter_by(public_id=public_id).first():
         return True
     return False
+
+def get_random_post():
+    row_count = DBPosts.query.filter_by(is_public=True).count()
+    rand = random.randrange(1, row_count+1)
+    row = DBPosts.query.get(rand)
+
+    post = Post(post_id=row.id)
+    return post.get_post()
 
