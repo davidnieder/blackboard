@@ -4,7 +4,6 @@ robots.txt
 *.sqlite3
 *.swp
 *~
-blackboard/static/upload/audio/*
-blackboard/static/upload/images/*
+blackboard/static/upload/*
 update.sh
 

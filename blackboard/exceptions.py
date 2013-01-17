@@ -25,7 +25,7 @@ class NoUserLoggedIn(BlackboardException):
     '''
 
 # Upload
-class NotSuchUploadSet(BlackboardException):
+class NoSuchUploadSet(BlackboardException):
     '''
     This Exception is raised if a UploadSet does not exist
     '''

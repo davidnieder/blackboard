@@ -18,6 +18,8 @@ register_field_error = u'Please fill in all fields'
 # new post, comment messages
 post_created = u'New post successfully created'
 post_error = u'Your post could not be created'
+post_edited = u'Your post was edited'
+post_edit_error = u'Yout post could not be edited'
 comment_error = u'Your comment could not be created'
 
 

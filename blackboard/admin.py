@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 
 from flask import render_template, url_for, flash, redirect, request, abort
+from flask.ext.login import current_user
 
 import config
 import messages
 from base import app
-from user import User, current_user_is_admin, get_user_list
+from user import User, get_user_list
 from post import Post
 from comment import Comment
 
 
 def for_admin_only(f):
     def wrapper(*args, **kwargs):
-        if current_user_is_admin():
+        if current_user.is_admin():
             return f(*args, **kwargs)
         else:
             flash(messages.no_admin_access, 'error')
@@ -30,7 +31,6 @@ def settings():
         value = request.form.get('value_0')
         # strip whitespaces
         value = value.replace(' ', '')
-
         if not setting or not value:
             abort(400)
         
@@ -44,12 +44,10 @@ def settings():
     setting_list = [
         'facebook_integration', 'facebook_app_id', 'facebook_app_secret',
         'feedback_address', 'imprint_uri', 'account_activation',
-        'posts_per_page', 'templates', 'default_template', 'image_extensions',
-        'setup', 'file_extensions', 'audio_extensions', 'max_image_size',
-        'max_audio_size', 'max_file_size', 'max_avatar_size', 'debug',
-        'posts_per_page_options', 'registration'
+        'posts_per_page', 'templates', 'default_template', 'debug',
+        'setup', 'file_extensions', 'max_file_size', 'registration',
+        'posts_per_page_options', 'upload_destination'
     ]
-
     settings = {}
     for setting in setting_list:
         settings[setting] = config.get(setting)

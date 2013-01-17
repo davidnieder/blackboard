@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from os import urandom
+import os
 
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.engine.url import _parse_rfc1738_args
@@ -42,12 +42,15 @@ def setup():
         admin.create()
 
         # generate secret key
-        secret_key = urandom(24)
+        secret_key = os.urandom(24)
         config.set('secret_key', secret_key)
         app.config['SECRET_KEY'] = secret_key
 
+        # set a default upload directory
+        config.set('upload_destination', os.path.abspath('static/upload'))
+
         # disable setup
-        config.set('setup', 'false')
+        config.set('setup', 'False')
 
         flash(messages.setup_finished, 'message')
         return redirect(url_for('login'))    

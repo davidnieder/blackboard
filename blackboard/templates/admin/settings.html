@@ -63,7 +63,7 @@
         <td>
           <select id="default_template">
           {% for option in settings.templates.split(',') %}
-            <option value="{{ option }}" {% if option == settings.default_template %} selected{% endif %}>{{ option }}</option>
+            <option value="{{ option }}" {%- if option == settings.default_template %} selected{% endif %}>{{ option }}</option>
           {% endfor %}
           </select>
         </td>
@@ -73,32 +73,20 @@
         <td colspan="3" style="text-align:center">Upload settings</td>
       </tr>
       <tr>
-        <td>Max size for images:<br><span>(in bytes)</span></td>
-        <td><input type="text" value="{{ settings.max_image_size }}" id="max_image_size"></td>
-        <td><input type="button" id="change_max_image_size" value="change" onclick="changeSetting('max_image_size')"></td>
+        <td>Upload destination:<br><span>(must be writable by the server)</span></td>
+        <td><input type="text" value="{{ settings.upload_destination }}" id="upload_destination"></td>
+        <td><input type="button" id="change_upload_destination" value="change" onclick="changeSetting('upload_destination')"></td>
       </tr>
       <tr>
-        <td>Allowed extensions for images:<br><span>(comma separated)</span></td>
-        <td><input type="text" value="{{ settings.image_extensions }}" id="image_extensions"></td>
-        <td><input type="button" id="change_image_extensions" value="change" onclick="changeSetting('image_extensions')"></td>
+        <td>Max size for files:<br><span>(in bytes)i</span></td>
+        <td><input type="text" value="{{ settings.max_file_size }}" id="max_file_size"></td>
+        <td><input type="button" id="change_max_file_size" value="change" onclick="changeSetting('max_file_size')"></td>
       </tr>
       <tr>
-        <td>Max size for audio files:<br><span>(in bytes)</span></td>
-        <td><input type="text" value="{{ settings.max_audio_size }}" id="max_audio_size"></td>
-        <td><input type="button" id="change_max_audio_size" value="change" onclick="changeSetting('max_audio_size')"></td>
+        <td>Allowed extensions for files:</td>
+        <td><textarea id="file_extensions">{{ settings.file_extensions }}</textarea></td>
+        <td><input type="button" id="change_allowed_file_extensions" value="change" onclick="changeSetting('file_extensions')"></td>
       </tr>
-      <tr>
-        <td>Allowed extensions for audio files:<br><span>(comma separated)</span></td>
-        <td><input type="text" value="{{ settings.audio_extensions }}" id="audio_extensions"></td>
-        <td><input type="button" id="change_audio_extensions" value="change" onclick="changeSetting('audio_extensions')"></td>
-      </tr>
-      <!--
-      <tr>
-        <td>Max size for avatars</td>
-        <td><input type="text" value="{{ settings.max_avatar_size }}" id="max_avatar_size"></td>
-        <td><input type="button" id="change_max_avatar_size" value="change" onclick="changeSetting('max_avatar_size')"></td>
-      </tr>
-      -->
       <tr>
         <td colspan="3" style="text-align:center">Facebook integration</td>
       </tr>
@@ -122,18 +110,6 @@
         <td><input type="text" value="{{ settings.facebook_app_secret }}" id="facebook_app_secret"></td>
         <td><input type="button" id="change_facebook_app_secret" value="change" onclick="changeSetting('facebook_app_secret')"></td>
       </tr>
-      <!--
-      <tr>
-        <td>Max size for files:</td>
-        <td><input type="text" value="{{ settings.max_file_size }}" id="max_file_size"></td>
-        <td><input type="button" id="" value="change"></td>
-      </tr>
-      <tr>
-        <td>Allowed extensions for files:</td>
-        <td><input type="text" value="{{ settings.file_extensions }}" id="file_extensions"></td>
-        <td><input type="button" id="" value="change"></td>
-      </tr>
-      -->
       <tr>
         <td colspan="3" style="text-align:center">Internal settings</td>
       </tr>

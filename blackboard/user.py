@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from flask.ext.login import current_user, login_user, logout_user
+from flask.ext.login import current_user, login_user, logout_user, \
+                            AnonymousUser
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import exceptions
@@ -70,6 +71,9 @@ class User:
     def is_anonymous(self):
         return False
 
+    def is_admin(self):
+        return self.admin
+
     def get_id(self):
         return unicode(self.id)
 
@@ -79,6 +83,9 @@ class User:
 
     def logout(self):
         logout_user()
+
+    def get_db_obj(self):
+        return self.db_user
 
 
 class NewUser(User):
@@ -160,12 +167,6 @@ def get_current_db_user():
     else:
         return None
 
-def current_user_is_admin():
-    if current_user.is_anonymous():
-        return False
-    else:
-        return True if current_user.admin else False
-
 def get_posts_per_page():
     if current_user.is_anonymous():
         return config.get('posts_per_page', int)
@@ -180,4 +181,9 @@ def get_template():
 
 def get_user_list():
     return DBUsers.query.all()
+
+# Monkey patch AnonymousUser class (flask-login)
+def is_admin():
+    return false
+AnonymousUser.is_admin = is_admin
 
