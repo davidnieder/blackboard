@@ -1,0 +1,33 @@
+    <div class="post">
+      <h5 class="post author">Post 
+        <a href="/public/{{ post.public_id }}/">#{{ post.id }}</a> by {{ post.user.name }}
+      </h5>
+      <h5 class="post date">on {{ post.time |date }}</h5>
+      <div class="post icon">
+        <img src="/static/img/{{ post.content_type }}.png" height="50" alt="icon">
+      </div>
+      <h3 class="post title">
+      <a href="/public/{{ post.public_id }}/">{{ post.title }}</a></h3>
+
+    {%- if post.content_type == 'text' %}
+      <div class="post text">
+        {{ post.content |safe }}
+      </div>
+
+    {%- elif post.content_type == 'link' %}
+      <div class="post link"><a href="{{ post.content }}">{{ post.content }}</a></div>
+      <div class="post text">{{ post.comment |safe }}</div>
+
+    {%- elif post.content_type in ['video', 'audio'] %}
+      <div class="post embedded">{{ post.content |safe }}</div>
+      <div class="post text">{{ post.comment |safe }}</div>
+
+    {%- elif post.content_type == 'image' %}
+      <div class="post image"><img src="{{ post.content }}"></div>
+      <div class="post text">{{ post.comment |safe }}</div>
+    {%- endif %}
+
+	  <div class="post public_link_field">
+        <a href="{{ request.url_root }}public/{{ post.public_id }}/">Permalink: [I]</a>
+      </div>
+    </div>

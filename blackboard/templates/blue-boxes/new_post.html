@@ -1,0 +1,227 @@
+{% extends 'default/base.html' %}
+
+{% block title %}<title>Neuer Eintrag - Blackboard</title>{% endblock %}
+
+{%- block scripts %}
+  <script type="text/javascript">
+    var post_type = '{{ post_type }}';
+    var upload_type = '{{ post_type }}';
+    var upload_handler = '/upload/{{ post_type }}/';
+  </script>
+  <script type="text/javascript" src="/static/script/ajax-upload.js"></script>
+  <script type="text/javascript" src="/static/script/new_post.js"></script>
+{%- endblock %}
+
+{%- block iconband %}
+  {% include 'default/icon_band.html' %}
+{%- endblock %}
+
+{%- block content %}
+  <div id="newpost">
+  {% if post_type == 'text' %}<img src="/static/img/text.png">
+  {% elif post_type == 'image' %}<img src="/static/img/image.png">
+  {% elif post_type == 'video' %}<img src="/static/img/video.png">
+  {% elif post_type == 'link' %}<img src="/static/img/link.png">
+  {% elif post_type == 'audio' %}<img src="/static/img/audio.png">{% endif %}
+
+  <h3>Write a new post</h3>
+  <div id="mask">
+    <table>
+  {% if post_type == 'text' %}
+      <tr>
+        <th colspan="2">Post a text</th>
+      </tr>
+      <tr>
+        <td>Title:<br>(optional)</td>
+        <td><input type="text" size="46" id="post_title"></td>
+      </tr>
+      <tr>
+        <td>Text:</td>
+        <td>
+          <textarea cols="53" rows="15" id="post_content"></textarea>
+          <span style="font-size:0.8em">You can use the following html-tags:<br>
+            &lt;a&gt; &lt;b&gt; &lt;i&gt; &lt;s&gt; &lt;u&gt; &lt;br&gt; &lt;strike&gt; &lt;strong&gt;
+          </span>
+        </td>
+  {% elif post_type == 'link' %}
+      <tr>
+        <th colspan="2">Post a link</th>
+      </tr>
+      <tr>
+        <td>Title:<br>(optional)</td>
+        <td><input type="text" size="46" id="post_title"></td>
+      </tr>
+      <tr>
+        <td>URL/URI:</td><td><input type="text" size="46" id="post_content"></td>
+      </tr>
+      <tr>
+        <td>Comment:<br>(optional)</td>
+        <td>
+          <textarea cols="53" rows="12" id="post_comment"></textarea>
+        </td>
+      </tr>
+  {% elif post_type == 'video' %}
+      <tr>
+        <th colspan="2">Post a video</th>
+      </tr>
+      <tr>
+        <td>Title:<br>(optional)</td>
+        <td><input type="text" size="46" id="post_title"></td>
+      </tr>
+      <tr>
+        <td>Embed-<br>Code:</td>
+        <td><textarea cols="53" rows="3" id="post_content"></textarea></td>
+      </tr>
+      <tr>
+        <td>Comment:<br>(optional)</td>
+        <td>
+          <textarea cols="53" rows="12" id="post_comment"></textarea>
+        </td>
+      </tr>
+  {% elif post_type == 'image' %}
+      <tr>
+        <th colspan="2">Post an image</th>
+      </tr>
+      <tr>
+        <td>Title:<br>(optional)</td>
+        <td><input type="text" size="46" id="post_title"></td>
+      </tr>
+{# snipet for posting an image by uri #}
+      <tr name="url_post">
+        <td>URI:</td>
+        <td>
+          <input type="text" size="46" id="post_content">
+        </td>
+      </tr>
+      <tr name="url_post">
+        <td></td>
+        <td>
+          <a href="#" onclick="switch_to_upload(true)">Upload an image</a>
+        </td>
+      </tr>
+{# snipet for uploading an image #}
+      <tr name="upload_post" style="display:none">
+        <td>File:</td>
+        <td>
+          <input type="text" size="21" id="file_name" readonly>
+          <input type="button" id="browse_filesystem" value="Durchsuchen">
+          <input type="button" value="Hochladen" id="start_upload"
+                 onclick="startUpload()">
+        </td>
+      </tr>
+      <tr name="upload_post" style="display:none">
+        <td></td>
+        <td>
+          <div id="file_extensions">Allowed files: .jpg .jpe .jpeg .png .gif
+                                    .svg .bmp<br>
+            Max file size: 3MB</div>
+          <div id="progress_bar" style="display:none">Uploading file
+            <img src="/static/img/progressbar.gif" id="progress_gif"
+                 style="float:right">
+          </div>
+          <div id="upload_finished" style="display:none">
+          Successfully uploaded. You can submit this post now.</div>
+          <div id="upload_error"
+               style="display:none;color:#A52A2A;margin-top:0.3em;">
+          Upload failed. Please note allowed files extensions and max file size
+          </div>
+          <div id="switch_to_url" style="margin-top:0.5em;">
+            <a href="#" onclick="switch_to_upload(false)" id="switch_link">
+            Embed image</a></div>
+        </td>
+      </tr>
+{# end #}
+      <tr>
+        <td>Comment:<br>(optional)</td>
+        <td><textarea cols="53" rows="12" id="post_comment"></textarea>
+        </td>
+      </tr>
+  {% elif post_type == 'audio' %}
+      <tr>
+        <th colspan="2">Post a song</th>
+      </tr>
+      <tr>
+        <td>Title:<br>(optional)</td>
+        <td><input type="text" size="46" id="post_title"></td>
+      </tr>
+{# snipet for posting an song by embeding #}
+      <tr name="url_post">
+        <td>Embed-<br>Code:</td>
+        <td><textarea cols="53" rows="3" id="post_content"></textarea></td>
+      </tr>
+
+      <tr name="url_post">
+        <td></td>
+        <td>
+          <a href="#" onclick="switch_to_upload(true)">Upload an mp3</a>
+        </td>
+      </tr>
+{# snipet for uploading an mp3 #}
+      <tr name="upload_post" style="display:none">
+        <td>File:</td>
+        <td>
+          <input type="text" size="21" id="file_name" readonly>
+          <input type="button" value="Browse" id="browse_filesystem">
+          <input type="button" value="Upload" id="start_upload" onclick="startUpload()">
+        </td>
+      </tr>
+
+      <tr name="upload_post" style="display:none">
+        <td></td>
+        <td>
+          <div id="file_extensions">Allowed files: .mp3<br>Max file size: 10MB</div>
+
+          <div id="progress_bar" style="display:none">Uploading file
+            <img src="/static/img/progressbar.gif" id="progress_gif"
+                 style="float:right">
+          </div>
+
+          <div id="upload_finished" style="display:none">
+            Datei erfolgreich hochgeladen. Du kannst diesen Beitrag jetzt abschicken.
+          </div>
+
+          <div id="upload_error" style="display:none;color:#A52A2A;margin-top:0.3em;">
+            Successfully uploaded. You can submit thos post now.
+          </div>
+
+          <div id="switch_to_url" style="margin-top:0.5em;">
+            <a href="#" onclick="switch_to_upload(false)" id="switch_link">Embed audio</a>
+          </div>
+        </td>
+      </tr>
+{# end #}
+      <tr>
+        <td>Comment:<br>(optional)</td>
+        <td><textarea cols="53" rows="12" id="post_comment"></textarea>
+        </td>
+      </tr>
+  {% endif %}
+	  <tr>
+		<td></td>
+		<td>
+		  <input type="checkbox" id="public_post" value="1">
+          Mark this post as public
+        </td>
+      <tr>
+        <td></td>
+        <td>
+          <input type="button" id="submit_button" value="Submit" onclick="submitPost()">
+        </td>
+      </tr>
+    </table>
+  </div>
+    <div style="display:none">
+      <form action="/post/add/" method="post" id="postForm">
+        <input type="text" name="title" id="postFormTitle">
+        <textarea name="content" id="postFormContent"></textarea>
+        <textarea type="text" name="comment" id="postFormComment"></textarea>
+        <input type="text" name="is_public" id="postFormIsPublic">
+        <input type="text" name="content_type" id="postFormContentType">
+        <input type="text" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{%- block navigation_pos %}
+{%- endblock %}

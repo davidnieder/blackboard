@@ -1,0 +1,30 @@
+{% extends 'default/base.html' %}
+
+{%- block title %}
+<title>{{ user.name }} - Blackboard</title>
+{%- endblock %}
+
+{% block content %}
+    <div style="padding:0;margin:0;border:solid #4274A1 thin">
+    <h4>Profil of {{ user.name }}</h4>
+    <table>
+      <tr>
+        <td>Name:</td>
+        <td>{{ user.name }}</td>
+      </tr>
+      <tr>
+        <td>Email:</td>
+        <td>{{ user.email }} <a href="mailto:{{ user.email }}">(write an email)</a></td>
+      </tr>
+      <tr>
+        <td>Active?</td>
+        <td>{% if user.active %}Yes{% else %}No{% endif %}</td>
+      </tr>
+      <tr>
+        <td>Last login:</td>
+        <td>{{ user.last_login |date}}</td>
+      </tr>
+    </table>
+    <h5><a href="/posts/user/{{ user.name }}/">Show all posts of this user</a></h5>
+    </div>
+{% endblock %}

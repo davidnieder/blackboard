@@ -1,0 +1,38 @@
+  <div id="navigation">
+  {%- if not current_user.is_anonymous() %}
+    Hello, <b>{{ current_user.name }}</b>
+    <ul>
+      <li><a href="/user/{{ current_user.name }}">Profil</a></li>
+      <li><a href="/user/settings/">Settings</a></li>
+      {%- if current_user.admin %}
+      <li><a href="/admin/">Admin</a></li>
+      {%- endif %}
+      <li><a href="/logout/">Logout</a></li>
+      <li><a href="/public/">Public page</a></li>
+    </ul>
+    Filter posts:
+    <ul>
+      <li><a href="/posts/audio/">All Songs</a></li>
+      <li><a href="/posts/video/">All Videos</a></li>
+      <li><a href="/posts/image/">All Images</a></li>
+      <li><a href="/posts/text/">All Texts</a></li>
+      <li><a href="/posts/link/">All Links</a></li>
+      <li><a href="/posts/user/{{ current_user.name }}/">My Posts</a></li>
+      <li><a href="/posts/all/list/">List of all Posts</a>
+    </ul>
+    Write a new post:
+    <ul>
+      <li><a href="/post/new/audio/">Post a Song</a></li>
+      <li><a href="/post/new/video/">Post a Video</a></li>
+      <li><a href="/post/new/image/">Post an Image</a></li>
+      <li><a href="/post/new/text/">Post a Text</a></li>
+      <li><a href="/post/new/link/">Post a Link</a></li>
+    </ul>
+  {%- else %}
+    Hello, <b>Guest</b>
+    <ul>
+      <li><a href="/login/">Login</a></li>
+      <li><a href="/register/">Register</a></li>
+    </ul>
+  {%- endif %}
+  </div>

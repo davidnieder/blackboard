@@ -1,0 +1,14 @@
+{% extends 'default/public_base.html' %}
+
+{%- block content %}
+  {%- if post %}
+{% include 'default/public_post.html' %}
+  {%- else %}
+    <div class="post">
+      <h3>Eintrag nicht vorhanden</h3>
+    </div>
+  {%- endif %}
+    <div id="pagelinks">
+      <a href="/">[More]</a>
+    </div>
+{%- endblock %}
