@@ -139,16 +139,16 @@ function _delete_post(post_id)  {
 }
 
 function make_post_request(endpoint, params)    {
-    var form = document.createElement("form");
-    form.setAttribute("method", 'POST');
-    form.setAttribute("action", endpoint);
+    var form = document.createElement('form');
+    form.setAttribute('method', 'POST');
+    form.setAttribute('action', endpoint);
 
     for(var key in params) {
         if(params.hasOwnProperty(key)) {
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value", params[key]);
+            var hiddenField = document.createElement('input');
+            hiddenField.setAttribute('type', 'hidden');
+            hiddenField.setAttribute('name', key);
+            hiddenField.setAttribute('value', params[key]);
 
             form.appendChild(hiddenField);
          }
