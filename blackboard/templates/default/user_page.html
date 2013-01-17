@@ -4,9 +4,13 @@
 <title>{{ user.name }} - Blackboard</title>
 {%- endblock %}
 
-{% block content %}
-    <div style="padding:0;margin:0;border:solid #4274A1 thin">
-    <h4>Profil of {{ user.name }}</h4>
+{%- block content %}
+  <div class="content">
+    <div class="content headline">
+      <h2>Profile of {{ user.name }}</h2>
+    </div>
+
+    <div class="user-profile">
     <table>
       <tr>
         <td>Name:</td>
@@ -26,5 +30,7 @@
       </tr>
     </table>
     <h5><a href="/posts/user/{{ user.name }}/">Show all posts of this user</a></h5>
-    </div>
+    </div>  <!-- end user-profile -->
+
+  </div> <!-- end content -->
 {% endblock %}

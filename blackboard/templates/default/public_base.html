@@ -5,62 +5,74 @@
   <meta charset="UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
-  {%- block stylesheets %}
-  <link rel="stylesheet" type="text/css" href="/static/style/default/default.css">
-  {%- endblock %}
-  {%- block scripts %}
-  {%- endblock %}
-  {%- block feed %}
-  <link rel="alternate" type="application/atom+xml" title="Recent public posts" href="{{ url_for('public_feed') }}">
+  {%- block feeds %}
+  <link rel="alternate" title="Recent posts" type="application/atom+xml" href="public/feed/">
   {%- endblock %}
 
-  {% block title %}<title>Blackboard</title>{% endblock %}
+  {%- block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="/static/style/default/base.css">
+  {%- endblock %}
+
+  {%- block scripts %}
+  <script type="text/javascript" src="/static/script/sha1.js"></script>
+  <script type="text/javascript" src="/static/script/login.js"></script>
+  {%- endblock %}
+
+  {%- block title %}<title>Blackboard</title>{% endblock %}
 
 </head>
 <body>
-<div id="wrapper">
+<div class="wrapper">
 {%- block header %}
-  <div id="header"><h1><a href="/">Blackboard/public</a></h1></div>
+  <header class="site-header">
+    <h2><a href="/">Blackboard/public</a></h2>
+  </header>
 {%- endblock %}
 
-{%- block page_number %}
-{%- endblock %}
-
-<div id="content">
 {%- block messagebox %}
 {%- for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="messagebox {{ category }}">{{ message }}</div>
+  <div class="message-box">
+    <h3 class="{{ category }}">{{ message }}</h3>
+  </div>
 {%- endfor %}
-{%- endblock %}
+{% endblock %}
+
+{%- block sidebar %}
+{% include 'default/sidebar.html' %}
+{% endblock %}
 
 {%- block content %}
-{%- endblock %}
-</div>
-  
-{%- block pagelinks %}
-{%- if page_links %}
-  <div id="pagelinks">
-    {%- if page_links.prev and page_links.prev != 1 %}<a href="/public/page/{{ page_links.prev }}/">Next Entries</a>{%- endif %}
-    {%- if page_links.prev and page_links.prev != 1 %}|{% endif %}
-    {%- if page_links.prev >= 1 %}<a href="/public/">First Page</a>{%- endif %}
-    {%- if page_links.prev >= 1 and page_links.next %}|{% endif %}
-    {%- if page_links.next %}<a href="/public/page/{{ page_links.next }}/">Previous Entries</a>
-    {%- endif %}
-  </div>
-{%- endif %}
-{%- endblock %}
+  <div class="content">
+
+  {%- block posts %}
+  {% endblock %}
+
+  {%- block pagelinks %}
+  {%- if page_links %}
+    <div class="page-links">
+    {%- if page_links.prev %}<a href="/public/page/{{ page_links.prev }}/" class="prev">&larr; Newer entries</a>{%- endif %}
+    {%- if page_links.prev >= 2 %}<a href="/public/" class="first">First page</a>{%- else %}&nbsp;{%- endif %}
+    {%- if page_links.next %}<a href="/public/page/{{ page_links.next }}/" class="next">Older entries &rarr;</a>{%- endif %}
+    </div> <!-- end page-links -->
+  {%- endif %}
+  {%- endblock %}
+
+  </div> <!-- end content -->
+{% endblock %}
+
 
 {%- block footer %}
-  <div id="footer">
+  <footer class="site-footer">
     <a href="/">Home Page</a>|
     <a href="/login/">Login</a>|
     <a href="mailto:{{ FEEDBACK_ADDRESS }}">Feedback</a>|
     <a href="{{ IMPRINT_URI }}">Imprint</a>|
-    <a href="{{ url_for('public_feed') }}">Feed</a>|
+    <a href="/public/feed/">Feed</a>|
     <a href="https://github.com/davidnieder/blackboard" target="_blank">Blackboard is open source</a>
-  </div>
-{%- endblock %}
-</div>
+  </footer> <!-- end footer -->
+{% endblock %}
+
+</div> <!-- end wrapper -->
 
 </body>
 </html>

@@ -1,96 +1,20 @@
 {% extends 'default/base.html' %}
 
-{% block title %}<title>{%- if post %}Eintrag #{{ post.id }}{% endif %} - Blackboard</title>{% endblock %}
+{%- if post %}
+{% block title %}<title>Post #{{ post.id }} - Blackboard</title>{% endblock %}
+{%- endif %}
 
-{%- block iconband %}
-{% include 'default/icon_band.html' %}
-{%- endblock %}
+{% block posts %}
+  {% if post %}
 
-{%- block navigation %}
-{% include 'default/navigation.html' %}
-{%- endblock %}
+{% include 'default/post.html' %}
 
-{% block content %}
-  {%- if post %}
-    <div class="post">
-      <h5 class="post author">Post 
-        <a href="/posts/{{ post.id }}/">#{{ post.id }}</a> by
-        <a href="/user/{{ post.user.id }}/">{{ post.user.name }}</a>
-      </h5>
-      <h5 class="post date">on
-        <a href="/posts/{{ post.time |db_format }}/">{{ post.time |date_and_time }} UTC</a>
-      </h5>
-      <div class="post icon"><a href="/posts/{{ post.content_type }}/">
-      <img src="/static/img/{{ post.content_type }}.png" height="50" alt="icon"></a></div>
-      <h3 class="post title">
-      <a href="/posts/{{ post.id }}/">{{ post.title }}</a></h3>
+{% include 'default/comment.html' %}
 
-    {%- if post.content_type == 'text' %}
-      <div class="post text">
-        {{ post.content |safe }}
-      </div>
+  {% else %}
+  <div class="content headline">
+    <h2>This entry does not exist</h2>
+  </div>
 
-    {%- elif post.content_type == 'link' %}
-      <div class="post link"><a href="{{ post.content }}">{{ post.content }}</a></div>
-      <div class="post text">{{ post.comment |safe }}</div>
-
-    {%- elif post.content_type in ['video', 'audio'] %}
-      <div class="post embedded">{{ post.content |safe }}</div>
-	  {%- if post.comment %}
-      <div class="post text">{{ post.comment |safe }}</div>
-	  {%- endif %}
-
-    {%- elif post.content_type == 'image' %}
-      <div class="post image"><img src="{{ post.content }}"></div>
-      <div class="post text">{{ post.comment |safe }}</div>
-
-    {%- endif %}
-
-    {%- if post.is_public %}
-      <div class="post public_link_field">
-        public link:
-        <input type="text" size="25" onclick="this.select()"
-            value="{{ request.url_root }}public/{{ post.public_id }}/" readonly>
-      </div>
-    {%- endif %}
-
-    </div>
-    <div class="commentarea">      
-    {%- if post.comments |len == 1 %}
-      <a name="comments" href="#comments"><h4>1 comment</h4></a>
-    {%- elif post.comments |len > 1 %}
-      <a name="comments" href="#comments"><h4>{{ post.comments |len }} comments</h4></a>
-    {%- else %}
-      <a name="comments" href="#comments"><h4>No comments yet</h4></a>
-    {%- endif %}
-    {%- for comment in post.comments %}
-      <div class="commentbox">
-        <span style="float: right">
-          <h6><a name="comment{{ comment.id }}" href="#comment{{ comment.id }}">Comment: #{{ post.id }}{{ comment.id }}</a></h6>
-        </span>
-        <h5>
-          <a href="/user/{{ comment.user.name }}">{{ comment.user.name }}</a>
-          wrote on {{ comment.time |date_and_time }} UTC:
-        </h5>
-        <blockquote>{{ comment.content |safe}}</blockquote>
-      </div>
-    {%- endfor %}
-      <div class="newcomment">
-        <form action="/comment/add/" method="post">
-          <h4>Your comment</h4>
-          <input type="hidden" name="related_post" value="{{ post.id }}">
-          <textarea name="content" cols="45" rows="8"></textarea><br>
-          <div style="font-size:0.8em">You can use the following html-tags<br>
-            &lt;a&gt; &lt;b&gt; &lt;i&gt; &lt;s&gt; &lt;u&gt; &lt;br&gt; &lt;strike&gt; &lt;strong&gt;
-          </div>
-		  <input name="csrf_token" type="hidden" value="{{ csrf_token() }}">
-          <input type="submit" value="Submit">
-        </form>
-      </div>
-    </div>
-  {%- else %}
-    <div class="post">
-      <h3>Eintrag nicht vorhanden</h3>
-    </div>
-  {%- endif %}
+  {% endif %}
 {% endblock %}

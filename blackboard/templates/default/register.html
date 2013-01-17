@@ -1,8 +1,9 @@
 {% extends 'default/base.html' %}
 
 {% block title %}<title>Register - Blackbook</title>{% endblock %}
+
 {%- block stylesheets %}
-<link rel="stylesheet" type="text/css" href="/static/style/default/default.css">
+<link rel="stylesheet" type="text/css" href="/static/style/default/base.css">
 {%- endblock %}
 
 {%- block scripts %}
@@ -10,19 +11,17 @@
 <script type="text/javascript" src="/static/script/register.js"></script>
 {%- endblock %}
 
-{% block content %}
+{%- block sidebar %}
+{%- endblock %}
 
-{%- if not registration_enabled %}
-  <div style="width:800px">
-    <h3>Registration is currently disabled, sorry.</h3>
-  </div>
-{%- endif %}
+{%- block content %}
+<div class="content">
+{%- if registration_enabled %}
+    <div class="content headline">
+      <h2>Register</h2>
+    </div>
 
-  <div id="register">
-
-    <h3>Register</h3>
-
-    <div class="form_input">
+    <div class="register">
       <form id="register_form" action="/register/" method="post" onsubmit="return checkForm()">
         <dl>
         <dt>Username:</dt>
@@ -39,8 +38,14 @@
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="submit" value="Register" tabindex="5" {% if not registration_enabled %}disabled{% endif %}>
       </form>
-    </div>
+    </div> <!-- end register -->
 
-  </div>
+{%- else %}
+    <div class="content headline">
+      <h2>Regitration is currently disabled, sorry.</h2>
+    </div>
+{% endif %}
+
+  </div> <!-- end content -->
+
 {% endblock %}
-{%- block navigation_pos %}{%- endblock %}

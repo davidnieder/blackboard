@@ -1,14 +1,29 @@
 {% extends 'default/public_base.html' %}
 
-{%- block content %}
-  {%- if post %}
-{% include 'default/public_post.html' %}
-  {%- else %}
-    <div class="post">
-      <h3>Eintrag nicht vorhanden</h3>
+{%- if post %}
+{% block title %}<title>Post #{{ post.id }} - Blackboard</title>{% endblock %}
+{%- endif %}
+
+{%- block posts %}
+{%- if post %}
+    <article id="post-{{ post.public_id }}" class="post">
+      <header class="post-header">
+        <h2>{{ post.title }}</h2>
+      </header>
+      <div class="post-content">
+        {{ post.content |safe }}
+      </div>
+      <footer>
+        <span>
+          <a href="/public/{{ post.public_id }}/">Permalink</a>,
+        </span>
+        This entry was posted in <a href="/public/category/{{ post.content_type }}/">{{ post.content_type }}</a>
+        on {{ post.time |date }} by <a href="/public/user/{{ post.user.name }}/">{{ post.user.name }}</a>
+      </footer>
+    </article> <!-- end post-{{ post.pubic_id}} -->
+{%- else %}
+    <div class="content headline">
+      <h2>This post does not exist</h2>
     </div>
-  {%- endif %}
-    <div id="pagelinks">
-      <a href="/">[More]</a>
-    </div>
-{%- endblock %}
+{% endif %}
+{% endblock %}

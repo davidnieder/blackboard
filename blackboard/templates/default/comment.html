@@ -1,0 +1,36 @@
+<div class="comment-area">
+  {%- if post.comments |len == 1 %}
+  <h4><a name="comments" href="#comments">1 comment</a></h4>
+  {%- elif post.comments |len > 1 %}
+  <h4><a name="comments" href="#comments">{{ post.comments |len }} comments</a></h4>
+  {%- else %}
+  <h4><a name="comments" href="#comments">No comments yet</a></h4>
+  {% endif %}
+
+  {%- for comment in post.comments %}
+  <div id="{{ comment.id }}" class="comment-box">
+    <span class="comment-link">
+      <a name="comment{{ comment.id }}" href="#comment{{ comment.id }}">Comment: #{{ post.id }}{{ comment.id }}</a>
+    </span>
+    <a href="/user/{{ comment.user.name }}">{{ comment.user.name }}</a>
+    wrote on {{ comment.time |date_and_time }} UTC:
+    <blockquote>{{ comment.content |safe}}</blockquote>
+  </div> <!-- end comment-box -->
+  {% endfor %}
+
+  <div class="new-comment">
+    <form action="/comment/add/" method="post">
+      <h4>Your comment</h4>
+      <input type="hidden" name="related_post" value="{{ post.id }}">
+      <textarea name="content"></textarea><br>
+      You may want to use the following html-tags:
+      &lt;a&gt; &lt;b&gt; &lt;i&gt; &lt;s&gt; &lt;u&gt; &lt;strike&gt; &lt;strong&gt; &lt;quote&gt;
+      &lt;ul&gt; &lt;li&gt; &lt;dl&gt; &lt;dt&gt; &lt;dd&gt;
+      
+      <input name="csrf_token" type="hidden" value="{{ csrf_token() }}">
+      <p>
+      <input type="submit" value="Submit">
+      </p>
+    </form>
+  </div>
+</div> <!-- end comment-area -->

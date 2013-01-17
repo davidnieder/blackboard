@@ -1,0 +1,72 @@
+{%- if current_user.is_anonymous() %}
+  <div class="sidebar">
+    <h3>Hello, honored guest! Feel free to look around</h3>
+    <ul>
+      <li><a href="/">Home page</a></li>
+      <li><a href="/public/post/random/">Random post</a></li>
+      <li><a href="/public/feed/">Article feed</a></li>
+    </ul>
+
+    <h3>You may be just interested in... </h3>
+    <ul>
+      <li><a href="/public/category/video/">Videos</a></li>
+      <li><a href="/public/category/audio/">Music</a></li>
+      <li><a href="/public/category/image/">Images</a></li>
+      <li><a href="/public/category/text/">Texts</a></li>
+      <li><a href="/public/category/link/">Links</a></li>
+    </ul>
+
+    <h3>Do we already know each other? Speak friend and enter</h3>
+      <ul>
+        <form name="login" action="/login/" method="post" id="login_form">
+        <li>Username:</li>
+        <li><input type="text" id="username" name="username" tabindex="1"></li>
+        <li>Password:</li>
+        <li><input type="password" id="password" tabindex="2"></li>
+        <li><input type="checkbox" tabindex="3" id="remember_me" name="remember_me" value="True">
+          <span>Remember me on this computer<br></span>
+        </li>
+        <input type="hidden" name="password" id="hashed_pw">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <li><input type="submit" value="Login"  onclick="checkForm()" tabindex="4"></li>
+        </form>
+        <li><a href="/register/">Sign up</a></li>
+      </ul>
+
+    <h3>This site looks familiar?</h3>
+    <ul>
+        <li><a href="http://wordpress.org/extend/themes/twentytwelve" target="_blank">Twenty Twelve Worpress Theme</a></li>
+    </ul>
+  </div>
+{%- else %}
+  <div class="sidebar">
+    <h3>Hello, {{ current_user.name }}</h3>
+    <ul>
+      <li><a href="/user/{{ current_user.name }}">Profil</a></li>
+      <li><a href="/user/settings/">Settings</a></li>
+      {%- if current_user.admin %}
+      <li><a href="/admin/">Admin</a></li>
+      {%- endif %}
+      <li><a href="/logout/">Logout</a></li>
+      <li><a href="/public/">Public page</a></li>
+    </ul>
+    <h3>Create a new post:</h3>
+    <ul>
+      <li><a href="/post/new/audio/">Post a Song</a></li>
+      <li><a href="/post/new/video/">Post a Video</a></li>
+      <li><a href="/post/new/image/">Post an Image</a></li>
+      <li><a href="/post/new/text/">Post a Text</a></li>
+      <li><a href="/post/new/link/">Post a Link</a></li>
+    </ul>
+    <h3>Filter posts:</h3>
+    <ul>
+      <li><a href="/posts/audio/">All Songs</a></li>
+      <li><a href="/posts/video/">All Videos</a></li>
+      <li><a href="/posts/image/">All Images</a></li>
+      <li><a href="/posts/text/">All Texts</a></li>
+      <li><a href="/posts/link/">All Links</a></li>
+      <li><a href="/posts/user/{{ current_user.name }}/">My Posts</a></li>
+      <li><a href="/posts/all/list/">List of all Posts</a>
+    </ul>
+  </div> <!-- end sidebar -->
+{% endif %}

@@ -4,20 +4,14 @@
   <title>List of all entries - Blackboard</title>
 {%- endblock %}
 
-{%- block iconband %}
-{% include 'default/icon_band.html' %}
-{%- endblock %}
+{%- block content %}
+  <div class="content">
 
-{%- block navigation %}
-{% include 'default/navigation.html' %}
-{%- endblock %}
-
-{% block content %}
   {%- if posts %}
-    <div class="post_list">
+    <div class="post-list">
       <ul>
       {%- for post in posts %}
-		<li class="post_list_{{ post.content_type }}">
+        <li class="post-list-{{ post.content_type }}">
           <a href="/posts/{{ post.id }}/">
           Post #{{ post.id }} by {{ post.user.name }} on {{ post.time |date }}:
           {%- if post.title %} {{ post.title }}{%- else %} [no title]{%- endif %}
@@ -27,8 +21,10 @@
       </ul>
     </div>
   {%- else %}
-    <div class="post">
-      <h3>No entries found</h3>
+    <div class="content headline">
+      <h2>No entries found</h2>
     </div>
   {%- endif %}
+
+  </div> <!-- end content -->
 {% endblock %}

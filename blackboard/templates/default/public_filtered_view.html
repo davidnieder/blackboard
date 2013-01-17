@@ -1,4 +1,4 @@
-{% extends 'default/base.html' %}
+{% extends 'default/public_base.html' %}
 
 {%- block posts %}
 {%- if posts %}
@@ -13,7 +13,7 @@
   </div>
 
   {%- for post in posts %}
-{% include 'default/post.html' %}
+{% include 'default/public_post.html' %}
   {% endfor %}
 
 {%- else %}

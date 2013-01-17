@@ -42,7 +42,7 @@ function start_upload() {
     form_data.append('csrf_token', csrf_token);
 
     request = new XMLHttpRequest();
-    request.open('POST', '/upload/', true);
+    request.open('POST', '/upload/?json=true', true);
     request.onreadystatechange = upload_state_changed;
 
     request.send(form_data);
@@ -67,7 +67,6 @@ function upload_processing()    {
 }
 
 function upload_finished()  {
-    alert(request.status);
     /* hide progress bar */
     document.getElementById('upload_status').style.display = 'none';
     /* enable inputs */
@@ -75,6 +74,9 @@ function upload_finished()  {
     document.getElementById('start_upload').disabled = false;
     /* clear file name field */
     document.getElementById('file_name').value = '';
+
+    /* eval json response */
+    var response = eval('(' + request.responseText + ')');
 
     /* check http status code */
     if(request.status != 200)   {
@@ -89,8 +91,6 @@ function upload_finished()  {
         }
     }
     else    {
-        var response = eval('(' + request.responseText + ')');
-
         if(response.error == 'true')   {
             var error_area = document.getElementById('upload_error');
             error_area.style.display = 'block';
@@ -105,11 +105,11 @@ function upload_finished()  {
                 resource_area.value += '\r\n' + response.url;
             }
         }
-
-        /* update csrf token for next request */
-        document.getElementById('csrf_token').value = response.csrf_token;
-        document.getElementById('__csrf_token').value = response.csrf_token;
     }
+
+    /* update csrf token for next request */
+    document.getElementById('csrf_token').value = response.csrf_token;
+    document.getElementById('__csrf_token').value = response.csrf_token;
 
     /* clean up document tree */
     var input = document.getElementById('_file_input');

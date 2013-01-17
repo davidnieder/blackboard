@@ -10,82 +10,70 @@
   {%- endblock %}
 
   {%- block stylesheets %}
-  <link rel="stylesheet" type="text/css" href="/static/style/default/default.css">
+  <link rel="stylesheet" type="text/css" href="/static/style/default/base.css">
   {%- endblock %}
 
   {%- block scripts %}
-  {%- endblock %}
+  {%- if current_user.is_admin() %}
+  <script type="text/javascript" src="/static/script/admin.js"></script>
+  {% endif %}
+  {% endblock %}
 
-  {% block title %}<title>Blackboard</title>{% endblock %}
+  {%- block title %}<title>Blackboard</title>{% endblock %}
 
 </head>
 <body>
-<div id="wrapper">
+<div class="wrapper">
 {%- block header %}
-  <div id="header"><h1><a href="/">Blackboard</a></h1></div>
+  <header class="site-header">
+    <h2><a href="/">Blackboard</a></h2>
+  </header>
 {%- endblock %}
 
-{%- block iconband %}{%- endblock %}
-{%- block pagenumber %}{%- endblock %}
-
-{%- block headline %}
-{%- endblock %}
-
-{%- block navigation %}
-{%- endblock %}
-
-<div id="content">
 {%- block messagebox %}
 {%- for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="messagebox {{ category }}">{{ message }}</div>
+  <div class="message-box">
+    <h3 class="{{ category }}">{{ message }}</h3>
+  </div>
 {%- endfor %}
-{%- endblock %}
+{% endblock %}
+
+{%- block sidebar %}
+{% include 'default/sidebar.html' %}
+{% endblock %}
 
 {%- block content %}
-{%- endblock %}
-</div>
-  
-{%- block pagelinks %}
-{%- if page_links %}
-  <div id="pagelinks">
-    {%- if page_links.prev and page_links.prev != 1 %}<a href="/page/{{ page_links.prev }}/">Next Entries</a>{%- endif %}
-    {%- if page_links.prev and page_links.prev != 1 %}|{%- endif %}
-    {%- if page_links.prev >= 1 %}<a href="/">First Page</a>{%- endif %}
-    {%- if page_links.prev >= 1 and page_links.next %}|{% endif %}
-    {%- if page_links.next %}<a href="/page/{{ page_links.next }}/">Previous Entries</a>
-    {%- endif %}
-  </div>
-{%- endif %}
-{%- endblock %}
+  <div class="content">
+
+  {%- block posts %}
+  {% endblock %}
+
+  {%- block pagelinks %}
+  {%- if page_links %}
+    <div class="page-links">
+    {%- if page_links.prev %}<a href="/page/{{ page_links.prev }}/" class="prev">&larr; Newer entries</a>{%- endif %}
+    {%- if page_links.prev >= 2 %}<a href="/" class="first">First page</a>{%- else %}&nbsp;{%- endif %}
+    {%- if page_links.next %}<a href="/page/{{ page_links.next }}/" class="next">Older entries &rarr;</a>{%- endif %}
+    </div> <!-- end page-links -->
+  {%- endif %}
+  {%- endblock %}
+
+  </div> <!-- end content -->
+{% endblock %}
+
 
 {%- block footer %}
-  <div id="footer">
+  <footer class="site-footer">
     <a href="/">Home Page</a>|
     <a href="/admin/">Administration</a>|
     <a href="mailto:{{ FEEDBACK_ADDRESS }}">Feedback</a>|
     <a href="{{ IMPRINT_URI }}">Imprint</a>|
-    <a href="/feed/">Feed</a>|
     <a href="https://github.com/davidnieder/blackboard" target="_blank">Blackboard is open source</a>
-  </div>
-{%- endblock %}
-</div>
+  </footer> <!-- end footer -->
+{% endblock %}
 
-{% block navigation_pos %}
-<script type="text/javascript"><!--
-    var navigation = document.getElementById('navigation');
-    var footer = document.getElementById('footer');
-    if(navigation != null)  {
-      var content = document.getElementById('content')
-      // positions + widths:
-      var marginLeft = 10;
-      var contentPosition = content.offsetLeft;
-      var contentWidth = content.offsetWidth;
-      var navigationPosition = contentPosition + contentWidth + marginLeft + "px";
-      // set position of navigation container
-      navigation.style.left = navigationPosition;
-    }
---></script>
-{%- endblock %}
+</div> <!-- end wrapper -->
 
+<input id="__csrf_token" type="hidden" value="{{ csrf_token() }}">
 </body>
 </html>

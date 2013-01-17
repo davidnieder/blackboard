@@ -1,7 +1,7 @@
 {% extends 'default/base.html' %}
 
 {% block stylesheets %}
-  <link rel="stylesheet" type="text/css" href="/static/style/default/default.css">
+  <link rel="stylesheet" type="text/css" href="/static/style/default/base.css">
 {% endblock %}
 
 {%- block scripts %}
@@ -11,12 +11,16 @@
 
 {% block title %}<title>Login - Blackbook</title>{% endblock %}
 
-{%- block content %}
-  <div id="login">
+{%- block sidebar %}
+{%- endblock %}
 
-    <h3>Login</h3>
+{% block content %}
+  <div class="content">
+    <div class="content headline">
+      <h2>Login</h2>
+    </div>
 
-    <div class="form_input">
+    <div class="login">
       {%- if next %}
       <form name="login" action="/login/?next={{ next }}" method="post" id="login_form">
       {%- else %}
@@ -30,16 +34,13 @@
         </dl>
 
         <input type="checkbox" tabindex="3" id="remember_me" name="remember_me" value="True">
-          <span>Remember me on this computer</span>
+          <span>Remember me on this computer<br></span>
 
         <input type="hidden" name="password" id="hashed_pw">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <input type="submit" value="Login"  onclick="checkForm()" tabindex="4">
+        <input type="submit" value="Sign in"  onclick="checkForm()" tabindex="4">
       </form>
-    </div>
-    <a href="#">Forgot password?</a> &nbsp; <a href="/register/">Have no account? Create one.</a>
-
-  </div>
-{%- endblock %}
-{%- block navigation_pos %}{%- endblock %}
-
+      <a href="#" title="Not implemented">Forgot password?</a> &nbsp; <a href="/register/">No account? Sign up.</a>
+    </div> <!-- end login -->
+  </div> <!-- end content -->
+{% endblock %}
