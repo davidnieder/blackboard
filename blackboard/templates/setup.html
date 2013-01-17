@@ -221,20 +221,18 @@
       <h2>Database</h2>
       <p>
         To store informations like blog posts, users and other stuff blackboard needs
-        a database. You can choose from a wild range of different databases. Check
-        <a href="http://docs.sqlalchemy.org/en/rel_0_7/core/engines.html#supported-databases">
-        supported databases</a> to figure out if your prefered database is supported.<br>
+        a database. Currently tested and supported databases are SQLite and MySQL.<br>
         The only information it requires to connect to your database is an
         URI. Depending on the database you want to use this URI looks different.
         Have a look at the following examples.
       </p>
       <dl>
         <dt>SQLite</dt>
-        <dd>The SQLite database path is either absolute or relative. A absolute path starts
-            with three slashes, a relative with two.<br>
+        <dd>The SQLite database path is either absolute or relative:<br>
             <code>sqlite:////absolute/path/to/database.db</code> (absolute path)<br>
-            <code>sqlite://database.db</code> (relative path)<br>
-            Note that on a windows system the absolute path looks different. But this
+            <code>sqlite:///database.db</code> (relative path)<br>
+            Note that your web server needs write access to the folder the database is stored in.<br>
+            Also note that on a windows system the absolute path looks different. But this
             wizard does not know anything about windows systems.
         </dd>
         <dt>MySQLite</dt>
@@ -258,14 +256,14 @@
       </p>
 
       <dl>
-        <dt>Username
-        <dd><input type="text" name="username" id="username">
-        <dt>Password
-        <dd><input type="password" name="password_1" id="password_1">
-        <dt>Password (repeat)
-        <dd><input type="password" name="password_2" id="password_2">
-        <dt>E-Mail
-        <dd><input type="text" name="email" id="email">
+        <dt>Username</dt>
+        <dd><input type="text" name="username" id="username"></dd>
+        <dt>Password</dt>
+        <dd><input type="password" name="password_1" id="password_1"></dd>
+        <dt>Password (repeat)</dt>
+        <dd><input type="password" name="password_2" id="password_2"></dd>
+        <dt>E-Mail</dt>
+        <dd><input type="text" name="email" id="email"></dd>
       </dl>
 
       <h2>That's all</h2>

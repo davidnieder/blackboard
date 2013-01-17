@@ -6,7 +6,7 @@ installed:
 
 - Python 2.6 or higher (Python 3 is not supported)
 - Flask
-- A database (a database supported by SQLAlchemy, SQLite comes with python)
+- A database (currently tested: MySQL, SQLite)
 - SQLAlchemy
 - lxml
 - oauth2
@@ -14,6 +14,7 @@ installed:
 - Flask-OAuth
 - Flask-SQLAlchemy
 - Flask-Uploads
+- mysql-python (when using MySQL)
 
 Once you have python installed you can install all other dependencies via pip
 or easy_install.
