@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import hashlib
+import uuid
 import random
 from datetime import datetime
 
@@ -11,6 +11,8 @@ import user
 import config
 from database import db, Posts as DBPosts
 
+
+post_categories = config.get('post_categories', list)
 
 class Posts():
 
@@ -44,7 +46,7 @@ class Posts():
             query = query.filter_by(user_id=self.user_id)
 
         if self.post_filter:
-            if self.post_filter in config.get('post_categories', list):
+            if self.post_filter in post_categories:
                 # filter by categories
                 query = query.filter_by(content_type=self.post_filter)
             else:
@@ -111,6 +113,28 @@ class Post():
             db.session.add(self.db_post)
             db.session.commit()
 
+    def edit(self, new_post):
+        self.title = new_post.title
+        self.content = new_post.content
+        self.comment = new_post.comment
+        self.content_type = new_post.content
+        self.is_public = new_post.is_public
+        self.db_post.title = new_post.title
+        self.db_post.content = new_post.content
+        self.db_post.comment = new_post.comment
+        self.db_post.content_type = new_post.content_type
+        self.db_post.is_public = new_post.is_public
+
+        if self.is_public and not self.public_id:
+            self.public_id = generate_public_id(self.time, self.user.id)
+            self.db_post.public_id = self.public_id
+            new_post.public_id = self.public_id
+
+        new_post.id = self.id
+
+        db.session.add(self.db_post)
+        db.session.commit()
+
     def get_post(self):
         if not self.id:
             return None
@@ -123,17 +147,8 @@ class Post():
 
     def set_public(self):
         if not self.public_id:
-            while True:
-                md5_hash = hashlib.md5()
-                md5_hash.update(str(self.time)+str(self.user.id))
-                public_id = md5_hash.hexdigest()[:5]
-
-                if DBPosts.query.filter_by(public_id=public_id).first():
-                    continue
-                else:
-                    self.public_id = public_id
-                    self.db_post.public_id = public_id
-                    break
+            self.public_id = generate_public_id(self.time, self.user.id)
+            self.db_post.public_id = self.public_id
 
         self.is_public = True
         self.db_post.is_public = True
@@ -146,44 +161,36 @@ class NewPost():
 
     def __init__(self, form):
         try:
-            validate = inputvalidation.NewPostForm(form)
-            self.new_post = validate.validated_form
-        except:
-            raise exceptions.CantValidateForm
+            post_form = inputvalidation.ValidatePostForm(form)
+        except exceptions.CantValidateForm:
+            raise exceptions.CantCreateNewPost
 
-        self.title = self.new_post['title'] if self.new_post['title'] \
-                                            else ''
-        self.content = self.new_post['content']
-        self.comment = self.new_post['comment'] if self.new_post['comment'] \
-                                                else ''
-        self.content_type = self.new_post['content_type']
+        self.title = post_form.title
+        self.content = post_form.content
+        self.content_type = post_form.category
+        self.is_public = post_form.is_public
+
+        # legacy
+        self.comment = None
+
         self.time = datetime.now()
-        self.user = user.get_current_db_user()
+        self.user = user.get_current_user()
 
-        if self.new_post['is_public']:
-            self.is_public = True
-            while True:
-                md5_hash = hashlib.md5()
-                md5_hash.update(str(self.time)+str(self.user.id))
-                public_id = md5_hash.hexdigest()[:5]
-
-                if DBPosts.query.filter_by(public_id=public_id).first():
-                    continue
-                else:
-                    self.public_id = public_id
-                    break
+        # generate public id
+        if self.is_public:
+            self.public_id = generate_public_id(self.time, self.user.id)
         else:
             self.is_public = False
             self.public_id = None
 
-    def safe(self):
+    def save(self):
         # create post object
         self.db_post = DBPosts(title = self.title,
                                content = self.content,
                                comment = self.comment,
                                content_type = self.content_type,
                                time = self.time,
-                               user = self.user,
+                               user = self.user.get_db_obj(),
                                is_public = self.is_public,
                                public_id = self.public_id)
 
@@ -194,9 +201,29 @@ class NewPost():
         # now this post has an id
         self.id = self.db_post.id
 
+    def generate_public_id(self):
+        while True:
+            md5_hash = hashlib.md5()
+            md5_hash.update(str(self.time)+str(self.user.id))
+            public_id = md5_hash.hexdigest()[:5]
+
+            if DBPosts.query.filter_by(public_id=public_id).first():
+                continue
+            else:
+                self.public_id = public_id
+                break
+
     def get_id(self):
         return self.id
 
+
+def generate_public_id(time, user_id):
+    while True:
+        public_id = uuid.uuid4().hex[:5]
+        if DBPosts.query.filter_by(public_id=public_id).first():
+            continue
+        else:
+            return public_id
 
 def check_if_post_exists(post_id):
     if DBPosts.query.filter_by(id=post_id).first():

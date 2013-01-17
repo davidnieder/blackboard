@@ -3,11 +3,11 @@
 from datetime import datetime
 
 import exceptions
-import inputvalidation
 import post
 
 from user import get_current_user
 from database import db, Comments as DBComments
+from inputvalidation import ValidateCommentForm
 
 
 class Comments():
@@ -57,23 +57,23 @@ class NewComment():
 
     def __init__(self, form):
         try:
-            validate = inputvalidation.NewCommentForm(form)
-            self.content = validate.get_content()
-            self.related_post = validate.get_related_post_id()
-        except:
+            comment_form = ValidateCommentForm(form)
+        except exceptions.CantValidateForm:
             raise exceptions.CantCreateNewComment
+
+        self.content = comment_form.content
+        self.related_post = comment_form.related_post
+        self.time = datetime.now()
 
         if not post.check_if_post_exists(self.related_post):
             raise exceptions.CantCreateNewComment
-
-        self.time = datetime.utcnow()
 
         if not get_current_user():
             raise exceptions.CantCreateNewComment
 
         self.user_id = get_current_user().id
 
-    def safe(self):
+    def save(self):
         self.db_comment = DBComments(
                                 content = self.content,
                                 time = self.time,
