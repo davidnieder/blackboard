@@ -17,14 +17,14 @@ db = SQLAlchemy(app)
 class Posts(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String)
-    content = db.Column(db.String)
-    comment = db.Column(db.String)
+    title = db.Column(db.String(120))
+    content = db.Column(db.Text)
+    comment = db.Column(db.Text)
     content_type = db.Column(db.String(5))
     time = db.Column(db.DateTime)
 
     is_public = db.Column(db.Boolean)
-    public_id = db.Column(db.String, unique=True)
+    public_id = db.Column(db.String(6), unique=True)
 
     comments = db.relationship('Comments', backref='posts')
 
@@ -49,7 +49,7 @@ class Users(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), unique=True)
-    password = db.Column(db.String)
+    password = db.Column(db.String(80))
     email = db.Column(db.String(80), unique=True)
 
     admin = db.Column(db.Boolean)
@@ -59,8 +59,8 @@ class Users(db.Model):
     posts_per_page = db.Column(db.Integer)
     email_notification = db.Column(db.Boolean)
     remember_me = db.Column(db.Boolean)
-    template = db.Column(db.String)
-    avatar = db.Column(db.String)
+    template = db.Column(db.String(40))
+    avatar = db.Column(db.String(80))
     facebook_integration = db.Column(db.Boolean)
 
 
@@ -84,7 +84,7 @@ class Users(db.Model):
 class Comments(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String)
+    content = db.Column(db.Text)
     time = db.Column(db.DateTime)
 
     related_post = db.Column(db.Integer, db.ForeignKey('posts.id'))
