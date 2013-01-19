@@ -1,89 +1,50 @@
 # -*- coding: utf-8 -*-
 
+import os
 import uuid
+from werkzeug import secure_filename
+from flask import request, url_for
 
-from flaskext import uploads
-
-from base import app
-import exceptions
 import config
+import exceptions
+from base import app
 
 
-def initializeUpload(uploadType):
-    if uploadType == 'images':
-        uploadDestination = config.get('upload_destination') + 'images/'
-        UploadSet = uploads.UploadSet('images', config.get('image_extensions',
-                            tuple), lambda dest: uploadDestination)
-        uploads.configure_uploads(app, UploadSet)
-        return UploadSet
-    elif uploadType == 'files':
-        uploadDestination = config.get('upload_destination') + 'files/'
-        UploadSet = uploads.UploadSet('files', config.get('file_extensions',
-                            tuple), lambda dest: uploadDestination)
-        uploads.configure_uploads(app, UploadSet)
-        return UploadSet
-    elif uploadType == 'avatars':
-        uploadDestination = config.get('upload_destination') + 'avatars/'
-        UploadSet = uploads.UploadSet('avatars', config.get('image_extensions',
-                            tuple), lambda dest: uploadDestination)
-        uploads.configure_uploads(app, UploadSet)
-        return UploadSet
-    elif uploadType == 'audio':
-        uploadDestination = config.get('upload_destination') + 'audio/'
-        UploadSet = uploads.UploadSet('audio', config.get('audio_extensions',
-                            tuple), lambda dest: uploadDestination)
-        uploads.configure_uploads(app, UploadSet)
-        return UploadSet
-    else:
-        raise exceptions.CantCreateUploadSet()
+upload_directory = config.get('upload_destination')
 
+class NewUpload():
 
-class Upload():
-
-    def __init__(self, UploadSet):
-        if UploadSet == 'images':
-            from base import imageUploadSet
-            self.UploadSet = imageUploadSet
-        elif UploadSet == 'files':
-            from base import fileUploadSet
-            self.UploadSet = fileUploadSet
-        elif UploadSet == 'avatars':
-            from base import avatarUploadSet
-            self.UploadSet = avatarUploadSet
-        elif UploadSet == 'audio':
-            from base import audioUploadSet
-            self.UploadSet = audioUploadSet
+    def __init__(self):
+        if request.files.has_key('file'):
+            self.file = request.files['file']
         else:
-            raise exceptions.NoSuchUploadSet
+            raise exceptions.UploadFailed('No file given or bad request')
 
-    def save(self, sentfile):
-        self.file = sentfile
-        self.uniqueFilename()
+        self.allowed_extensions = config.get('file_extensions', list)
+        self.filename = self.file.filename.rsplit('.', 1)[0]
+        self.file_extension = self.file.filename.rsplit('.', 1)[1]
+
+        self.file_is_allowed()
+        self.unique_filename()
+
+    def save(self):
+        self.filepath = os.path.join(upload_directory, self.filename)
         try:
-            self.name = self.UploadSet.save(self.file, name=self.name)
-        except uploads.UploadNotAllowed:
-            raise exceptions.UploadFailed
+            self.file.save(self.filepath)
+        except IOError:
+            raise exceptions.UploadFailed('Can\'t save file due to io error')
 
-    def url(self):
-        return self.UploadSet.url(self.name)
+        self.url = url_for('serve_uploaded_file', filename=self.filename,
+                           _external=True)
 
-    def uniqueFilename(self):
-        self.name = self.file.filename
-        if len(self.name) > 32:
-            self.name = self.name[ (len(self.name)-32): ]
-            
-        self.name = uuid.uuid4().hex[:16] + '__' + self.name
-        return self.name
+    def unique_filename(self):
+        self.filename = secure_filename(self.filename)
+        if len(self.filename) > 46:
+            self.filename = self.filename[:46]
+        self.filename = self.filename + '__' + uuid.uuid4().hex[:16] + '.' + \
+                        self.file_extension
 
-def setFileSize(uploadType):
-    if uploadType == 'images':
-        uploads.patch_request_class(app, config.get('max_image_size', int))
-    elif uploadType == 'files':
-        uploads.patch_request_class(app, config.get('max_file_size', int))
-    elif uploadType == 'avatars':
-        uploads.patch_request_class(app, config.get('max_avatar_size', int))
-    elif uploadType == 'audio':
-        uploads.patch_request_class(app, config.get('max_audio_size', int))
-    else:
-        raise exceptions.NoSuchUploadSet()
+    def file_is_allowed(self):
+        if self.file_extension not in self.allowed_extensions:
+            raise exception.UploadFailed('File extension not allowed')        
 

@@ -27,6 +27,9 @@ app.add_url_rule('/user/settings/', view_func=views.user_settings,
 # post views
 app.add_url_rule('/posts/<int:post_id>/', view_func=views.get_post)
 
+app.add_url_rule('/posts/<int:post_id>/edit/', view_func=views.edit_post,
+                 methods=['GET', 'POST'])
+
 app.add_url_rule('/posts/<filter>/', view_func=views.get_posts)
 
 app.add_url_rule('/posts/<filter>/<int:page_number>/',
@@ -43,7 +46,12 @@ app.add_url_rule('/page/<int:page_number>/', view_func=views.get_page)
 
 
 # new post, comment
+app.add_url_rule('/post/new/', view_func=views.new_post)
+
 app.add_url_rule('/post/new/<post_type>/', view_func=views.new_post)
+
+app.add_url_rule('/post/preview/', view_func=views.preview_post,
+                 methods=['POST'])
 
 app.add_url_rule('/post/add/', view_func=views.add_post, methods=['POST'])
 
@@ -52,8 +60,10 @@ app.add_url_rule('/comment/add/', view_func=views.add_comment,
 
 
 # uploads
-app.add_url_rule('/upload/<file_type>/', view_func=views.handle_upload,
+app.add_url_rule('/upload/', view_func=views.handle_upload,
                  methods=['POST'])
+
+app.add_url_rule('/upload/<filename>', view_func=views.serve_uploaded_file)
 
 
 # public pages

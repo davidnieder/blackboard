@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import render_template, request, redirect, url_for, flash, abort
-from flask import session, jsonify
+from flask import session, jsonify, send_from_directory
 from flask.ext.login import login_required
 from werkzeug.contrib.atom import AtomFeed
 
@@ -11,7 +11,7 @@ import config
 import messages
 
 from user import User, NewUser, get_current_user, get_posts_per_page
-from post import Posts, Post, NewPost, get_random_post
+from post import Posts, Post, NewPost, post_categories, get_random_post
 from comment import NewComment
 from usersettings import UserSettings
 
@@ -156,28 +156,34 @@ def get_minimal_post_list():
 
 # new post, comment
 @login_required
-def new_post(post_type):
-    if post_type in config.get('post_categories', list):
-        if post_type == 'image':
-            upload.setFileSize('images')
-        elif post_type == 'audio':
-            upload.setFileSize('audio')
-
+def new_post(post_type=None):
+    if post_type in post_categories or post_type is None:
         return render_template(get_template('new_post.html'), \
                                post_type=post_type)
-    abort(404)
+    else:
+        abort(404)
+
+@login_required
+def preview_post():
+    try:
+        post = NewPost(request.form)
+    except exceptions.CantCreateNewPost:
+        flash(messages.post_error, 'error')
+        return redirect(url_for('new_post'))
+
+    return render_template(get_template('edit_preview.html'), post=post)
 
 @login_required
 def add_post():
     try:
         post = NewPost(request.form)
-        post.safe()
+        post.save()
 
         flash(messages.post_created, 'message')
 
     except exceptions.CantCreateNewPost:
         flash(messages.post_error, 'error')
-        return redirect(url_for('index'))
+        return redirect(url_for('new_post'))
 
     # push this post to facebook?
     if config.get('facebook_integration', bool):
@@ -188,13 +194,35 @@ def add_post():
     return redirect(url_for('index'))
 
 @login_required
+def edit_post(post_id):
+    old_post = Post(post_id=post_id)
+    if not old_post.id:
+        abort(404)
+    if old_post.user_id != get_current_user().id or \
+       not get_current_user().is_admin():
+        abort(403)
+
+    if request.method == 'GET':
+        return render_template(get_template('edit_preview.html'),
+                               action='edit', post=old_post)
+    else:
+        try:
+            new_post = NewPost(request.form)
+            old_post.edit(new_post)
+        except exceptions.CantCreateNewPost:
+            flash(messages.post_edit_error, 'error')
+            return render_template(get_template('edit_preview'), action='edit',
+                                   post=request.form)
+        flash(messages.post_edited, 'message')
+        return redirect(url_for('get_post', post_id=old_post.id))
+
+@login_required
 def add_comment():
     try:
         comment = NewComment(request.form)
-        comment.safe()
+        comment.save()
 
         return redirect('/posts/' + str(comment.related_post) + '/#comments')
-
     except exceptions.CantCreateNewComment:
         flash(messages.comment_error, 'error')
 
@@ -203,22 +231,21 @@ def add_comment():
 
 # file upload
 @login_required
-def handle_upload(file_type):
-    if file_type == 'image':
-        u = upload.Upload('images')
-    elif file_type == 'audio':
-        u = upload.Upload('audio')
-
+def handle_upload():
     # generate csrf token for next request
     from base import generate_csrf_token
     csrf_token = generate_csrf_token()
 
     try:
-        u.save(request.files['file'])
-        return jsonify(url=u.url(), error='false',
-                       csrf_token=csrf_token)
-    except:
-        return jsonify(error='true', csr_token=csrf_token)
+        new_upload = NewUpload()
+        new_upload.save()
+    except exceptions.UploadFailed:
+        return jsonify(error='true', csrf_token=csrf_token)
+
+    return jsonify(url=new_upload.url, error='false', csrf_token=csrf_token)
+
+def serve_uploaded_file(filename):
+    return send_from_directory(upload.upload_directory, filename)
 
 
 # public pages
