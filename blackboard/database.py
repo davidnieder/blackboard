@@ -19,7 +19,6 @@ class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     content = db.Column(db.Text)
-    comment = db.Column(db.Text)
     content_type = db.Column(db.String(5))
     time = db.Column(db.DateTime)
 

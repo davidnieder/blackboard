@@ -91,7 +91,6 @@ class Post():
             self.id = self.db_post.id
             self.title = self.db_post.title
             self.content = self.db_post.content
-            self.comment = self.db_post.comment
             self.content_type = self.db_post.content_type
             self.time = self.db_post.time
             self.is_public = self.db_post.is_public
@@ -116,12 +115,10 @@ class Post():
     def edit(self, new_post):
         self.title = new_post.title
         self.content = new_post.content
-        self.comment = new_post.comment
         self.content_type = new_post.content
         self.is_public = new_post.is_public
         self.db_post.title = new_post.title
         self.db_post.content = new_post.content
-        self.db_post.comment = new_post.comment
         self.db_post.content_type = new_post.content_type
         self.db_post.is_public = new_post.is_public
 
@@ -140,10 +137,9 @@ class Post():
             return None
         else:
             return dict(id=self.id, title=self.title, content=self.content,
-                        comment=self.comment, content_type=self.content_type,
-                        time=self.time, is_public=self.is_public,
-                        public_id=self.public_id, comments=self.comments,
-                        user=self.user)
+                        content_type=self.content_type, time=self.time,
+                        is_public=self.is_public, public_id=self.public_id,
+                        comments=self.comments, user=self.user)
 
     def set_public(self):
         if not self.public_id:
@@ -170,9 +166,6 @@ class NewPost():
         self.content_type = post_form.category
         self.is_public = post_form.is_public
 
-        # legacy
-        self.comment = None
-
         self.time = datetime.now()
         self.user = user.get_current_user()
 
@@ -187,7 +180,6 @@ class NewPost():
         # create post object
         self.db_post = DBPosts(title = self.title,
                                content = self.content,
-                               comment = self.comment,
                                content_type = self.content_type,
                                time = self.time,
                                user = self.user.get_db_obj(),
