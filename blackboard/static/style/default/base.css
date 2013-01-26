@@ -154,7 +154,7 @@ input[type="button"]:disabled  {
 .sidebar ul {
   margin-bottom: 48px;
   list-style: none outside none;
-  padding-left: 2px;
+  padding-left: 0px;
 }
 .sidebar ul form  {
   margin-bottom: 10px;
@@ -162,6 +162,14 @@ input[type="button"]:disabled  {
 .sidebar li {
   font-size: 13px;
   line-height: 1.846153846;
+}
+.sidebar li input[type="checkbox"]  {
+/*  margin-right: 0px;*/
+  margin-left: 0px;
+  vertical-align: middle;
+}
+.sidebar li input[type="submit"]  {
+  margin-top: 8px;
 }
 .sidebar a  {
   color: #757575;
@@ -311,6 +319,8 @@ iframe, object, video  {
 .login input[type="checkbox"]  {
   margin-top: 0px;
   margin-left: 0px;
+  margin-bottom: 0px;
+  vertical-align: middle;
 }
 .login input[type="submit"]  {
   margin-top: 5px;
