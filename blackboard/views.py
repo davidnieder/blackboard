@@ -285,7 +285,8 @@ def public_user_posts(username, page_number=1):
     page_links = calc_page_links(len(posts), page_number)
 
     return render_template(get_template('public_filtered_view.html'),
-                           posts=posts, username=username, type='user')
+                           posts=posts, username=username, type='user',
+                           page_links=page_links)
 
 def public_random_post():
     post = get_random_post()

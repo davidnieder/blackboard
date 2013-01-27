@@ -50,9 +50,9 @@
   {%- block pagelinks %}
   {%- if page_links %}
     <div class="page-links">
-    {%- if page_links.prev %}<a href="/public/page/{{ page_links.prev }}/" class="prev">&larr; Newer entries</a>{%- endif %}
-    {%- if page_links.prev >= 2 %}<a href="/public/" class="first">First page</a>{%- else %}&nbsp;{%- endif %}
-    {%- if page_links.next %}<a href="/public/page/{{ page_links.next }}/" class="next">Older entries &rarr;</a>{%- endif %}
+      {% if page_links.prev %}<a href="/public/page/{{ page_links.prev }}/" class="prev">&larr; Newer entries</a>{% endif %}
+      {% if page_links.prev >= 2 %}<a href="/public/" class="first">First page</a>{% else %}&nbsp;{% endif %}
+      {% if page_links.next %}<a href="/public/page/{{ page_links.next }}/" class="next">Older entries &rarr;</a>{% endif %}
     </div> <!-- end page-links -->
   {%- endif %}
   {%- endblock %}

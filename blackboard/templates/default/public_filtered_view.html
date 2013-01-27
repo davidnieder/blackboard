@@ -22,3 +22,19 @@
   </div>
 {% endif %}
 {% endblock %}
+
+{%- block pagelinks %}
+{%- if page_links %}
+  <div class="page-links">
+  {%- if type == 'user' %}
+    {% if page_links.prev %}<a href="/public/user/{{ username }}/{{ page_links.prev }}/" class="prev">&larr; Newer entries</a>{% endif %}
+    {% if page_links.prev >= 2 %}<a href="/public/user/{{ username }}/1/" class="first">First page</a>{% else %}&nbsp;{% endif %}
+    {% if page_links.next %}<a href="/public/user/{{ username }}/{{ page_links.next }}/" class="next">Older entries &rarr;</a>{% endif %}
+  {%- elif type in ['text', 'link', 'image', 'audio', 'video'] %}
+    {% if page_links.prev %}<a href="/public/category/{{ type }}/{{ page_links.prev }}/" class="prev">&larr; Newer entries</a>{% endif %}
+    {% if page_links.prev >= 2 %}<a href="/public/category/{{ type }}/1/" class="first">First page</a>{% else %}&nbsp;{% endif %}
+    {% if page_links.next %}<a href="/public/category/{{ type }}/{{ page_links.next }}/" class="next">Older entries &rarr;</a>{% endif %}
+  {%- endif %}
+  </div>
+{%- endif %}
+{%- endblock %}

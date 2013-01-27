@@ -8,7 +8,7 @@
   {%- elif type == 'user' %}
     <h2>All entries posted by {{ username }}:</h2>
   {%- else %}
-    <h2>All entries posted on {{ type.split('-')[2] }}.{{type.split('-')[1]}}.{{type.split('-')[0]}}:</h2>
+    <h2>All entries posted on {{ type.split('-')[2] }}.{{ type.split('-')[1] }}.{{ type.split('-')[0] }}:</h2>
   {%- endif %}
   </div>
 
@@ -21,4 +21,20 @@
     <h2>No entries found in this category</h2>
   </div>
 {% endif %}
-{% endblock %}
+{%- endblock %}
+
+{%- block pagelinks %}
+{% if page_links %}
+  <div class="page-links">
+  {%- if type == 'user' %}
+    {% if page_links.prev %}<a href="/posts/user/{{ username }}/{{ page_links.prev }}/" class="prev">&larr; Newer entries</a>{% endif %}
+    {% if page_links.prev >= 2 %}<a href="/posts/user/{{ username }}/1/" class="first">First page</a>{% else %}&nbsp;{% endif %}
+    {% if page_links.next %}<a href="/posts/user/{{ username }}/{{ page_links.next }}/" class="next">Older entries &rarr;</a>{% endif %}
+  {%- elif type in ['text', 'link', 'image', 'audio', 'video'] %}
+    {% if page_links.prev %}<a href="/posts/{{ type }}/{{ page_links.prev }}/" class="prev">&larr; Newer entries</a>{% endif %}
+    {% if page_links.prev >= 2 %}<a href="/posts/{{ type }}/1/" class="first">First page</a>{% else %}&nbsp;{% endif %}
+    {% if page_links.next %}<a href="/posts/{{ type }}/{{ page_links.next }}/" class="next">Older entries &rarr;</a>{% endif %}
+   {%- endif %}
+  </div> <!-- end page-links -->
+{% endif %}
+{%- endblock %}
