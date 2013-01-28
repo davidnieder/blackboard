@@ -31,12 +31,11 @@ class Posts(db.Model):
     user = db.relationship('Users', backref='posts', uselist=False)
 
 
-    def __init__(self, title, content, comment, content_type, time, user,
+    def __init__(self, title, content, content_type, time, user,
                  is_public, public_id):
 
         self.title = title
         self.content = content
-        self.comment = comment
         self.content_type = content_type
         self.time = time
         self.user = user

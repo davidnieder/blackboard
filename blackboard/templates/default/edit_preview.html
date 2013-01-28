@@ -4,6 +4,7 @@
 
 {%- block scripts %}
   <script type="text/javascript" src="/static/script/new_post.js"></script>
+  <script type="text/javascript" src="/static/script/upload.js"></script>
 {% endblock %}
 
 {%- block content %}
@@ -55,8 +56,15 @@
       <dt>Upload</dt>
       <dd id="upload_form">
         <input type="text" id="file_name" readonly>
-        <input type="button" value="Browse Filesystem" id="browse_filesystem" tabindex="7">
+        <input type="button" value="Browse Filesystem" id="browse_filesystem" tabindex="7" onclick="browse_filesystem()">
         <input type="button" value="Upload" id="start_upload" tabindex="8" onclick="start_upload()">
+      </dd>
+
+      <dd id="upload_status" class="upload-progress">
+        Upload progressing... <progress></progress>
+      </dd>
+      <dd id="upload_error" class="upload-error">
+
       </dd>
 
       <dt>Resources</dt>

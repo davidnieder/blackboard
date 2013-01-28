@@ -237,7 +237,7 @@ def handle_upload():
     csrf_token = generate_csrf_token()
 
     try:
-        new_upload = NewUpload()
+        new_upload = upload.NewUpload()
         new_upload.save()
     except exceptions.UploadFailed:
         return jsonify(error='true', csrf_token=csrf_token)
