@@ -227,11 +227,14 @@ def check_if_public_post_exists(public_id):
         return True
     return False
 
-def get_random_post():
-    row_count = DBPosts.query.filter_by(is_public=True).count()
-    rand = random.randrange(1, row_count+1)
-    row = DBPosts.query.get(rand)
+def get_random_post(only_public=False):
+    query = DBPosts.query
+    if only_public:
+        query = query.filter_by(is_public=True)
 
-    post = Post(post_id=row.id)
-    return post.get_post()
+    row_count = query.count()
+    rand = random.randrange(0, row_count)
+    row = query.all()[rand]
+
+    return Post(post_id=row.id).get_post()
 

@@ -289,7 +289,7 @@ def public_user_posts(username, page_number=1):
                            page_links=page_links)
 
 def public_random_post():
-    post = get_random_post()
+    post = get_random_post(only_public=True)
     return render_template(get_template('public_single_post.html'), post=post)
 
 

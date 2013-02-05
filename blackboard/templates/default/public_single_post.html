@@ -1,11 +1,19 @@
 {% extends 'default/public_base.html' %}
 
-{%- if post %}
-{% block title %}<title>Post #{{ post.id }} - Blackboard</title>{% endblock %}
-{%- endif %}
+{% block title %}
+{%- if post.is_public %}
+  {%- if post.title %}
+  <title>{{ post.title }} - Blackboard</title>
+  {%- else %}
+  <title>Blackboard</title>
+  {% endif %}
+{%- else %}
+  <title>Blackboard</title>
+{% endif %}
+{% endblock %}
 
 {%- block posts %}
-{%- if post %}
+{%- if post.is_public %}
     <article id="post-{{ post.public_id }}" class="post">
       <header class="post-header">
         <h2>{{ post.title }}</h2>
