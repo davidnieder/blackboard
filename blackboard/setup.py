@@ -47,7 +47,8 @@ def setup():
         app.config['SECRET_KEY'] = secret_key
 
         # set a default upload directory
-        config.set('upload_destination', os.path.abspath('static/upload'))
+        blackboard_root = os.path.dirname(os.path.abspath(__file__))
+        config.set('upload_destination', blackboard_root + '/static/upload')
 
         # disable setup
         config.set('setup', 'False')
