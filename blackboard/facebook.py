@@ -5,7 +5,7 @@ from time import time
 
 from flask import redirect, request, url_for, flash
 from flask.ext.login import login_required
-from flaskext.oauth import OAuth
+from flask.ext.oauth import OAuth
 
 import config
 import messages

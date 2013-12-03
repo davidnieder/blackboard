@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from flask.ext.login import current_user, login_user, logout_user, \
-                            AnonymousUser
+                            AnonymousUserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import exceptions
@@ -185,5 +185,5 @@ def get_user_list():
 # Monkey patch AnonymousUser class (flask-login)
 def is_admin():
     return false
-AnonymousUser.is_admin = is_admin
+AnonymousUserMixin.is_admin = is_admin
 
